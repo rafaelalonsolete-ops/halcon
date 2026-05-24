@@ -18,10 +18,10 @@
   /* TOP BAR */
   .topbar{background:var(--navy2);border-bottom:1px solid var(--gold30);padding:10px 36px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
   .brand{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--gold);letter-spacing:-0.02em}
-  .brand-sub{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--white30);font-weight:600}
+  .brand-sub{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.65);font-weight:600}
   .divider-v{width:1px;height:32px;background:var(--gold30)}
   .topbar-left{display:flex;align-items:center;gap:18px}
-  .topbar-center{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--white30);font-weight:600}
+  .topbar-center{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:600}
   .topbar-right{display:flex;align-items:center;gap:16px}
   .clock{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--gold)}
   .date-lbl{font-size:10px;color:var(--white30);text-align:right;font-weight:500}
@@ -30,7 +30,7 @@
   /* MAIN GRID */
   .main{flex:1;display:grid;grid-template-columns:300px 1fr 260px;grid-template-rows:1fr 1fr;gap:1px;background:var(--gold30);overflow:hidden}
   .panel{background:var(--navy2);padding:20px 24px;display:flex;flex-direction:column;overflow:hidden}
-  .panel-lbl{font-size:8px;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .panel-lbl{font-size:8px;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold2);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
   .panel-lbl::after{content:'';flex:1;height:1px;background:var(--gold30)}
 
   /* SEMÁFORO */
@@ -52,14 +52,14 @@
   .ccard{background:var(--white10);border:1px solid var(--white10);border-top:3px solid var(--gold30);padding:14px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
   .ccard.hi{border-top-color:var(--gold);background:var(--gold10)}
   .ccard-icon{font-size:22px;margin-bottom:6px}
-  .ccard-lbl{font-size:7px;letter-spacing:0.18em;text-transform:uppercase;color:var(--white30);font-weight:700;margin-bottom:4px}
+  .ccard-lbl{font-size:7px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:4px}
   .ccard-val{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--white);line-height:1}
   .ccard-sub{font-size:11px;color:var(--white60);font-weight:600;margin-top:3px}
   .ccard-det{font-size:9px;color:var(--white30);margin-top:2px}
   .stats-bar{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}
   .sbar{background:var(--white10);padding:8px 6px;text-align:center;border-top:2px solid var(--gold30)}
   .sbar-icon{font-size:14px;margin-bottom:3px}
-  .sbar-lbl{font-size:7px;letter-spacing:0.14em;text-transform:uppercase;color:var(--white30);font-weight:700;margin-bottom:2px}
+  .sbar-lbl{font-size:7px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:2px}
   .sbar-val{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--white)}
   .sbar-sub{font-size:8px;color:var(--white30);margin-top:1px}
 
@@ -67,13 +67,13 @@
   .panel-sol{grid-column:3;grid-row:1;background:var(--navy3)}
   .sol-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--white10)}
   .sol-item:last-of-type{border-bottom:none}
-  .sol-lbl{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--white30);font-weight:700}
+  .sol-lbl{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700}
   .sol-val{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--gold)}
   .sol-val.alert{color:#FCA5A5}
   .gasoil-block{margin-top:12px;background:var(--white10);border:1px solid var(--gold30);padding:12px;text-align:center}
-  .gasoil-lbl{font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:5px}
-  .gasoil-price{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--white);line-height:1}
-  .gasoil-var{font-size:13px;font-weight:700;margin-top:4px;color:var(--gold)}
+  .gasoil-lbl{font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold2);font-weight:700;margin-bottom:5px}
+  .gasoil-price{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--white);line-height:1}
+  .gasoil-var{font-size:12px;font-weight:700;margin-top:4px;color:var(--gold)}
 
   /* FORECAST */
   .panel-fc{grid-column:1/3;grid-row:2}
@@ -81,7 +81,7 @@
   .fcard{background:var(--white10);border:1px solid var(--white10);border-top:3px solid transparent;padding:12px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative}
   .fcard.best{background:rgba(201,168,76,0.12);border-color:var(--gold30);border-top-color:var(--gold)}
   .fcard.best::before{content:'⭐';position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:13px}
-  .fc-day{font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--white30);font-weight:700}
+  .fc-day{font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700}
   .fc-date{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--white)}
   .fc-icon{font-size:20px}
   .fc-bft{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--gold)}
@@ -95,7 +95,7 @@
   .cala-nombre{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:8px}
   .cala-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--white10);font-size:10px}
   .cala-row:last-of-type{border-bottom:none}
-  .cala-row-lbl{color:var(--white30);font-weight:500}
+  .cala-row-lbl{color:rgba(255,255,255,0.7);font-weight:500}
   .cala-row-val{color:var(--white);font-weight:700;text-align:right;max-width:150px}
   .trav-block{margin-top:12px;background:var(--white10);border:1px solid var(--gold30);padding:10px}
   .trav-lbl{font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}
