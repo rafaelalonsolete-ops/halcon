@@ -40,7 +40,7 @@
   .sem-dot.r{background:#C0392B}.sem-dot.y{background:#E8A020}.sem-dot.g{background:#27AE60}
   .sem-emoji{font-size:28px;margin-bottom:8px}
   .sem-decision{font-family:'Playfair Display',serif;font-size:56px;font-weight:900;line-height:1;letter-spacing:-0.02em;margin-bottom:6px}
-  .sem-razon{font-size:11px;color:var(--white60);text-align:center;line-height:1.5;max-width:240px}
+  .sem-razon{font-size:11px;color:rgba(255,255,255,0.85);text-align:center;line-height:1.5;max-width:240px}
   .sem-confort{margin-top:14px;display:flex;align-items:baseline;gap:4px}
   .sem-num{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;color:var(--gold);line-height:1}
   .sem-lbl{font-size:10px;color:var(--white30);letter-spacing:0.12em;text-transform:uppercase;font-weight:600}
@@ -73,7 +73,7 @@
   .gasoil-block{margin-top:12px;background:var(--white10);border:1px solid var(--gold30);padding:12px;text-align:center}
   .gasoil-lbl{font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:5px}
   .gasoil-price{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--white);line-height:1}
-  .gasoil-var{font-size:13px;font-weight:700;margin-top:4px}
+  .gasoil-var{font-size:13px;font-weight:700;margin-top:4px;color:var(--gold)}
 
   /* FORECAST */
   .panel-fc{grid-column:1/3;grid-row:2}
@@ -87,7 +87,7 @@
   .fc-bft{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--gold)}
   .fc-dir{font-size:11px;font-weight:600;color:var(--white60)}
   .fc-temp{font-size:10px;color:var(--white30)}
-  .tend-bar{margin-top:8px;background:rgba(0,0,0,0.2);border-left:3px solid var(--gold);padding:9px 12px;font-size:11px;color:var(--white60);line-height:1.5;flex-shrink:0}
+  .tend-bar{margin-top:8px;background:rgba(0,0,0,0.2);border-left:3px solid var(--gold);padding:9px 12px;font-size:11px;color:rgba(255,255,255,0.85);line-height:1.5;flex-shrink:0}
   .tend-bar strong{color:var(--gold)}
 
   /* CALA + TRAVESÍA */
@@ -282,6 +282,8 @@ function updateClock() {
   const d = now.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   document.querySelector('.clock') && (document.querySelector('.clock').textContent = h+':'+m+':'+s);
   document.getElementById('emitido-lbl') && (document.getElementById('emitido-lbl').textContent = d);
+  // Update page title with real date
+  document.title = 'HALCÓN · ' + new Date().toLocaleDateString('es-ES', {weekday:'long', day:'numeric', month:'long'});
 }
 // Añadir reloj al topbar
 const topbarRight = document.querySelector('.topbar-right');
@@ -323,6 +325,7 @@ function applyData(d) {
   // Topbar
   setText('parte-fecha', d.parte_fecha);
   setText('parte-num', '⚓ PARTE · ' + (d.parte_fecha||''));
+  setText('parte-fecha', d.parte_fecha||'');
 
   // Semáforo
   const panel = document.getElementById('panel-sem');
@@ -330,7 +333,7 @@ function applyData(d) {
   setText('sem-emoji', d.decision_emoji);
   setText('sem-decision', d.decision);
   setStyle('sem-decision', 'color', d.decision_color);
-  setText('sem-razon', d.semaforo_razon);
+  setText('sem-razon', d.semaforo_razon || d.motivo || '');
   setText('sem-confort', d.confort_10);
   setText('sem-fib', '🎯 ' + d.fiabilidad_pct + '% fiabilidad');
   document.getElementById('dot-r').style.opacity = d.sem_red_opacity;
@@ -366,12 +369,18 @@ function applyData(d) {
 
   // Gasoil
   setText('gasoil-price', d.gasoil_price + ' €/L');
-  setText('gasoil-var', (d.gasoil_simbolo||'=') + ' ' + d.gasoil_variacion_eur + '€ vs ayer');
-  setStyle('gasoil-var', 'color', d.gasoil_color);
+  setText('gasoil-var', (d.gasoil_simbolo||'=') + ' ' + (d.gasoil_variacion_eur||0) + '€ vs ayer');
+  // gasoil color: if igual=#888 use gold instead for visibility on dark bg
+  const gColor = (d.gasoil_color === '#888' || !d.gasoil_color) ? '#C9A84C' : d.gasoil_color;
+  setStyle('gasoil-var', 'color', gColor);
 
   // Tendencia
   const tend = document.getElementById('tendencia');
-  if (tend) tend.innerHTML = '<strong>Tendencia:</strong> ' + d.tendencia_72h + ' · Presión ' + d.presion_hpa + ' hPa — <strong>' + d.presion_trend + '</strong>';
+  if (tend) {
+    const tendText = d.tendencia_72h || '';
+    const presText = d.presion_trend || '';
+    tend.innerHTML = '<strong>Tendencia:</strong> ' + tendText + (d.presion_hpa ? ' · Presión ' + d.presion_hpa + ' hPa' : '') + (presText ? ' — <strong>' + presText + '</strong>' : '');
+  }
 
   // Forecast
   renderForecast(d);
