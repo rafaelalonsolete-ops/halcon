@@ -4,419 +4,117 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HALCÓN · Dashboard</title>
-<meta http-equiv="refresh" content="300">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=JetBrains+Mono:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #0A1628;
-    --navy2: #0F2540;
-    --navy3: #1B3A5C;
-    --gold: #C9A84C;
-    --gold2: #E8C96A;
-    --cream: #F5EFE3;
-    --go: #27AE60;
-    --go2: #2ECC71;
-    --warn: #E8A020;
-    --stop: #C0392B;
-    --white: #FFFFFF;
-    --white60: rgba(255,255,255,0.6);
-    --white30: rgba(255,255,255,0.3);
-    --white10: rgba(255,255,255,0.1);
-    --gold10: rgba(201,168,76,0.1);
-    --gold30: rgba(201,168,76,0.3);
+    --navy:#0A1628;--navy2:#0F2540;--navy3:#1B3A5C;
+    --gold:#C9A84C;--gold2:#E8C96A;--gold10:rgba(201,168,76,0.10);--gold30:rgba(201,168,76,0.30);
+    --white:rgba(255,255,255,1);--white60:rgba(255,255,255,0.6);--white30:rgba(255,255,255,0.3);--white10:rgba(255,255,255,0.08);
+    --go:#27AE60;--warn:#E8A020;--stop:#C0392B;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--navy);font-family:'Poppins',sans-serif;color:var(--white);width:100vw;height:100vh;overflow:hidden;display:flex;flex-direction:column}
 
-  body {
-    background: var(--navy);
-    font-family: 'Poppins', sans-serif;
-    color: var(--white);
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
+  /* TOP BAR */
+  .topbar{background:var(--navy2);border-bottom:1px solid var(--gold30);padding:10px 36px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+  .brand{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--gold);letter-spacing:-0.02em}
+  .brand-sub{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--white30);font-weight:600}
+  .divider-v{width:1px;height:32px;background:var(--gold30)}
+  .topbar-left{display:flex;align-items:center;gap:18px}
+  .topbar-center{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--white30);font-weight:600}
+  .topbar-right{display:flex;align-items:center;gap:16px}
+  .clock{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--gold)}
+  .date-lbl{font-size:10px;color:var(--white30);text-align:right;font-weight:500}
+  .live-badge{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--go);background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.3);padding:3px 10px;font-weight:700}
 
-  /* ── TOP BAR ── */
-  .topbar {
-    background: var(--navy2);
-    border-bottom: 1px solid var(--gold30);
-    padding: 10px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-shrink: 0;
-  }
-  .topbar-left { display: flex; align-items: center; gap: 20px; }
-  .brand {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    font-weight: 900;
-    color: var(--gold);
-    letter-spacing: -0.02em;
-  }
-  .brand-sub {
-    font-size: 11px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--white30);
-    font-weight: 600;
-  }
-  .divider-v { width: 1px; height: 36px; background: var(--gold30); }
-  .topbar-center {
-    font-size: 12px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--white30);
-    font-weight: 600;
-  }
-  .topbar-right { display: flex; align-items: center; gap: 20px; }
-  .clock {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--gold);
-  }
-  .date-lbl {
-    font-size: 11px;
-    color: var(--white30);
-    text-align: right;
-    font-weight: 500;
-  }
-  .refresh-badge {
-    font-size: 9px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--go);
-    background: rgba(39,174,96,0.1);
-    border: 1px solid rgba(39,174,96,0.3);
-    padding: 3px 10px;
-    font-weight: 700;
-  }
+  /* MAIN GRID */
+  .main{flex:1;display:grid;grid-template-columns:300px 1fr 260px;grid-template-rows:1fr 1fr;gap:1px;background:var(--gold30);overflow:hidden}
+  .panel{background:var(--navy2);padding:20px 24px;display:flex;flex-direction:column;overflow:hidden}
+  .panel-lbl{font-size:8px;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .panel-lbl::after{content:'';flex:1;height:1px;background:var(--gold30)}
 
-  /* ── MAIN GRID ── */
-  .main {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 340px 1fr 280px;
-    grid-template-rows: 1fr 1fr;
-    gap: 1px;
-    background: var(--gold30);
-    overflow: hidden;
-  }
+  /* SEMÁFORO */
+  .panel-sem{grid-column:1;grid-row:1;align-items:center;justify-content:center;position:relative}
+  .sem-lights{display:flex;gap:10px;margin-bottom:14px}
+  .sem-dot{width:16px;height:16px;border-radius:50%}
+  .sem-dot.r{background:#C0392B}.sem-dot.y{background:#E8A020}.sem-dot.g{background:#27AE60}
+  .sem-emoji{font-size:28px;margin-bottom:8px}
+  .sem-decision{font-family:'Playfair Display',serif;font-size:56px;font-weight:900;line-height:1;letter-spacing:-0.02em;margin-bottom:6px}
+  .sem-razon{font-size:11px;color:var(--white60);text-align:center;line-height:1.5;max-width:240px}
+  .sem-confort{margin-top:14px;display:flex;align-items:baseline;gap:4px}
+  .sem-num{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;color:var(--gold);line-height:1}
+  .sem-lbl{font-size:10px;color:var(--white30);letter-spacing:0.12em;text-transform:uppercase;font-weight:600}
+  .sem-fib{margin-top:10px;font-size:10px;color:var(--white30);letter-spacing:0.12em;text-transform:uppercase}
 
-  .panel {
-    background: var(--navy2);
-    padding: 24px 28px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .panel-label {
-    font-size: 9px;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    color: var(--gold);
-    font-weight: 700;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .panel-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--gold30);
-  }
+  /* CONDICIONES */
+  .panel-cond{grid-column:2;grid-row:1}
+  .cond-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex-shrink:0}
+  .ccard{background:var(--white10);border:1px solid var(--white10);border-top:3px solid var(--gold30);padding:14px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ccard.hi{border-top-color:var(--gold);background:var(--gold10)}
+  .ccard-icon{font-size:22px;margin-bottom:6px}
+  .ccard-lbl{font-size:7px;letter-spacing:0.18em;text-transform:uppercase;color:var(--white30);font-weight:700;margin-bottom:4px}
+  .ccard-val{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--white);line-height:1}
+  .ccard-sub{font-size:11px;color:var(--white60);font-weight:600;margin-top:3px}
+  .ccard-det{font-size:9px;color:var(--white30);margin-top:2px}
+  .stats-bar{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}
+  .sbar{background:var(--white10);padding:8px 6px;text-align:center;border-top:2px solid var(--gold30)}
+  .sbar-icon{font-size:14px;margin-bottom:3px}
+  .sbar-lbl{font-size:7px;letter-spacing:0.14em;text-transform:uppercase;color:var(--white30);font-weight:700;margin-bottom:2px}
+  .sbar-val{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--white)}
+  .sbar-sub{font-size:8px;color:var(--white30);margin-top:1px}
 
-  /* ── PANEL 1: SEMÁFORO (col1 row1) ── */
-  .panel-semaforo {
-    grid-column: 1;
-    grid-row: 1;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .panel-semaforo::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at center, var(--sem-glow, rgba(39,174,96,0.12)) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .sem-lights-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 18px;
-  }
-  .sem-dot {
-    width: 18px; height: 18px; border-radius: 50%;
-  }
-  .sem-dot.red { background: #C0392B; }
-  .sem-dot.yellow { background: #E8A020; }
-  .sem-dot.green { background: #27AE60; }
-  .sem-decision {
-    font-family: 'Playfair Display', serif;
-    font-size: 64px;
-    font-weight: 900;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    margin-bottom: 8px;
-  }
-  .sem-emoji { font-size: 32px; margin-bottom: 10px; }
-  .sem-razon {
-    font-size: 12px;
-    color: var(--white60);
-    text-align: center;
-    line-height: 1.5;
-    max-width: 260px;
-  }
-  .sem-confort {
-    margin-top: 16px;
-    display: flex;
-    align-items: baseline;
-    gap: 4px;
-  }
-  .sem-confort-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 48px;
-    font-weight: 900;
-    color: var(--gold);
-    line-height: 1;
-  }
-  .sem-confort-lbl {
-    font-size: 11px;
-    color: var(--white30);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 600;
-  }
+  /* SOL + GASOIL */
+  .panel-sol{grid-column:3;grid-row:1;background:var(--navy3)}
+  .sol-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--white10)}
+  .sol-item:last-of-type{border-bottom:none}
+  .sol-lbl{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--white30);font-weight:700}
+  .sol-val{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--gold)}
+  .sol-val.alert{color:#FCA5A5}
+  .gasoil-block{margin-top:12px;background:var(--white10);border:1px solid var(--gold30);padding:12px;text-align:center}
+  .gasoil-lbl{font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:5px}
+  .gasoil-price{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--white);line-height:1}
+  .gasoil-var{font-size:13px;font-weight:700;margin-top:4px}
 
-  /* ── PANEL 2: VIENTO + OLAS (col2 row1) ── */
-  .panel-condiciones {
-    grid-column: 2;
-    grid-row: 1;
-  }
-  .cond-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    flex: 1;
-  }
-  .cond-card {
-    background: var(--white10);
-    border: 1px solid var(--white10);
-    border-top: 3px solid var(--gold30);
-    padding: 16px 12px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  .cond-card.highlight { border-top-color: var(--gold); background: var(--gold10); }
-  .cond-icon { font-size: 24px; margin-bottom: 8px; }
-  .cond-lbl {
-    font-size: 8px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--white30);
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-  .cond-val {
-    font-family: 'Playfair Display', serif;
-    font-size: 36px;
-    font-weight: 700;
-    color: var(--white);
-    line-height: 1;
-  }
-  .cond-sub {
-    font-size: 12px;
-    color: var(--white60);
-    font-weight: 600;
-    margin-top: 4px;
-  }
-  .cond-detail { font-size: 10px; color: var(--white30); margin-top: 3px; }
+  /* FORECAST */
+  .panel-fc{grid-column:1/3;grid-row:2}
+  .fc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;flex:1}
+  .fcard{background:var(--white10);border:1px solid var(--white10);border-top:3px solid transparent;padding:12px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative}
+  .fcard.best{background:rgba(201,168,76,0.12);border-color:var(--gold30);border-top-color:var(--gold)}
+  .fcard.best::before{content:'⭐';position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:13px}
+  .fc-day{font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--white30);font-weight:700}
+  .fc-date{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--white)}
+  .fc-icon{font-size:20px}
+  .fc-bft{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--gold)}
+  .fc-dir{font-size:11px;font-weight:600;color:var(--white60)}
+  .fc-temp{font-size:10px;color:var(--white30)}
+  .tend-bar{margin-top:8px;background:rgba(0,0,0,0.2);border-left:3px solid var(--gold);padding:9px 12px;font-size:11px;color:var(--white60);line-height:1.5;flex-shrink:0}
+  .tend-bar strong{color:var(--gold)}
 
-  /* Stats bar */
-  .stats-bar {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 8px;
-    margin-top: 10px;
-  }
-  .stat-mini {
-    background: var(--white10);
-    padding: 10px 8px;
-    text-align: center;
-    border-top: 2px solid var(--gold30);
-  }
-  .stat-mini-icon { font-size: 16px; margin-bottom: 4px; }
-  .stat-mini-lbl { font-size: 7px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white30); font-weight: 700; margin-bottom: 3px; }
-  .stat-mini-val { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 700; color: var(--white); }
-  .stat-mini-sub { font-size: 9px; color: var(--white30); margin-top: 2px; }
+  /* CALA + TRAVESÍA */
+  .panel-cala{grid-column:3;grid-row:2;background:var(--navy3)}
+  .cala-nombre{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:8px}
+  .cala-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--white10);font-size:10px}
+  .cala-row:last-of-type{border-bottom:none}
+  .cala-row-lbl{color:var(--white30);font-weight:500}
+  .cala-row-val{color:var(--white);font-weight:700;text-align:right;max-width:150px}
+  .trav-block{margin-top:12px;background:var(--white10);border:1px solid var(--gold30);padding:10px}
+  .trav-lbl{font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}
+  .trav-nombre{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--white)}
+  .trav-coste{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--gold2);margin-top:3px}
+  .trav-razon{font-size:9px;color:var(--white30);margin-top:4px;line-height:1.4}
 
-  /* ── PANEL 3: SOL + VENTANA (col3 row1) ── */
-  .panel-sol {
-    grid-column: 3;
-    grid-row: 1;
-    background: var(--navy3);
-  }
-  .sol-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--white10);
-  }
-  .sol-item:last-child { border-bottom: none; }
-  .sol-lbl { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white30); font-weight: 700; }
-  .sol-val { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; color: var(--gold); }
-  .sol-val.alert { color: #FCA5A5; }
-
-  /* Gasoil block */
-  .gasoil-block {
-    margin-top: 14px;
-    background: var(--white10);
-    border: 1px solid var(--gold30);
-    padding: 14px;
-    text-align: center;
-  }
-  .gasoil-lbl { font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 6px; }
-  .gasoil-price { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--white); line-height: 1; }
-  .gasoil-var { font-size: 13px; font-weight: 700; margin-top: 4px; }
-
-  /* ── PANEL 4: FORECAST (col1+2 row2) ── */
-  .panel-forecast {
-    grid-column: 1 / 3;
-    grid-row: 2;
-  }
-  .forecast-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    flex: 1;
-  }
-  .fc-card {
-    background: var(--white10);
-    border: 1px solid var(--white10);
-    border-top: 3px solid transparent;
-    padding: 14px 10px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    position: relative;
-  }
-  .fc-card.best {
-    background: rgba(201,168,76,0.12);
-    border-color: var(--gold30);
-    border-top-color: var(--gold);
-  }
-  .fc-card.best::before {
-    content: '⭐';
-    position: absolute;
-    top: -14px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 14px;
-  }
-  .fc-day { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white30); font-weight: 700; }
-  .fc-date { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--white); }
-  .fc-icon { font-size: 22px; }
-  .fc-bft { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: var(--gold); }
-  .fc-dir { font-size: 11px; font-weight: 600; color: var(--white60); }
-  .fc-temp { font-size: 11px; color: var(--white30); }
-
-  /* Tendencia */
-  .tendencia-bar {
-    margin-top: 10px;
-    background: rgba(0,0,0,0.2);
-    border-left: 3px solid var(--gold);
-    padding: 10px 14px;
-    font-size: 11px;
-    color: var(--white60);
-    line-height: 1.5;
-    flex-shrink: 0;
-  }
-  .tendencia-bar strong { color: var(--gold); }
-
-  /* ── PANEL 5: CALA + TRAVESÍA (col3 row2) ── */
-  .panel-cala {
-    grid-column: 3;
-    grid-row: 2;
-    background: var(--navy3);
-  }
-  .cala-nombre {
-    font-family: 'Playfair Display', serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--gold);
-    margin-bottom: 10px;
-  }
-  .cala-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 7px 0;
-    border-bottom: 1px solid var(--white10);
-    font-size: 11px;
-  }
-  .cala-row:last-of-type { border-bottom: none; }
-  .cala-row-lbl { color: var(--white30); font-weight: 500; }
-  .cala-row-val { color: var(--white); font-weight: 700; text-align: right; max-width: 160px; }
-
-  .trav-block {
-    margin-top: 14px;
-    background: var(--white10);
-    border: 1px solid var(--gold30);
-    padding: 12px;
-  }
-  .trav-lbl { font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 6px; }
-  .trav-nombre { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--white); }
-  .trav-coste { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 700; color: var(--gold2); margin-top: 4px; }
-  .trav-razon { font-size: 10px; color: var(--white30); margin-top: 6px; line-height: 1.4; }
-
-  /* ── BOTTOM TICKER ── */
-  .ticker {
-    background: var(--gold);
-    color: var(--navy2);
-    padding: 6px 0;
-    overflow: hidden;
-    flex-shrink: 0;
-    position: relative;
-  }
-  .ticker-inner {
-    display: flex;
-    white-space: nowrap;
-    animation: ticker 40s linear infinite;
-  }
-  .ticker-item {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    padding: 0 40px;
-  }
-  .ticker-sep { opacity: 0.4; }
-  @keyframes ticker {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* Clock animation */
-  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
-  .clock-sep { animation: pulse 1s infinite; }
+  /* TICKER */
+  .ticker{background:var(--gold);color:var(--navy2);padding:5px 0;overflow:hidden;flex-shrink:0}
+  .ticker-inner{display:flex;white-space:nowrap;animation:tick 50s linear infinite}
+  .ticker-item{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:0 36px}
+  .ticker-sep{opacity:0.4}
+  @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+  .pulse{animation:pulse 1s infinite}
 </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-left">
     <div>
@@ -426,255 +124,288 @@
     <div class="divider-v"></div>
     <div>
       <div class="brand-sub">Parte Marítimo Premium</div>
-      <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px">{{12.parte_fecha}}</div>
+      <div id="parte-fecha" style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px">—</div>
     </div>
   </div>
-  <div class="topbar-center">⚓ PARTE Nº {{formatDate(now; "YYYYMMDD-HHmm")}}</div>
+  <div class="topbar-center" id="parte-num">CARGANDO PARTE...</div>
   <div class="topbar-right">
     <div>
-      <div class="date-lbl">EMITIDO {{formatDate(now; "DD/MM/YYYY")}} · {{formatDate(now; "HH:mm")}}H</div>
+      <div class="date-lbl" id="emitido-lbl">—</div>
       <div class="date-lbl" style="margin-top:2px">Auto-refresh cada 5 min</div>
     </div>
     <div class="divider-v"></div>
-    <div class="refresh-badge">● EN VIVO</div>
+    <div class="live-badge">● EN VIVO</div>
   </div>
 </div>
 
-<!-- MAIN GRID -->
 <div class="main">
 
-  <!-- PANEL 1: SEMÁFORO -->
-  <div class="panel panel-semaforo" style="--sem-glow:{{12.semaforo_bg_color}}26">
-    <div class="sem-lights-row">
-      <div class="sem-dot red" style="opacity:{{12.sem_red_opacity}}"></div>
-      <div class="sem-dot yellow" style="opacity:{{12.sem_yellow_opacity}}"></div>
-      <div class="sem-dot green" style="opacity:{{12.sem_green_opacity}}"></div>
+  <!-- SEMÁFORO -->
+  <div class="panel panel-sem" id="panel-sem">
+    <div class="sem-lights">
+      <div class="sem-dot r" id="dot-r"></div>
+      <div class="sem-dot y" id="dot-y"></div>
+      <div class="sem-dot g" id="dot-g"></div>
     </div>
-    <div class="sem-emoji">{{12.decision_emoji}}</div>
-    <div class="sem-decision" style="color:{{12.decision_color}}">{{12.decision}}</div>
-    <div class="sem-razon">{{12.semaforo_razon}}</div>
+    <div class="sem-emoji" id="sem-emoji">🟢</div>
+    <div class="sem-decision" id="sem-decision">—</div>
+    <div class="sem-razon" id="sem-razon">Cargando datos...</div>
     <div class="sem-confort">
-      <div class="sem-confort-num">{{12.confort_10}}</div>
-      <div class="sem-confort-lbl">/10<br>confort</div>
+      <div class="sem-num" id="sem-confort">—</div>
+      <div class="sem-lbl">/10<br>confort</div>
     </div>
-    <div style="margin-top:12px;font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.12em;text-transform:uppercase">🎯 {{12.fiabilidad_pct}}% fiabilidad</div>
+    <div class="sem-fib" id="sem-fib">🎯 —% fiabilidad</div>
   </div>
 
-  <!-- PANEL 2: CONDICIONES -->
-  <div class="panel panel-condiciones">
-    <div class="panel-label">i. Condiciones meteorológicas</div>
+  <!-- CONDICIONES -->
+  <div class="panel panel-cond">
+    <div class="panel-lbl">i. Condiciones meteorológicas</div>
     <div class="cond-grid">
-      <div class="cond-card highlight">
-        <div class="cond-icon">🌬️</div>
-        <div class="cond-lbl">Viento</div>
-        <div class="cond-val">{{12.viento_bft}}</div>
-        <div class="cond-sub">Bft · {{12.viento_dir}}</div>
-        <div class="cond-detail">{{12.viento_kmh}} km/h</div>
+      <div class="ccard hi">
+        <div class="ccard-icon">🌬️</div>
+        <div class="ccard-lbl">Viento</div>
+        <div class="ccard-val" id="viento-bft">—</div>
+        <div class="ccard-sub" id="viento-dir">Bft</div>
+        <div class="ccard-det" id="viento-kmh">— km/h</div>
       </div>
-      <div class="cond-card">
-        <div class="cond-icon">💨</div>
-        <div class="cond-lbl">Ráfagas</div>
-        <div class="cond-val">{{12.wind_gust_beaufort}}</div>
-        <div class="cond-sub">Bft máx</div>
-        <div class="cond-detail">{{12.wind_gust_kmh}} km/h</div>
+      <div class="ccard">
+        <div class="ccard-icon">💨</div>
+        <div class="ccard-lbl">Ráfagas</div>
+        <div class="ccard-val" id="gust-bft">—</div>
+        <div class="ccard-sub">Bft máx</div>
+        <div class="ccard-det" id="gust-kmh">— km/h</div>
       </div>
-      <div class="cond-card highlight">
-        <div class="cond-icon">🌊</div>
-        <div class="cond-lbl">Olas</div>
-        <div class="cond-val">{{12.olas_m}}</div>
-        <div class="cond-sub">metros</div>
-        <div class="cond-detail">Período {{12.wave_period}}s</div>
+      <div class="ccard hi">
+        <div class="ccard-icon">🌊</div>
+        <div class="ccard-lbl">Olas</div>
+        <div class="ccard-val" id="olas-m">—</div>
+        <div class="ccard-sub">metros</div>
+        <div class="ccard-det" id="olas-per">Período —s</div>
       </div>
-      <div class="cond-card">
-        <div class="cond-icon">🌡️</div>
-        <div class="cond-lbl">Temperatura</div>
-        <div class="cond-val">{{12.temp_c}}</div>
-        <div class="cond-sub">°C aire</div>
-        <div class="cond-detail">Agua {{12.agua_c}}°C</div>
+      <div class="ccard">
+        <div class="ccard-icon">🌡️</div>
+        <div class="ccard-lbl">Temperatura</div>
+        <div class="ccard-val" id="temp-c">—</div>
+        <div class="ccard-sub">°C aire</div>
+        <div class="ccard-det" id="agua-c">Agua —°C</div>
       </div>
     </div>
     <div class="stats-bar">
-      <div class="stat-mini">
-        <div class="stat-mini-icon">🤚</div>
-        <div class="stat-mini-lbl">Sensación</div>
-        <div class="stat-mini-val">{{12.feels_like}}°</div>
-      </div>
-      <div class="stat-mini">
-        <div class="stat-mini-icon">💧</div>
-        <div class="stat-mini-lbl">Lluvia</div>
-        <div class="stat-mini-val">{{12.lluvia_pct}}%</div>
-      </div>
-      <div class="stat-mini">
-        <div class="stat-mini-icon">🔵</div>
-        <div class="stat-mini-lbl">Presión</div>
-        <div class="stat-mini-val">{{12.presion_hpa}}</div>
-        <div class="stat-mini-sub">hPa</div>
-      </div>
-      <div class="stat-mini">
-        <div class="stat-mini-icon">👁️</div>
-        <div class="stat-mini-lbl">Visib.</div>
-        <div class="stat-mini-val">{{12.visibility_km}}</div>
-        <div class="stat-mini-sub">km</div>
-      </div>
-      <div class="stat-mini">
-        <div class="stat-mini-icon">☀️</div>
-        <div class="stat-mini-lbl">UV</div>
-        <div class="stat-mini-val" style="color:{{12.uv_color}}">{{12.uv_index}}</div>
-        <div class="stat-mini-sub">{{12.uv_descripcion}}</div>
-      </div>
-      <div class="stat-mini">
-        <div class="stat-mini-icon">🌀</div>
-        <div class="stat-mini-lbl">Corriente</div>
-        <div class="stat-mini-val">{{12.sea_current_knots}}</div>
-        <div class="stat-mini-sub">kn {{12.sea_current_dir}}</div>
-      </div>
+      <div class="sbar"><div class="sbar-icon">🤚</div><div class="sbar-lbl">Sensación</div><div class="sbar-val" id="feels">—</div><div class="sbar-sub">°C</div></div>
+      <div class="sbar"><div class="sbar-icon">💧</div><div class="sbar-lbl">Lluvia</div><div class="sbar-val" id="lluvia">—</div><div class="sbar-sub">%</div></div>
+      <div class="sbar"><div class="sbar-icon">🔵</div><div class="sbar-lbl">Presión</div><div class="sbar-val" id="presion">—</div><div class="sbar-sub">hPa</div></div>
+      <div class="sbar"><div class="sbar-icon">👁️</div><div class="sbar-lbl">Visib.</div><div class="sbar-val" id="visib">—</div><div class="sbar-sub">km</div></div>
+      <div class="sbar"><div class="sbar-icon">☀️</div><div class="sbar-lbl">UV</div><div class="sbar-val" id="uv-idx" style="">—</div><div class="sbar-sub" id="uv-desc">—</div></div>
+      <div class="sbar"><div class="sbar-icon">🌀</div><div class="sbar-lbl">Corriente</div><div class="sbar-val" id="curr-kn">—</div><div class="sbar-sub" id="curr-dir">kn</div></div>
     </div>
   </div>
 
-  <!-- PANEL 3: SOL + GASOIL -->
+  <!-- SOL + GASOIL -->
   <div class="panel panel-sol">
-    <div class="panel-label">⏱ Ventana · Sol</div>
-    <div class="sol-item">
-      <div class="sol-lbl">🌅 Amanecer</div>
-      <div class="sol-val">{{12.sunrise_time}}H</div>
-    </div>
-    <div class="sol-item">
-      <div class="sol-lbl">⏰ Ventana inicio</div>
-      <div class="sol-val">{{12.ventana_inicio}}H</div>
-    </div>
-    <div class="sol-item">
-      <div class="sol-lbl">⏰ Ventana fin</div>
-      <div class="sol-val">{{12.ventana_fin}}H</div>
-    </div>
-    <div class="sol-item">
-      <div class="sol-lbl">🌇 Puesta de sol</div>
-      <div class="sol-val">{{12.sunset_time}}H</div>
-    </div>
-    <div class="sol-item">
-      <div class="sol-lbl">⚠️ Regreso antes de</div>
-      <div class="sol-val alert">{{12.return_time_recommended}}H</div>
-    </div>
+    <div class="panel-lbl">⏱ Ventana · Sol</div>
+    <div class="sol-item"><div class="sol-lbl">🌅 Amanecer</div><div class="sol-val" id="sunrise">—H</div></div>
+    <div class="sol-item"><div class="sol-lbl">⏰ Ventana inicio</div><div class="sol-val" id="vent-ini">—H</div></div>
+    <div class="sol-item"><div class="sol-lbl">⏰ Ventana fin</div><div class="sol-val" id="vent-fin">—H</div></div>
+    <div class="sol-item"><div class="sol-lbl">🌇 Puesta de sol</div><div class="sol-val" id="sunset">—H</div></div>
+    <div class="sol-item"><div class="sol-lbl">⚠️ Regreso antes de</div><div class="sol-val alert" id="regreso">—H</div></div>
     <div class="gasoil-block">
       <div class="gasoil-lbl">⛽ Gasoil · REPSOL Andratx</div>
-      <div class="gasoil-price">{{12.gasoil_price}} €/L</div>
-      <div class="gasoil-var" style="color:{{12.gasoil_color}}">{{12.gasoil_simbolo}} {{12.gasoil_variacion_eur}}€ vs ayer</div>
+      <div class="gasoil-price" id="gasoil-price">— €/L</div>
+      <div class="gasoil-var" id="gasoil-var">— vs ayer</div>
     </div>
   </div>
 
-  <!-- PANEL 4: FORECAST 5 DÍAS -->
-  <div class="panel panel-forecast">
-    <div class="panel-label">📅 Pronóstico extendido · 5 días · Puerto de Andratx</div>
-    <div class="forecast-grid">
-      <div class="fc-card {{12.weekly_day1_class}}">
-        <div class="fc-day">{{12.forecast_day1_day}}</div>
-        <div class="fc-date">{{12.forecast_day1_date}}</div>
-        <div class="fc-icon">{{12.forecast_day1_icon}}</div>
-        <div class="fc-bft">{{12.forecast_day1_beaufort}} Bft</div>
-        <div class="fc-dir">{{12.forecast_day1_wind_dir}}</div>
-        <div class="fc-temp">{{12.forecast_day1_temp}}°C</div>
-      </div>
-      <div class="fc-card {{12.weekly_day2_class}}">
-        <div class="fc-day">{{12.forecast_day2_day}}</div>
-        <div class="fc-date">{{12.forecast_day2_date}}</div>
-        <div class="fc-icon">{{12.forecast_day2_icon}}</div>
-        <div class="fc-bft">{{12.forecast_day2_beaufort}} Bft</div>
-        <div class="fc-dir">{{12.forecast_day2_wind_dir}}</div>
-        <div class="fc-temp">{{12.forecast_day2_temp}}°C</div>
-      </div>
-      <div class="fc-card {{12.weekly_day3_class}}">
-        <div class="fc-day">{{12.forecast_day3_day}}</div>
-        <div class="fc-date">{{12.forecast_day3_date}}</div>
-        <div class="fc-icon">{{12.forecast_day3_icon}}</div>
-        <div class="fc-bft">{{12.forecast_day3_beaufort}} Bft</div>
-        <div class="fc-dir">{{12.forecast_day3_wind_dir}}</div>
-        <div class="fc-temp">{{12.forecast_day3_temp}}°C</div>
-      </div>
-      <div class="fc-card {{12.weekly_day4_class}}">
-        <div class="fc-day">{{12.forecast_day4_day}}</div>
-        <div class="fc-date">{{12.forecast_day4_date}}</div>
-        <div class="fc-icon">{{12.forecast_day4_icon}}</div>
-        <div class="fc-bft">{{12.forecast_day4_beaufort}} Bft</div>
-        <div class="fc-dir">{{12.forecast_day4_wind_dir}}</div>
-        <div class="fc-temp">{{12.forecast_day4_temp}}°C</div>
-      </div>
-      <div class="fc-card {{12.weekly_day5_class}}">
-        <div class="fc-day">{{12.forecast_day5_day}}</div>
-        <div class="fc-date">{{12.forecast_day5_date}}</div>
-        <div class="fc-icon">{{12.forecast_day5_icon}}</div>
-        <div class="fc-bft">{{12.forecast_day5_beaufort}} Bft</div>
-        <div class="fc-dir">{{12.forecast_day5_wind_dir}}</div>
-        <div class="fc-temp">{{12.forecast_day5_temp}}°C</div>
-      </div>
+  <!-- FORECAST -->
+  <div class="panel panel-fc">
+    <div class="panel-lbl">📅 Pronóstico extendido · 5 días</div>
+    <div class="fc-grid" id="fc-grid">
+      <!-- Generado por JS -->
     </div>
-    <div class="tendencia-bar">
-      <strong>Tendencia:</strong> {{12.tendencia_72h}} · Presión {{12.presion_hpa}} hPa — <strong>{{12.presion_trend}}</strong>
-    </div>
+    <div class="tend-bar" id="tendencia">Cargando tendencia...</div>
   </div>
 
-  <!-- PANEL 5: CALA + TRAVESÍA -->
+  <!-- CALA + TRAVESÍA -->
   <div class="panel panel-cala">
-    <div class="panel-label">⚓ Cala · Travesía</div>
-    <div class="cala-nombre">{{12.cala_recomendada}}</div>
-    <div class="cala-row">
-      <span class="cala-row-lbl">🧭 Protección</span>
-      <span class="cala-row-val">{{12.cala_proteccion}}</span>
-    </div>
-    <div class="cala-row">
-      <span class="cala-row-lbl">🌊 Fondeo</span>
-      <span class="cala-row-val">{{12.cala_fondeo}}</span>
-    </div>
-    <div class="cala-row">
-      <span class="cala-row-lbl">🍽️ Restaurante</span>
-      <span class="cala-row-val">{{12.cala_restaurante}}</span>
-    </div>
-    <div class="cala-row">
-      <span class="cala-row-lbl">📡 AIS Barcos</span>
-      <span class="cala-row-val">{{12.barcos_zona_total}} · {{12.ocupacion_cala_recomendada}}</span>
-    </div>
+    <div class="panel-lbl">⚓ Cala · Travesía</div>
+    <div class="cala-nombre" id="cala-nombre">—</div>
+    <div class="cala-row"><span class="cala-row-lbl">🧭 Protección</span><span class="cala-row-val" id="cala-prot">—</span></div>
+    <div class="cala-row"><span class="cala-row-lbl">🌊 Fondeo</span><span class="cala-row-val" id="cala-fondeo">—</span></div>
+    <div class="cala-row"><span class="cala-row-lbl">🍽️ Restaurante</span><span class="cala-row-val" id="cala-rest">—</span></div>
+    <div class="cala-row"><span class="cala-row-lbl">📡 AIS / Ocupación</span><span class="cala-row-val" id="cala-ais">—</span></div>
     <div class="trav-block">
       <div class="trav-lbl">🏝️ Travesía recomendada</div>
-      <div class="trav-nombre">{{12.travesia_recomendada}}</div>
-      <div class="trav-coste">{{12.travesia1_coste}} €</div>
-      <div class="trav-razon">{{12.travesia_porque}}</div>
+      <div class="trav-nombre" id="trav-nombre">—</div>
+      <div class="trav-coste" id="trav-coste">— €</div>
+      <div class="trav-razon" id="trav-razon">—</div>
     </div>
   </div>
 
 </div>
 
-<!-- BOTTOM TICKER -->
+<!-- TICKER -->
 <div class="ticker">
-  <div class="ticker-inner">
+  <div class="ticker-inner" id="ticker">
+    <span class="ticker-item">🦅 HALCÓN · PARTE MARÍTIMO PREMIUM</span>
+    <span class="ticker-item ticker-sep">·</span>
+    <span class="ticker-item" id="tick1">⚓ PUERTO DE ANDRATX · AMARRE 263</span>
+    <span class="ticker-item ticker-sep">·</span>
+    <span class="ticker-item" id="tick2">🌬️ CARGANDO...</span>
+    <span class="ticker-item ticker-sep">·</span>
+    <span class="ticker-item" id="tick3">🌊 CARGANDO...</span>
+    <span class="ticker-item ticker-sep">·</span>
+    <span class="ticker-item" id="tick4">⛽ CARGANDO...</span>
+    <span class="ticker-item ticker-sep">·</span>
+    <span class="ticker-item" id="tick5">📅 CARGANDO...</span>
+    <span class="ticker-item ticker-sep">·</span>
     <span class="ticker-item">🦅 HALCÓN · PARTE MARÍTIMO PREMIUM</span>
     <span class="ticker-item ticker-sep">·</span>
     <span class="ticker-item">⚓ PUERTO DE ANDRATX · AMARRE 263</span>
     <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item">🌬️ VIENTO {{12.viento_bft}} Bft {{12.viento_dir}} · {{12.viento_kmh}} km/h</span>
+    <span class="ticker-item" id="tick2b">🌬️ CARGANDO...</span>
     <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item">🌊 OLAS {{12.olas_m}}m · PERÍODO {{12.wave_period}}s</span>
+    <span class="ticker-item" id="tick3b">🌊 CARGANDO...</span>
     <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item">⛽ GASOIL {{12.gasoil_price}}€/L · REPSOL PORT D'ANDRATX</span>
+    <span class="ticker-item" id="tick4b">⛽ CARGANDO...</span>
     <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item">📅 {{12.parte_fecha}} · {{12.ventana_inicio}}-{{12.ventana_fin}}H</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item">🎯 FIABILIDAD {{12.fiabilidad_pct}}% · CLAUDE IA · MULTI-FUENTE</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <!-- Repeat for seamless loop -->
-    <span class="ticker-item">🦅 HALCÓN · PARTE MARÍTIMO PREMIUM</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item">⚓ PUERTO DE ANDRATX · AMARRE 263</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item">🌬️ VIENTO {{12.viento_bft}} Bft {{12.viento_dir}} · {{12.viento_kmh}} km/h</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item">🌊 OLAS {{12.olas_m}}m · PERÍODO {{12.wave_period}}s</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item">⛽ GASOIL {{12.gasoil_price}}€/L · REPSOL PORT D'ANDRATX</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item">📅 {{12.parte_fecha}} · {{12.ventana_inicio}}-{{12.ventana_fin}}H</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item">🎯 FIABILIDAD {{12.fiabilidad_pct}}% · CLAUDE IA · MULTI-FUENTE</span>
+    <span class="ticker-item" id="tick5b">📅 CARGANDO...</span>
     <span class="ticker-item ticker-sep">·</span>
   </div>
 </div>
 
+<script>
+// ── RELOJ ──────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const s = String(now.getSeconds()).padStart(2,'0');
+  const d = now.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.querySelector('.clock') && (document.querySelector('.clock').textContent = h+':'+m+':'+s);
+  document.getElementById('emitido-lbl') && (document.getElementById('emitido-lbl').textContent = d);
+}
+// Añadir reloj al topbar
+const topbarRight = document.querySelector('.topbar-right');
+const clockEl = document.createElement('div');
+clockEl.className = 'clock';
+topbarRight.insertBefore(clockEl, topbarRight.firstChild);
+setInterval(updateClock, 1000);
+updateClock();
+
+// ── CARGAR DATOS ───────────────────────────────────────
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el && val !== undefined && val !== null) el.textContent = val;
+}
+function setStyle(id, prop, val) {
+  const el = document.getElementById(id);
+  if (el && val) el.style[prop] = val;
+}
+
+function renderForecast(d) {
+  const grid = document.getElementById('fc-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  for (let i = 1; i <= 5; i++) {
+    const cls = d['weekly_day'+i+'_class'] === 'best' ? 'fcard best' : 'fcard';
+    grid.innerHTML += `
+      <div class="${cls}">
+        <div class="fc-day">${d['forecast_day'+i+'_day']||''}</div>
+        <div class="fc-date">${d['forecast_day'+i+'_date']||''}</div>
+        <div class="fc-icon">${d['forecast_day'+i+'_icon']||'☀️'}</div>
+        <div class="fc-bft">${d['forecast_day'+i+'_beaufort']||'—'} Bft</div>
+        <div class="fc-dir">${d['forecast_day'+i+'_wind_dir']||''}</div>
+        <div class="fc-temp">${d['forecast_day'+i+'_temp']||'—'}°C</div>
+      </div>`;
+  }
+}
+
+function applyData(d) {
+  // Topbar
+  setText('parte-fecha', d.parte_fecha);
+  setText('parte-num', '⚓ PARTE · ' + (d.parte_fecha||''));
+
+  // Semáforo
+  const panel = document.getElementById('panel-sem');
+  if (panel) panel.style.background = 'radial-gradient(ellipse at center, ' + (d.semaforo_bg_color||'#1B6B3A') + '22 0%, #0A1628 70%)';
+  setText('sem-emoji', d.decision_emoji);
+  setText('sem-decision', d.decision);
+  setStyle('sem-decision', 'color', d.decision_color);
+  setText('sem-razon', d.semaforo_razon);
+  setText('sem-confort', d.confort_10);
+  setText('sem-fib', '🎯 ' + d.fiabilidad_pct + '% fiabilidad');
+  document.getElementById('dot-r').style.opacity = d.sem_red_opacity;
+  document.getElementById('dot-y').style.opacity = d.sem_yellow_opacity;
+  document.getElementById('dot-g').style.opacity = d.sem_green_opacity;
+
+  // Condiciones
+  setText('viento-bft', d.viento_bft);
+  setText('viento-dir', 'Bft · ' + d.viento_dir);
+  setText('viento-kmh', d.viento_kmh + ' km/h');
+  setText('gust-bft', d.wind_gust_beaufort);
+  setText('gust-kmh', d.wind_gust_kmh + ' km/h');
+  setText('olas-m', d.olas_m);
+  setText('olas-per', 'Período ' + d.wave_period + 's');
+  setText('temp-c', d.temp_c);
+  setText('agua-c', 'Agua ' + d.agua_c + '°C');
+  setText('feels', d.feels_like);
+  setText('lluvia', d.lluvia_pct);
+  setText('presion', d.presion_hpa);
+  setText('visib', d.visibility_km);
+  setText('uv-idx', d.uv_index);
+  setStyle('uv-idx', 'color', d.uv_color);
+  setText('uv-desc', d.uv_descripcion);
+  setText('curr-kn', d.sea_current_knots);
+  setText('curr-dir', 'kn ' + d.sea_current_dir);
+
+  // Sol
+  setText('sunrise', d.sunrise_time + 'H');
+  setText('vent-ini', d.ventana_inicio + 'H');
+  setText('vent-fin', d.ventana_fin + 'H');
+  setText('sunset', d.sunset_time + 'H');
+  setText('regreso', d.return_time_recommended + 'H');
+
+  // Gasoil
+  setText('gasoil-price', d.gasoil_price + ' €/L');
+  setText('gasoil-var', (d.gasoil_simbolo||'=') + ' ' + d.gasoil_variacion_eur + '€ vs ayer');
+  setStyle('gasoil-var', 'color', d.gasoil_color);
+
+  // Tendencia
+  const tend = document.getElementById('tendencia');
+  if (tend) tend.innerHTML = '<strong>Tendencia:</strong> ' + d.tendencia_72h + ' · Presión ' + d.presion_hpa + ' hPa — <strong>' + d.presion_trend + '</strong>';
+
+  // Forecast
+  renderForecast(d);
+
+  // Cala
+  setText('cala-nombre', d.cala_recomendada);
+  setText('cala-prot', d.cala_proteccion);
+  setText('cala-fondeo', d.cala_fondeo);
+  setText('cala-rest', d.cala_restaurante);
+  setText('cala-ais', d.barcos_zona_total + ' barcos · ' + d.ocupacion_cala_recomendada);
+  setText('trav-nombre', d.travesia_recomendada);
+  setText('trav-coste', d.travesia1_coste + ' €');
+  setText('trav-razon', d.travesia_porque);
+
+  // Ticker
+  const items = [
+    ['tick2','tick2b', '🌬️ VIENTO ' + d.viento_bft + ' Bft ' + d.viento_dir + ' · ' + d.viento_kmh + ' km/h'],
+    ['tick3','tick3b', '🌊 OLAS ' + d.olas_m + 'm · PERÍODO ' + d.wave_period + 's'],
+    ['tick4','tick4b', '⛽ GASOIL ' + d.gasoil_price + '€/L · REPSOL PORT D\'ANDRATX'],
+    ['tick5','tick5b', '📅 ' + (d.parte_fecha||'') + ' · ' + d.ventana_inicio + '-' + d.ventana_fin + 'H'],
+  ];
+  items.forEach(([a,b,txt]) => { setText(a,txt); setText(b,txt); });
+}
+
+function loadData() {
+  fetch('./data.json?t=' + Date.now())
+    .then(r => r.json())
+    .then(applyData)
+    .catch(e => console.warn('Error cargando data.json:', e));
+}
+
+loadData();
+// Refresca datos cada 5 minutos sin recargar la página
+setInterval(loadData, 5 * 60 * 1000);
+</script>
 </body>
 </html>
