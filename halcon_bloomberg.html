@@ -36,6 +36,10 @@
 
   /* SEMÁFORO */
   .panel-sem{grid-column:1;grid-row:1;align-items:center;justify-content:center;position:relative}
+  @keyframes semFlash{0%,100%{opacity:1;transform:scale(1)}15%{opacity:.3;transform:scale(1.02)}30%{opacity:1;transform:scale(1)}45%{opacity:.3;transform:scale(1.02)}60%{opacity:1;transform:scale(1)}75%{opacity:.5;transform:scale(1.01)}90%{opacity:1}}
+  .sem-flash{animation:semFlash 1.8s ease-in-out}
+  .sem-change-alert{position:absolute;top:8px;right:8px;background:var(--gold);color:#000;font-size:8px;font-weight:800;padding:3px 8px;letter-spacing:.1em;text-transform:uppercase;border-radius:2px;opacity:0;transition:opacity 0.5s}
+  .sem-change-alert.visible{opacity:1}
   .sem-lights{display:flex;gap:10px;margin-bottom:14px}
   .sem-dot{width:16px;height:16px;border-radius:50%;opacity:0.2;transition:opacity 0.5s}
   .sem-dot.r{background:#C0392B}.sem-dot.y{background:#E8A020}.sem-dot.g{background:#27AE60}
@@ -108,6 +112,16 @@
   .trav-coste{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:var(--gold2);margin-top:3px}
   .trav-razon{font-size:10px;color:#FFFFFF !important;margin-top:4px;line-height:1.4}
 
+  /* CALA DESTACADA */
+  .cala-destino-badge{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .cala-destino-badge::before{content:'';flex:1;height:1px;background:var(--gold30)}
+  .cala-destino-badge::after{content:'';flex:1;height:1px;background:var(--gold30)}
+  .cala-nombre-big{font-family:'Poppins',sans-serif;font-size:20px;font-weight:800;color:var(--gold);margin-bottom:4px;line-height:1.1;text-shadow:0 0 20px rgba(201,168,76,.3)}
+  .cala-ocupacion-pill{display:inline-block;font-size:9px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+  .ocup-baja{background:rgba(39,174,96,.2);color:#27AE60;border:1px solid rgba(39,174,96,.4)}
+  .ocup-media{background:rgba(232,160,32,.2);color:#E8A020;border:1px solid rgba(232,160,32,.4)}
+  .ocup-alta{background:rgba(192,57,43,.2);color:#C0392B;border:1px solid rgba(192,57,43,.4)}
+
   /* TICKER */
   .ticker{background:var(--gold);color:var(--navy2);padding:5px 0;overflow:hidden;flex-shrink:0}
   .ticker-inner{display:flex;white-space:nowrap;animation:tick 50s linear infinite}
@@ -148,6 +162,7 @@
 
   <!-- SEMÁFORO -->
   <div class="panel panel-sem" id="panel-sem">
+    <div class="sem-change-alert" id="sem-change-alert">🔔 CAMBIO</div>
     <div class="sem-lights">
       <div class="sem-dot r" id="dot-r"></div>
       <div class="sem-dot y" id="dot-y"></div>
@@ -234,7 +249,9 @@
   <!-- CALA + TRAVESÍA -->
   <div class="panel panel-cala">
     <div class="panel-lbl">⚓ Cala · Travesía</div>
-    <div class="cala-nombre" id="cala-nombre">—</div>
+    <div class="cala-destino-badge">🏖 DESTINO DEL DÍA</div>
+    <div class="cala-nombre-big" id="cala-nombre">—</div>
+    <div id="cala-ocup-pill" class="cala-ocupacion-pill ocup-baja">— barcos</div>
     <div class="cala-row"><span class="cala-row-lbl">🧭 Protección</span><span class="cala-row-val" id="cala-prot">—</span></div>
     <div class="cala-row"><span class="cala-row-lbl">🌊 Fondeo</span><span class="cala-row-val" id="cala-fondeo">—</span></div>
     <div class="cala-row"><span class="cala-row-lbl">🍽️ Restaurante</span><span class="cala-row-val" id="cala-rest">—</span></div>
@@ -426,6 +443,13 @@ function applyData(d) {
 
   // Cala
   setText('cala-nombre', d.cala_recomendada);
+  // Cala ocupación pill
+  var pill = document.getElementById('cala-ocup-pill');
+  if(pill){
+    var ocup = (d.ocupacion_cala_recomendada||'').toLowerCase();
+    pill.className = 'cala-ocupacion-pill ' + (ocup==='baja'?'ocup-baja':ocup==='media'?'ocup-media':'ocup-alta');
+    pill.textContent = (d.barcos_zona_total||'—') + ' barcos · ocupación ' + (d.ocupacion_cala_recomendada||'—');
+  }
   setText('cala-prot', d.cala_proteccion);
   setText('cala-fondeo', d.cala_fondeo);
   setText('cala-rest', d.cala_restaurante);
@@ -448,6 +472,16 @@ function loadData() {
   fetch('./data.json?t=' + Date.now())
     .then(function(r){ return r.json(); })
     .then(function(d){
+      // Detectar cambio de semáforo
+      var prevSem = localStorage.getItem('halcon_sem_prev');
+      var newSem = (d.semaforo||'').toUpperCase();
+      if(prevSem && prevSem !== newSem){
+        var panelSem = document.getElementById('panel-sem');
+        if(panelSem){ panelSem.classList.remove('sem-flash'); void panelSem.offsetWidth; panelSem.classList.add('sem-flash'); panelSem.addEventListener('animationend',function(){ panelSem.classList.remove('sem-flash'); },{once:true}); }
+        var alertEl = document.getElementById('sem-change-alert');
+        if(alertEl){ alertEl.textContent = '🔔 ' + prevSem + ' → ' + newSem; alertEl.classList.add('visible'); setTimeout(function(){ alertEl.classList.remove('visible'); }, 8000); }
+      }
+      localStorage.setItem('halcon_sem_prev', newSem);
       applyData(d);
       var now2=new Date();
       var hh2=String(now2.getHours()).padStart(2,'0');
