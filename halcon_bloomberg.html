@@ -280,7 +280,7 @@ function updateClock() {
   const m = String(now.getMinutes()).padStart(2,'0');
   const s = String(now.getSeconds()).padStart(2,'0');
   const d = now.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  document.querySelector('.clock') && (document.querySelector('.clock').textContent = h+':'+m+':'+s);
+  document.querySelector('.clock') && (document.querySelector('.clock').textContent = h+':'+m);
   document.getElementById('emitido-lbl') && (document.getElementById('emitido-lbl').textContent = d);
   // Update page title with real date
   document.title = 'HALCÓN · ' + new Date().toLocaleDateString('es-ES', {weekday:'long', day:'numeric', month:'long'});
