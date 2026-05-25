@@ -37,12 +37,16 @@
   /* SEMÁFORO */
   .panel-sem{grid-column:1;grid-row:1;align-items:center;justify-content:center;position:relative}
   .sem-lights{display:flex;gap:10px;margin-bottom:14px}
-  .sem-dot{width:16px;height:16px;border-radius:50%}
+  .sem-dot{width:16px;height:16px;border-radius:50%;opacity:0.2;transition:opacity 0.5s}
   .sem-dot.r{background:#C0392B}.sem-dot.y{background:#E8A020}.sem-dot.g{background:#27AE60}
+  .sem-dot.active{opacity:1;animation:semPulse 1.8s ease-in-out infinite}
+  @keyframes semPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
   .sem-emoji{font-size:28px;margin-bottom:8px}
   .sem-decision{font-family:'Poppins',sans-serif;font-size:56px;font-weight:900;line-height:1;letter-spacing:-0.02em;margin-bottom:6px}
   .sem-razon{font-size:11px;color:rgba(255,255,255,0.85);text-align:center;line-height:1.5;max-width:240px}
   .sem-confort{margin-top:14px;display:flex;align-items:baseline;gap:4px}
+  .comfort-bar-wrap{width:150px;height:7px;background:rgba(255,255,255,0.1);border-radius:4px;margin-top:10px;overflow:hidden}
+  .comfort-bar-fill{height:100%;border-radius:4px;transition:width 1s ease,background 1s ease}
   .sem-num{font-family:'Poppins',sans-serif;font-size:44px;font-weight:900;color:var(--gold);line-height:1}
   .sem-lbl{font-size:10px;color:rgba(255,255,255,0.85);letter-spacing:0.12em;text-transform:uppercase;font-weight:600}
   .sem-fib{margin-top:10px;font-size:10px;color:rgba(255,255,255,0.85);letter-spacing:0.12em;text-transform:uppercase}
@@ -132,6 +136,7 @@
   <div class="topbar-right">
     <div>
       <div class="date-lbl" id="emitido-lbl">—</div>
+      <div class="date-lbl" id="ultimo-parte-lbl" style="margin-top:2px;color:rgba(255,255,255,0.35)">—</div>
       <div class="countdown" id="countdown-lbl">↻ 5:00</div>
     </div>
     <div class="divider-v"></div>
@@ -155,6 +160,7 @@
       <div class="sem-num" id="sem-confort">—</div>
       <div class="sem-lbl">/10<br>confort</div>
     </div>
+    <div class="comfort-bar-wrap"><div class="comfort-bar-fill" id="comfort-bar"></div></div>
     <div class="sem-fib" id="sem-fib">🎯 —% fiabilidad</div>
   </div>
 
@@ -321,15 +327,19 @@ function renderForecast(d) {
   if (!grid) return;
   grid.innerHTML = '';
   for (let i = 1; i <= 5; i++) {
-    const cls = d['weekly_day'+i+'_class'] === 'best' ? 'fcard best' : 'fcard';
+    var cls5 = d['weekly_day'+i+'_class'] === 'best' ? 'fcard best' : 'fcard';
+    var bft5 = parseInt(d['forecast_day'+i+'_beaufort'])||0;
+    var bColor5 = bft5<=3?'#27AE60':bft5<=5?'#E8A020':'#C0392B';
+    var condLbl5 = bft5<=1?'Calma':bft5<=3?'Brisa suave':bft5<=5?'Brisa moderada':bft5<=7?'Viento fuerte':'Temporal';
     grid.innerHTML += `
-      <div class="${cls}">
+      <div class="${cls5}" style="border-top-color:${bColor5}">
         <div class="fc-day">${d['forecast_day'+i+'_day']||''}</div>
         <div class="fc-date">${d['forecast_day'+i+'_date']||''}</div>
         <div class="fc-icon">${d['forecast_day'+i+'_icon']||'☀️'}</div>
         <div class="fc-bft">${d['forecast_day'+i+'_beaufort']||'—'} Bft</div>
         <div class="fc-dir">${d['forecast_day'+i+'_wind_dir']||''}</div>
         <div class="fc-temp">${d['forecast_day'+i+'_temp']||'—'}°C</div>
+        <div style="font-size:8px;color:${bColor5};font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-top:3px">${condLbl5}</div>
       </div>`;
   }
 }
@@ -349,6 +359,14 @@ function applyData(d) {
   setText('sem-razon', d.semaforo_razon || d.motivo || '');
   setText('sem-confort', d.confort_10);
   setText('sem-fib', '🎯 ' + d.fiabilidad_pct + '% fiabilidad');
+  ['dot-r','dot-y','dot-g'].forEach(function(id){ var el=document.getElementById(id); if(el) el.classList.remove('active'); });
+  var sem = (d.semaforo||'').toUpperCase();
+  var dotMap = {VERDE:'dot-g',AMARILLO:'dot-y',ROJO:'dot-r'};
+  var activeDot = dotMap[sem];
+  if(activeDot){ var dotEl=document.getElementById(activeDot); if(dotEl) dotEl.classList.add('active'); }
+  var cv = parseFloat(d.confort_10)||0;
+  var cBar = document.getElementById('comfort-bar');
+  if(cBar){ cBar.style.width=(cv/10*100)+'%'; cBar.style.background=cv>=7?'#27AE60':cv>=5?'#E8A020':'#C0392B'; }
   document.getElementById('dot-r').style.opacity = d.sem_red_opacity;
   document.getElementById('dot-y').style.opacity = d.sem_yellow_opacity;
   document.getElementById('dot-g').style.opacity = d.sem_green_opacity;
@@ -382,10 +400,18 @@ function applyData(d) {
 
   // Gasoil
   setText('gasoil-price', d.gasoil_price + ' €/L');
-  setText('gasoil-var', (d.gasoil_simbolo||'=') + ' ' + (d.gasoil_variacion_eur||0) + '€ vs ayer');
-  // gasoil color: if igual=#888 use gold instead for visibility on dark bg
-  const gColor = (d.gasoil_color === '#888' || !d.gasoil_color) ? '#C9A84C' : d.gasoil_color;
-  setStyle('gasoil-var', 'color', gColor);
+  var gColor = (d.gasoil_color === '#888' || !d.gasoil_color) ? '#C9A84C' : d.gasoil_color;
+  var gVarEl = document.getElementById('gasoil-var');
+  if(gVarEl){
+    var sym = d.gasoil_simbolo||'=';
+    var bigArrow = sym==='↑'?'▲':sym==='↓'?'▼':'▬';
+    gVarEl.innerHTML = '<span style="font-size:18px;vertical-align:middle">'+bigArrow+'</span> '+(d.gasoil_variacion_eur||0)+'€ vs ayer';
+    gVarEl.style.color = gColor;
+    gVarEl.style.background = gColor+'22';
+    gVarEl.style.borderRadius = '4px';
+    gVarEl.style.padding = '4px 10px';
+    gVarEl.style.display = 'inline-block';
+  }
 
   // Tendencia
   const tend = document.getElementById('tendencia');
@@ -420,9 +446,16 @@ function applyData(d) {
 
 function loadData() {
   fetch('./data.json?t=' + Date.now())
-    .then(r => r.json())
-    .then(applyData)
-    .catch(e => console.warn('Error cargando data.json:', e));
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      applyData(d);
+      var now2=new Date();
+      var hh2=String(now2.getHours()).padStart(2,'0');
+      var mm2=String(now2.getMinutes()).padStart(2,'0');
+      var upEl=document.getElementById('ultimo-parte-lbl');
+      if(upEl) upEl.textContent='Actualizado: '+hh2+':'+mm2+'H';
+    })
+    .catch(function(e){ console.warn('Error cargando data.json:',e); });
 }
 
 loadData();
