@@ -25,6 +25,7 @@
   .topbar-right{display:flex;align-items:center;gap:16px}
   .clock{font-family:'Poppins',sans-serif;font-size:22px;font-weight:700;color:var(--gold)}
   .date-lbl{font-size:10px;color:var(--white30);text-align:right;font-weight:500}
+  .countdown{font-size:11px;color:var(--gold);text-align:center;font-weight:700;letter-spacing:0.05em;margin-top:3px;opacity:0.85}
   .live-badge{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--go);background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.3);padding:3px 10px;font-weight:700}
 
   /* MAIN GRID */
@@ -131,7 +132,7 @@
   <div class="topbar-right">
     <div>
       <div class="date-lbl" id="emitido-lbl">—</div>
-      <div class="date-lbl" style="margin-top:2px">Auto-refresh cada 5 min</div>
+      <div class="countdown" id="countdown-lbl">↻ 5:00</div>
     </div>
     <div class="divider-v"></div>
     <div class="live-badge">● EN VIVO</div>
@@ -285,6 +286,18 @@ function updateClock() {
   // Update page title with real date
   document.title = 'HALCÓN · ' + new Date().toLocaleDateString('es-ES', {weekday:'long', day:'numeric', month:'long'});
 }
+// ── COUNTDOWN REFRESH ──────────────────────────────────
+let countdownSecs = 300;
+function updateCountdown() {
+  countdownSecs--;
+  if (countdownSecs < 0) countdownSecs = 300;
+  const mm = String(Math.floor(countdownSecs / 60)).padStart(1,'0');
+  const ss = String(countdownSecs % 60).padStart(2,'0');
+  const el = document.getElementById('countdown-lbl');
+  if (el) el.textContent = '↻ ' + mm + ':' + ss;
+}
+setInterval(updateCountdown, 1000);
+
 // Añadir reloj al topbar
 const topbarRight = document.querySelector('.topbar-right');
 const clockEl = document.createElement('div');
@@ -414,7 +427,7 @@ function loadData() {
 
 loadData();
 // Refresca datos cada 5 minutos sin recargar la página
-setInterval(loadData, 5 * 60 * 1000);
+setInterval(function(){ countdownSecs = 300; loadData(); }, 5 * 60 * 1000);
 </script>
 </body>
 </html>
