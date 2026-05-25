@@ -112,6 +112,12 @@
   .trav-coste{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:var(--gold2);margin-top:3px}
   .trav-razon{font-size:10px;color:#FFFFFF !important;margin-top:4px;line-height:1.4}
 
+  /* BRÚJULA VIENTO */
+  .wind-compass{display:flex;align-items:center;justify-content:center;margin:4px 0 2px}
+  .compass-ring{width:38px;height:38px;border-radius:50%;border:2px solid var(--gold30);position:relative;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04)}
+  .compass-n{position:absolute;top:2px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:800;color:var(--gold);letter-spacing:0;line-height:1}
+  .compass-arrow{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:16px solid var(--gold);transform-origin:50% 75%;transition:transform 1s ease}
+
   /* CALA DESTACADA */
   .cala-destino-badge{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}
   .cala-destino-badge::before{content:'';flex:1;height:1px;background:var(--gold30)}
@@ -184,7 +190,12 @@
     <div class="panel-lbl">i. Condiciones meteorológicas</div>
     <div class="cond-grid">
       <div class="ccard hi">
-        <div class="ccard-icon">🌬️</div>
+        <div class="wind-compass">
+          <div class="compass-ring">
+            <div class="compass-n">N</div>
+            <div class="compass-arrow" id="wind-arrow"></div>
+          </div>
+        </div>
         <div class="ccard-lbl">Viento</div>
         <div class="ccard-val" id="viento-bft">—</div>
         <div class="ccard-sub" id="viento-dir">Bft</div>
@@ -391,6 +402,11 @@ function applyData(d) {
   // Condiciones
   setText('viento-bft', d.viento_bft);
   setText('viento-dir', 'Bft · ' + d.viento_dir);
+  // Brújula: convertir cardinal a grados y rotar flecha
+  var cardinalDeg = {N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};
+  var windDeg = cardinalDeg[(d.viento_dir||'N').toUpperCase()] || 0;
+  var arrow = document.getElementById('wind-arrow');
+  if(arrow) arrow.style.transform = 'rotate(' + windDeg + 'deg)';
   setText('viento-kmh', d.viento_kmh + ' km/h');
   setText('gust-bft', d.wind_gust_beaufort);
   setText('gust-kmh', d.wind_gust_kmh + ' km/h');
