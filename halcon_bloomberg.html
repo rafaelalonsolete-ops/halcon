@@ -87,6 +87,14 @@
   /* FORECAST */
   .panel-fc{grid-column:1/3;grid-row:2}
   .fc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;flex:1}
+  .ais-data-panel{flex:1;background:rgba(0,0,0,.2);border-left:1px solid var(--gold30);padding:12px 10px;display:flex;flex-direction:column;gap:6px;min-width:0}
+  .ais-data-title{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .ais-data-block{background:var(--white10);border-top:2px solid var(--gold30);padding:8px 8px;flex:1}
+  .ais-zone-lbl{font-size:6px;letter-spacing:.1em;text-transform:uppercase;color:var(--white30);font-weight:700;margin-bottom:4px}
+  .ais-zone-num{font-family:'Poppins',sans-serif;font-size:28px;font-weight:700;color:var(--gold);line-height:1}
+  .ais-zone-sub{font-size:8px;color:var(--white60);margin-top:3px}
+  .ais-live-dot-sm{width:5px;height:5px;border-radius:50%;background:#27AE60;animation:aisDot 1.5s ease-in-out infinite;display:inline-block;vertical-align:middle}
+  @keyframes aisDot{0%,100%{opacity:1}50%{opacity:.3}}
   .fcard{background:var(--white10);border:1px solid var(--white10);border-top:3px solid transparent;padding:12px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative}
   .fcard.best{background:rgba(201,168,76,0.12);border-color:var(--gold30);border-top-color:var(--gold)}
   .fcard.best::before{content:'⭐';position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:13px}
@@ -251,13 +259,31 @@
     </div>
   </div>
 
-  <!-- FORECAST -->
+  <!-- FORECAST + AIS DATOS -->
   <div class="panel panel-fc">
-    <div class="panel-lbl">📅 Pronóstico extendido · 5 días</div>
-    <div class="fc-grid" id="fc-grid">
-      <!-- Generado por JS -->
+    <div class="fc-grid-wrap">
+      <div class="panel-lbl">📅 Pronóstico extendido · 5 días</div>
+      <div class="fc-grid" id="fc-grid"></div>
+      <div class="tend-bar" id="tendencia">Cargando tendencia...</div>
     </div>
-    <div class="tend-bar" id="tendencia">Cargando tendencia...</div>
+    <div class="ais-data-panel">
+      <div class="ais-data-title"><span class="ais-live-dot-sm"></span>AIS · Zona</div>
+      <div class="ais-data-block">
+        <div class="ais-zone-lbl">📡 Zona Andratx 35km</div>
+        <div class="ais-zone-num" id="ais-zona-total">—</div>
+        <div class="ais-zone-sub" id="ais-zona-sub">barcos en zona</div>
+      </div>
+      <div class="ais-data-block">
+        <div class="ais-zone-lbl">⚓ Cala recomendada</div>
+        <div class="ais-zone-num" id="ais-cala-num" style="font-size:22px">—</div>
+        <div class="ais-zone-sub" id="ais-cala-ocup">ocupación —</div>
+      </div>
+      <div class="ais-data-block">
+        <div class="ais-zone-lbl">🏝️ Travesía destino</div>
+        <div class="ais-zone-num" id="ais-trav-num" style="font-size:22px">—</div>
+        <div class="ais-zone-sub" id="ais-trav-sub">barcos fondeados</div>
+      </div>
+    </div>
   </div>
 
   <!-- CALA + TRAVESÍA -->
@@ -477,6 +503,11 @@ function applyData(d) {
   setText('cala-fondeo', d.cala_fondeo);
   setText('cala-rest', d.cala_restaurante);
   setText('cala-ais', d.barcos_zona_total + ' barcos · ' + d.ocupacion_cala_recomendada);
+  setText('ais-zona-total', d.barcos_zona_total || '—');
+  setText('ais-cala-num', d.barcos_fondeados || '—');
+  setText('ais-cala-ocup', (d.cala_recomendada||'—') + ' · ' + (d.ocupacion_cala_recomendada||'—'));
+  setText('ais-trav-num', '—');
+  setText('ais-trav-sub', d.travesia_recomendada || '—');
   setText('trav-nombre', d.travesia_recomendada);
   setText('trav-coste', d.travesia1_coste + ' €');
   setText('trav-razon', d.travesia_porque);
