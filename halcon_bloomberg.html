@@ -66,11 +66,11 @@
   .ccard-sub{font-size:11px;color:var(--white60);font-weight:600;margin-top:3px}
   .ccard-det{font-size:9px;color:var(--white30);margin-top:2px}
   .stats-bar{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}
-  .sbar{background:var(--white10);padding:16px 6px;text-align:center;border-top:2px solid var(--gold30)}
-  .sbar-icon{font-size:28px;margin-bottom:6px}
-  .sbar-lbl{font-size:7px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:2px}
-  .sbar-val{font-family:'Poppins',sans-serif;font-size:30px;font-weight:700;color:var(--white)}
-  .sbar-sub{font-size:12px;color:rgba(255,255,255,0.7);margin-top:3px;font-weight:600}
+  .sbar{background:var(--white10);padding:12px 6px;text-align:center;border-top:2px solid var(--gold30)}
+  .sbar-icon{font-size:20px;margin-bottom:3px}
+  .sbar-lbl{font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:2px}
+  .sbar-val{font-family:'Poppins',sans-serif;font-size:26px;font-weight:700;color:var(--white)}
+  .sbar-sub{font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px;font-weight:600}
 
   /* SOL + GASOIL */
   .panel-sol{grid-column:3;grid-row:1;background:var(--navy3);overflow:hidden}
@@ -161,6 +161,7 @@
       <div class="brand-sub">Puerto de Andratx · Amarre 263</div>
     </div>
     <div class="divider-v"></div>
+    <button onclick="if(!document.fullscreenElement){document.documentElement.requestFullscreen();this.textContent='✕';}else{document.exitFullscreen();this.textContent='⛶';}" title="Pantalla completa" style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.35);color:#C9A84C;font-size:18px;width:36px;height:36px;border-radius:4px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center">⛶</button>
     <div>
       <div class="brand-sub">Parte Marítimo Premium</div>
       <div id="parte-fecha" style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px">—</div>
@@ -174,6 +175,7 @@
       <div class="countdown" id="countdown-lbl">↻ 5:00</div>
     </div>
     <div class="divider-v"></div>
+    <button onclick="if(!document.fullscreenElement){document.documentElement.requestFullscreen();this.textContent='✕';}else{document.exitFullscreen();this.textContent='⛶';}" title="Pantalla completa" style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.35);color:#C9A84C;font-size:18px;width:36px;height:36px;border-radius:4px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center">⛶</button>
     <div class="live-badge">● EN VIVO</div>
   </div>
 </div>
@@ -592,6 +594,5 @@ if(btnFs){
   });
 }
 </script>
-<button class="btn-fs" id="btn-fs" title="Pantalla completa">⛶</button>
 </body>
 </html>
