@@ -4,500 +4,503 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HALCÓN · Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=JetBrains+Mono:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --navy:#0A1628;--navy2:#0F2540;--navy3:#1B3A5C;
-    --gold:#C9A84C;--gold2:#E8C96A;--gold10:rgba(201,168,76,0.10);--gold30:rgba(201,168,76,0.30);
-    --white:rgba(255,255,255,1);--white60:rgba(255,255,255,0.6);--white30:rgba(255,255,255,0.3);--white10:rgba(255,255,255,0.08);
-    --go:#27AE60;--warn:#E8A020;--stop:#C0392B;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--navy);font-family:'Poppins',sans-serif;color:var(--white);width:100vw;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+:root{
+  --navy:#0A1628;--navy2:#0F2540;--navy3:#1B3A5C;
+  --gold:#C9A84C;--gold2:#E8C96A;--gold10:rgba(201,168,76,0.1);--gold30:rgba(201,168,76,0.3);
+  --white:rgba(255,255,255,1);--white60:rgba(255,255,255,0.6);--white30:rgba(255,255,255,0.3);--white10:rgba(255,255,255,0.1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--navy);font-family:'Poppins',sans-serif;color:var(--white);height:100%;overflow:hidden}
+.wrapper{display:flex;flex-direction:column;height:100vh}
 
-  /* TOP BAR */
-  .topbar{background:var(--navy2);border-bottom:1px solid var(--gold30);padding:10px 36px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
-  .brand{font-family:'Poppins',sans-serif;font-size:26px;font-weight:900;color:var(--gold);letter-spacing:-0.02em}
-  .brand-sub{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.65);font-weight:600}
-  .divider-v{width:1px;height:32px;background:var(--gold30)}
-  .topbar-left{display:flex;align-items:center;gap:18px}
-  .topbar-center{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:600}
-  .topbar-right{display:flex;align-items:center;gap:16px}
-  .clock{font-family:'Poppins',sans-serif;font-size:22px;font-weight:700;color:var(--gold)}
-  .date-lbl{font-size:10px;color:var(--white30);text-align:right;font-weight:500}
-  .countdown{font-size:11px;color:var(--gold);text-align:center;font-weight:700;letter-spacing:0.05em;margin-top:3px;opacity:0.85}
-  .live-badge{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--go);background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.3);padding:3px 10px;font-weight:700}
+/* ── TOPBAR ── */
+.topbar{background:#060E1A;display:grid;grid-template-columns:250px 1fr auto;align-items:center;padding:10px 18px;border-bottom:1px solid var(--gold30);flex-shrink:0;gap:10px}
+.topbar-left .brand{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--gold)}
+.topbar-left .sub{font-size:8px;color:var(--white30);letter-spacing:.12em;text-transform:uppercase;margin-top:2px}
+.live-badge{display:inline-block;background:#C0392B;color:#fff;font-size:7px;font-weight:700;padding:2px 6px;letter-spacing:.1em;margin-left:8px;vertical-align:middle}
+.topbar-center{text-align:center;font-size:12px;font-weight:500;color:var(--white60)}
+.topbar-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.clock{font-family:'Poppins',sans-serif;font-size:22px;font-weight:700;color:var(--gold)}
+.countdown{font-size:11px;color:var(--gold);opacity:.7}
+.date-lbl{font-size:9px;color:var(--white30)}
 
-  /* MAIN GRID */
-  .main{flex:1;display:grid;grid-template-columns:300px 1fr 260px;grid-template-rows:1fr 1fr;gap:1px;background:var(--gold30);overflow:hidden}
-  .panel{background:var(--navy2);padding:20px 24px;display:flex;flex-direction:column;overflow:hidden}
-  .panel-lbl{font-size:8px;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold2);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-  .panel-lbl::after{content:'';flex:1;height:1px;background:var(--gold30)}
+/* ── MAIN GRID ── */
+.main{flex:1;display:grid;grid-template-columns:250px 1fr 230px;grid-template-rows:1fr 1fr;gap:1px;background:var(--gold30);overflow:hidden}
+.panel{background:var(--navy);padding:12px 14px;overflow:hidden}
+.panel-lbl{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--white30);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.panel-lbl::before{content:'';width:18px;height:1px;background:var(--gold30);flex-shrink:0}
 
-  /* SEMÁFORO */
-  .panel-sem{grid-column:1;grid-row:1;align-items:center;justify-content:center;position:relative}
-  @keyframes semFlash{0%,100%{opacity:1;transform:scale(1)}15%{opacity:.3;transform:scale(1.02)}30%{opacity:1;transform:scale(1)}45%{opacity:.3;transform:scale(1.02)}60%{opacity:1;transform:scale(1)}75%{opacity:.5;transform:scale(1.01)}90%{opacity:1}}
-  .sem-flash{animation:semFlash 1.8s ease-in-out}
-  .sem-change-alert{position:absolute;top:8px;right:8px;background:var(--gold);color:#000;font-size:8px;font-weight:800;padding:3px 8px;letter-spacing:.1em;text-transform:uppercase;border-radius:2px;opacity:0;transition:opacity 0.5s}
-  .sem-change-alert.visible{opacity:1}
-  .sem-lights{display:flex;gap:10px;margin-bottom:14px}
-  .sem-dot{width:16px;height:16px;border-radius:50%;opacity:0.2;transition:opacity 0.5s}
-  .sem-dot.r{background:#C0392B}.sem-dot.y{background:#E8A020}.sem-dot.g{background:#27AE60}
-  .sem-dot.active{opacity:1;animation:semPulse 1.8s ease-in-out infinite}
-  @keyframes semPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
-  .sem-emoji{font-size:28px;margin-bottom:8px}
-  .sem-decision{font-family:'Poppins',sans-serif;font-size:56px;font-weight:900;line-height:1;letter-spacing:-0.02em;margin-bottom:6px}
-  .sem-razon{font-size:11px;color:rgba(255,255,255,0.85);text-align:center;line-height:1.5;max-width:240px}
-  .sem-confort{margin-top:14px;display:flex;align-items:baseline;gap:4px}
-  .comfort-bar-wrap{width:150px;height:7px;background:rgba(255,255,255,0.1);border-radius:4px;margin-top:10px;overflow:hidden}
-  .comfort-bar-fill{height:100%;border-radius:4px;transition:width 1s ease,background 1s ease}
-  .sem-num{font-family:'Poppins',sans-serif;font-size:44px;font-weight:900;color:var(--gold);line-height:1}
-  .sem-lbl{font-size:10px;color:rgba(255,255,255,0.85);letter-spacing:0.12em;text-transform:uppercase;font-weight:600}
-  .sem-fib{margin-top:10px;font-size:10px;color:rgba(255,255,255,0.85);letter-spacing:0.12em;text-transform:uppercase}
+/* ── COL1 ROW1: SEMÁFORO ── */
+.panel-sem{grid-column:1;grid-row:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative}
+.sem-change-alert{position:absolute;top:8px;right:8px;background:var(--gold);color:#000;font-size:8px;font-weight:800;padding:3px 8px;letter-spacing:.1em;text-transform:uppercase;border-radius:2px;opacity:0;transition:opacity 0.5s}
+.sem-change-alert.visible{opacity:1}
+.sem-lights{display:flex;gap:6px;margin-bottom:8px}
+.sem-dot{width:13px;height:13px;border-radius:50%;opacity:.2;transition:opacity .5s}
+.sem-dot.active{opacity:1;animation:semPulse 1.8s ease-in-out infinite}
+@keyframes semPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+.sem-dot.r{background:#C0392B}.sem-dot.y{background:#E8A020}.sem-dot.g{background:#27AE60}
+@keyframes semFlash{0%,100%{opacity:1}15%{opacity:.3}30%{opacity:1}45%{opacity:.3}60%{opacity:1}}
+.sem-flash{animation:semFlash 1.8s ease-in-out}
+.sem-emoji{font-size:26px;margin-bottom:4px}
+.sem-decision{font-family:'Poppins',sans-serif;font-size:22px;font-weight:700;color:#27AE60;margin-bottom:4px}
+.sem-razon{font-size:7px;color:var(--white30);line-height:1.4;max-width:180px;margin-bottom:10px}
+.sem-confort-lbl{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--white30);font-weight:700;margin-bottom:2px}
+.sem-num{font-family:'Poppins',sans-serif;font-size:34px;font-weight:700;color:#27AE60;line-height:1}
+.comfort-bar-wrap{width:130px;height:5px;background:rgba(255,255,255,.1);border-radius:4px;margin:6px auto;overflow:hidden}
+.comfort-bar-fill{height:100%;border-radius:4px;transition:width 1s ease,background 1s ease}
+.sem-fib{font-size:8px;color:var(--white30);margin-top:3px}
 
-  /* CONDICIONES */
-  .panel-cond{grid-column:2;grid-row:1}
-  .cond-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex-shrink:0}
-  .ccard{background:var(--white10);border:1px solid var(--white10);border-top:3px solid var(--gold30);padding:14px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
-  .ccard.hi{border-top-color:var(--gold);background:var(--gold10)}
-  .ccard-icon{font-size:22px;margin-bottom:6px}
-  .ccard-lbl{font-size:7px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:4px}
-  .ccard-val{font-family:'Poppins',sans-serif;font-size:32px;font-weight:700;color:var(--white);line-height:1}
-  .ccard-sub{font-size:11px;color:var(--white60);font-weight:600;margin-top:3px}
-  .ccard-det{font-size:9px;color:var(--white30);margin-top:2px}
-  .stats-bar{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}
-  .sbar{background:var(--white10);padding:8px 6px;text-align:center;border-top:2px solid var(--gold30)}
-  .sbar-icon{font-size:14px;margin-bottom:3px}
-  .sbar-lbl{font-size:7px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:2px}
-  .sbar-val{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--white)}
-  .sbar-sub{font-size:8px;color:var(--white30);margin-top:1px}
+/* ── COL1 ROW2: CALA + TRAVESÍA + TENDENCIA ── */
+.panel-cala-col{grid-column:1;grid-row:2;background:var(--navy2);overflow:hidden;display:flex;flex-direction:column;padding:12px 14px}
+.cala-destino-badge{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px;text-align:center}
+.cala-nombre-big{font-size:15px;font-weight:700;color:var(--gold);margin-bottom:4px}
+.cala-ocupacion-pill{display:inline-block;font-size:7px;font-weight:700;padding:2px 8px;border-radius:99px;margin-bottom:6px}
+.ocup-baja{background:rgba(39,174,96,.2);color:#27AE60;border:1px solid rgba(39,174,96,.4)}
+.ocup-media{background:rgba(232,160,32,.2);color:#E8A020;border:1px solid rgba(232,160,32,.4)}
+.ocup-alta{background:rgba(192,57,43,.2);color:#C0392B;border:1px solid rgba(192,57,43,.4)}
+.cala-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--white10);font-size:8px}
+.cala-row:last-of-type{border-bottom:none}
+.cala-row-lbl{color:var(--white60)}
+.cala-row-val{color:var(--white);font-weight:600;text-align:right}
+.col1-divider{height:1px;background:var(--gold30);margin:8px 0}
+.trav-lbl-top{font-size:7px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}
+.trav-nombre{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--white);margin-bottom:2px}
+.trav-coste{font-family:'Poppins',sans-serif;font-size:20px;font-weight:700;color:var(--gold2);margin-bottom:3px}
+.trav-razon{font-size:7px;color:var(--white60);line-height:1.4;margin-bottom:8px}
+.tend-compact{background:rgba(0,0,0,.2);border-left:3px solid var(--gold);padding:6px 8px;font-size:7px;color:rgba(255,255,255,.8);line-height:1.5}
+.tend-compact strong{color:var(--gold)}
 
-  /* SOL + GASOIL */
-  .panel-sol{grid-column:3;grid-row:1;background:var(--navy3);overflow:hidden}
-  .sol-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--white10)}
-  .sol-item:last-of-type{border-bottom:none}
-  .sol-lbl{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700}
-  .sol-val{font-family:'Poppins',sans-serif;font-size:17px;font-weight:700;color:var(--gold)}
-  .sol-val.alert{color:#FCA5A5}
-  .gasoil-block{margin-top:10px;background:var(--white10);border:1px solid var(--gold30);padding:10px 8px;text-align:center}
-  .gasoil-lbl{font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold2);font-weight:700;margin-bottom:5px}
-  .gasoil-price{font-family:'Poppins',sans-serif;font-size:24px;font-weight:700;color:var(--white);line-height:1}
-  .gasoil-var{font-size:12px;font-weight:700;margin-top:4px;color:var(--gold)}
+/* ── COL2 ROW1: VENTANA SOL ── */
+.panel-sol{grid-column:2;grid-row:1;background:var(--navy3);padding:12px 14px}
+.sol-grid-2col{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.sol-item-2c{background:rgba(0,0,0,.2);padding:10px 10px;border-left:3px solid var(--gold30);display:flex;align-items:center;gap:10px}
+.sol-item-2c.alrt{border-left-color:#FCA5A5}
+.sol-item-2c.gas{background:var(--gold10);border-left-color:var(--gold)}
+.sol-2c-icon{font-size:16px;flex-shrink:0}
+.sol-2c-right{display:flex;flex-direction:column}
+.sol-2c-lbl{font-size:6px;letter-spacing:.08em;text-transform:uppercase;color:var(--white30);font-weight:700;margin-bottom:2px}
+.sol-2c-val{font-size:14px;font-weight:700;color:var(--gold);line-height:1}
+.sol-2c-val.alrt{color:#FCA5A5}
+.sol-2c-sub{font-size:7px;color:var(--white30);margin-top:2px}
 
-  /* FORECAST */
-  .panel-fc{grid-column:1/3;grid-row:2}
-  .fc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;flex:1}
-  .fcard{background:var(--white10);border:1px solid var(--white10);border-top:3px solid transparent;padding:12px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative}
-  .fcard.best{background:rgba(201,168,76,0.12);border-color:var(--gold30);border-top-color:var(--gold)}
-  .fcard.best::before{content:'⭐';position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:13px}
-  .fc-day{font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700}
-  .fc-date{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--white)}
-  .fc-icon{font-size:20px}
-  .fc-bft{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:var(--gold)}
-  .fc-dir{font-size:11px;font-weight:600;color:var(--white60)}
-  .fc-temp{font-size:10px;color:var(--white30)}
-  .tend-bar{margin-top:8px;background:rgba(0,0,0,0.2);border-left:3px solid var(--gold);padding:9px 12px;font-size:11px;color:rgba(255,255,255,0.85);line-height:1.5;flex-shrink:0}
-  .tend-bar strong{color:var(--gold)}
+/* ── COL2 ROW2: CONDICIONES ── */
+.panel-cond{grid-column:2;grid-row:2}
+.cond-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:8px}
+.ccard{background:var(--white10);border:1px solid var(--white10);border-top:3px solid var(--gold30);padding:10px 6px;text-align:center}
+.ccard.hi{border-top-color:var(--gold);background:var(--gold10)}
+.ccard-icon{font-size:16px;margin-bottom:3px}
+.ccard-lbl{font-size:6px;letter-spacing:.12em;text-transform:uppercase;color:var(--white60);font-weight:700;margin-bottom:2px}
+.ccard-val{font-family:'Poppins',sans-serif;font-size:22px;font-weight:700;color:var(--white);line-height:1}
+.ccard-sub{font-size:9px;color:var(--white60);margin-top:2px}
+.wind-compass{display:flex;align-items:center;justify-content:center;margin:2px 0 4px}
+.compass-ring{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--gold30);position:relative;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04)}
+.compass-n{position:absolute;top:2px;left:50%;transform:translateX(-50%);font-size:6px;font-weight:800;color:var(--gold)}
+.compass-arrow{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:14px solid var(--gold);transform-origin:50% 75%;transition:transform 1s ease}
+.stats-row{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.stat-item{background:var(--white10);border-top:2px solid var(--gold30);padding:14px 5px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px}
+.stat-icon{font-size:15px}
+.stat-lbl{font-size:6px;letter-spacing:.1em;text-transform:uppercase;color:var(--white60);font-weight:700}
+.stat-val{font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;color:var(--white)}
+.stat-sub{font-size:6px;color:var(--white30)}
 
-  /* CALA + TRAVESÍA */
-  .panel-cala{grid-column:3;grid-row:2;background:var(--navy3)}
-  .cala-nombre{font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:6px}
-  .cala-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--white10);font-size:9px}
-  .cala-row:last-of-type{border-bottom:none}
-  .cala-row-lbl{color:rgba(255,255,255,0.7);font-weight:500}
-  .cala-row-val{color:var(--white);font-weight:700;text-align:right;max-width:150px}
-  .trav-block{margin-top:12px;background:var(--white10);border:1px solid var(--gold30);padding:10px}
-  .trav-lbl{font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}
-  .trav-nombre{font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;color:var(--white)}
-  .trav-coste{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:var(--gold2);margin-top:3px}
-  .trav-razon{font-size:10px;color:#FFFFFF !important;margin-top:4px;line-height:1.4}
+/* ── COL3 ROWS 1+2: AIS ── */
+.panel-ais{grid-column:3;grid-row:1/3;background:var(--navy);padding:12px 12px;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.ais-live-dot{width:5px;height:5px;border-radius:50%;background:#27AE60;animation:aisPulse 1.5s ease-in-out infinite;display:inline-block;margin-right:5px;vertical-align:middle}
+@keyframes aisPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ais-map-wrap{border-radius:4px;border:1px solid var(--gold30);overflow:hidden;flex:0 0 195px}
+#ais-map{height:195px}
+.ais-zona-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.azs{background:var(--white10);padding:6px 4px;text-align:center;border-top:2px solid var(--gold30)}
+.azs-v{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700}
+.azs-l{font-size:6px;color:var(--white30);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
+.ais-vrow{display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:1px solid var(--white10);font-size:8px}
+.ais-vrow:last-child{border-bottom:none}
+.ais-vdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;border:1px solid rgba(255,255,255,.6)}
+.ais-vname{font-weight:600;color:var(--white);flex:1}
+.ais-vtype{font-size:7px;color:var(--white30)}
+.ais-vpill{font-size:7px;font-weight:700;padding:1px 5px;border-radius:99px}
+.ais-vpill.m{background:rgba(39,174,96,.2);color:#27AE60}
+.ais-vpill.a{background:rgba(232,160,32,.2);color:#E8A020}
+.ais-vspd{font-size:7px;color:var(--white30);min-width:28px;text-align:right}
+.ais-cala-box{background:rgba(39,174,96,.07);border:1px solid rgba(39,174,96,.25);border-radius:4px;padding:6px 8px}
+.ais-cala-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.ais-cala-tit{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold2);font-weight:700}
+.ais-cala-badge{font-size:7px;font-weight:700;padding:1px 7px;border-radius:99px;background:rgba(39,174,96,.2);color:#27AE60;border:1px solid rgba(39,174,96,.35)}
+.ais-brow{display:flex;align-items:center;gap:6px;padding:3px 0;border-top:1px solid rgba(255,255,255,.05);font-size:9px}
+.ais-bname{font-weight:600;color:var(--white);flex:1}
+.ais-btype{font-size:7px;color:var(--white30)}
+.ais-bdist{font-size:8px;color:#E8A020;font-weight:700}
 
-  /* BRÚJULA VIENTO */
-  .wind-compass{display:flex;align-items:center;justify-content:center;margin:4px 0 2px}
-  .compass-ring{width:38px;height:38px;border-radius:50%;border:2px solid var(--gold30);position:relative;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04)}
-  .compass-n{position:absolute;top:2px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:800;color:var(--gold);letter-spacing:0;line-height:1}
-  .compass-arrow{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:16px solid var(--gold);transform-origin:50% 75%;transition:transform 1s ease}
+/* ── FORECAST — viene dentro de panel-cond col2 row2 pero necesita espacio ── */
+/* Hacemos forecast parte de col2 row2 expandido */
 
-  /* CALA DESTACADA */
-  .cala-destino-badge{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}
-  .cala-destino-badge::before{content:'';flex:1;height:1px;background:var(--gold30)}
-  .cala-destino-badge::after{content:'';flex:1;height:1px;background:var(--gold30)}
-  .cala-nombre-big{font-family:'Poppins',sans-serif;font-size:20px;font-weight:800;color:var(--gold);margin-bottom:4px;line-height:1.1;text-shadow:0 0 20px rgba(201,168,76,.3)}
-  .cala-ocupacion-pill{display:inline-block;font-size:9px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
-  .ocup-baja{background:rgba(39,174,96,.2);color:#27AE60;border:1px solid rgba(39,174,96,.4)}
-  .ocup-media{background:rgba(232,160,32,.2);color:#E8A020;border:1px solid rgba(232,160,32,.4)}
-  .ocup-alta{background:rgba(192,57,43,.2);color:#C0392B;border:1px solid rgba(192,57,43,.4)}
+/* ── TICKER ── */
+.ticker{background:var(--gold);color:#060E1A;padding:4px 0;overflow:hidden;white-space:nowrap;flex-shrink:0}
+.ticker-track{display:flex;animation:tickMove 35s linear infinite}
+.ticker-item{white-space:nowrap;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:0 30px;flex-shrink:0}
+.ticker-sep{color:rgba(0,0,0,.3);padding:0 4px}
+@keyframes tickMove{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-  /* TICKER */
-  .ticker{background:var(--gold);color:var(--navy2);padding:5px 0;overflow:hidden;flex-shrink:0}
-  .ticker-inner{display:flex;white-space:nowrap;animation:tick 50s linear infinite}
-  .ticker-item{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:0 36px}
-  .ticker-sep{opacity:0.4}
-  @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-  .pulse{animation:pulse 1s infinite}
+/* ── FORECAST (parte baja de col2 row2, separado) ── */
+/* Redefinimos el grid para dar 3 filas a col2 */
+.main{grid-template-rows:auto 1fr auto}
+.panel-sol{grid-row:1}
+.panel-cond{grid-row:2}
+.panel-fc{grid-column:2;grid-row:3;background:var(--navy);padding:12px 14px}
+.fc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.fcard{background:var(--white10);border:1px solid var(--white10);border-top:3px solid transparent;padding:8px 4px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px}
+.fcard.best{background:rgba(201,168,76,.12);border-color:var(--gold30)}
+.fc-day{font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--white60);font-weight:700}
+.fc-date{font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;color:var(--white)}
+.fc-icon{font-size:15px}
+.fc-bft{font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;color:var(--gold)}
+.fc-dir{font-size:9px;font-weight:600;color:var(--white60)}
+.fc-temp{font-size:8px;color:var(--white30)}
+
+/* sem col1 ahora ocupa row1 solamente, cala col1 row2, fc col2 row3 */
+.panel-sem{grid-row:1}
+.panel-cala-col{grid-row:2/4}
+.panel-ais{grid-row:1/4}
+
 </style>
 </head>
 <body>
+<div class="wrapper">
 
-<div class="topbar">
-  <div class="topbar-left">
-    <div>
-      <div class="brand">🦅 HALCÓN</div>
-      <div class="brand-sub">Puerto de Andratx · Amarre 263</div>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="brand">🦅 HALCÓN <span class="live-badge">● EN VIVO</span></div>
+      <div class="sub">Puerto Andratx · Amarre 263</div>
     </div>
-    <div class="divider-v"></div>
-    <div>
-      <div class="brand-sub">Parte Marítimo Premium</div>
-      <div id="parte-fecha" style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px">—</div>
+    <div class="topbar-center">
+      <div style="font-size:10px;color:var(--white30);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px">Parte Marítimo Premium</div>
+      <div id="emitido-lbl" style="font-size:11px;color:var(--white60)">—</div>
     </div>
-  </div>
-  <div class="topbar-center" id="parte-num">CARGANDO PARTE...</div>
-  <div class="topbar-right">
-    <div>
-      <div class="date-lbl" id="emitido-lbl">—</div>
-      <div class="date-lbl" id="ultimo-parte-lbl" style="margin-top:2px;color:rgba(255,255,255,0.35)">—</div>
+    <div class="topbar-right">
+      <div id="ultimo-parte-lbl" class="date-lbl"></div>
       <div class="countdown" id="countdown-lbl">↻ 5:00</div>
     </div>
-    <div class="divider-v"></div>
-    <div class="live-badge">● EN VIVO</div>
   </div>
-</div>
 
-<div class="main">
+  <!-- MAIN -->
+  <div class="main">
 
-  <!-- SEMÁFORO -->
-  <div class="panel panel-sem" id="panel-sem">
-    <div class="sem-change-alert" id="sem-change-alert">🔔 CAMBIO</div>
-    <div class="sem-lights">
-      <div class="sem-dot r" id="dot-r"></div>
-      <div class="sem-dot y" id="dot-y"></div>
-      <div class="sem-dot g" id="dot-g"></div>
-    </div>
-    <div class="sem-emoji" id="sem-emoji">🟢</div>
-    <div class="sem-decision" id="sem-decision">—</div>
-    <div class="sem-razon" id="sem-razon">Cargando datos...</div>
-    <div class="sem-confort">
+    <!-- COL1 ROW1: SEMÁFORO -->
+    <div class="panel panel-sem" id="panel-sem">
+      <div class="sem-change-alert" id="sem-change-alert">🔔 CAMBIO</div>
+      <div class="sem-lights">
+        <div class="sem-dot r" id="dot-r"></div>
+        <div class="sem-dot y" id="dot-y"></div>
+        <div class="sem-dot g" id="dot-g"></div>
+      </div>
+      <div class="sem-emoji" id="sem-emoji">🟢</div>
+      <div class="sem-decision" id="sem-decision">—</div>
+      <div class="sem-razon" id="sem-razon">Cargando datos...</div>
+      <div class="sem-confort-lbl">Confort</div>
       <div class="sem-num" id="sem-confort">—</div>
-      <div class="sem-lbl">/10<br>confort</div>
+      <div class="comfort-bar-wrap"><div class="comfort-bar-fill" id="comfort-bar"></div></div>
+      <div class="sem-fib" id="sem-fib">🎯 —% fiabilidad</div>
     </div>
-    <div class="comfort-bar-wrap"><div class="comfort-bar-fill" id="comfort-bar"></div></div>
-    <div class="sem-fib" id="sem-fib">🎯 —% fiabilidad</div>
-  </div>
 
-  <!-- CONDICIONES -->
-  <div class="panel panel-cond">
-    <div class="panel-lbl">i. Condiciones meteorológicas</div>
-    <div class="cond-grid">
-      <div class="ccard hi">
-        <div class="wind-compass">
-          <div class="compass-ring">
-            <div class="compass-n">N</div>
-            <div class="compass-arrow" id="wind-arrow"></div>
-          </div>
-        </div>
-        <div class="ccard-lbl">Viento</div>
-        <div class="ccard-val" id="viento-bft">—</div>
-        <div class="ccard-sub" id="viento-dir">Bft</div>
-        <div class="ccard-det" id="viento-kmh">— km/h</div>
-      </div>
-      <div class="ccard">
-        <div class="ccard-icon">💨</div>
-        <div class="ccard-lbl">Ráfagas</div>
-        <div class="ccard-val" id="gust-bft">—</div>
-        <div class="ccard-sub">Bft máx</div>
-        <div class="ccard-det" id="gust-kmh">— km/h</div>
-      </div>
-      <div class="ccard hi">
-        <div class="ccard-icon">🌊</div>
-        <div class="ccard-lbl">Olas</div>
-        <div class="ccard-val" id="olas-m">—</div>
-        <div class="ccard-sub">metros</div>
-        <div class="ccard-det" id="olas-per">Período —s</div>
-      </div>
-      <div class="ccard">
-        <div class="ccard-icon">🌡️</div>
-        <div class="ccard-lbl">Temperatura</div>
-        <div class="ccard-val" id="temp-c">—</div>
-        <div class="ccard-sub">°C aire</div>
-        <div class="ccard-det" id="agua-c">Agua —°C</div>
-      </div>
-    </div>
-    <div class="stats-bar">
-      <div class="sbar"><div class="sbar-icon">🤚</div><div class="sbar-lbl">Sensación</div><div class="sbar-val" id="feels">—</div><div class="sbar-sub">°C</div></div>
-      <div class="sbar"><div class="sbar-icon">💧</div><div class="sbar-lbl">Lluvia</div><div class="sbar-val" id="lluvia">—</div><div class="sbar-sub">%</div></div>
-      <div class="sbar"><div class="sbar-icon">🔵</div><div class="sbar-lbl">Presión</div><div class="sbar-val" id="presion">—</div><div class="sbar-sub">hPa</div></div>
-      <div class="sbar"><div class="sbar-icon">👁️</div><div class="sbar-lbl">Visib.</div><div class="sbar-val" id="visib">—</div><div class="sbar-sub">km</div></div>
-      <div class="sbar"><div class="sbar-icon">☀️</div><div class="sbar-lbl">UV</div><div class="sbar-val" id="uv-idx" style="">—</div><div class="sbar-sub" id="uv-desc">—</div></div>
-      <div class="sbar"><div class="sbar-icon">🌀</div><div class="sbar-lbl">Corriente</div><div class="sbar-val" id="curr-kn">—</div><div class="sbar-sub" id="curr-dir">kn</div></div>
-    </div>
-  </div>
-
-  <!-- SOL + GASOIL -->
-  <div class="panel panel-sol">
-    <div class="panel-lbl">⏱ Ventana · Sol</div>
-    <div class="sol-item"><div class="sol-lbl">🌅 Amanecer</div><div class="sol-val" id="sunrise">—H</div></div>
-    <div class="sol-item"><div class="sol-lbl">⏰ Ventana inicio</div><div class="sol-val" id="vent-ini">—H</div></div>
-    <div class="sol-item"><div class="sol-lbl">⏰ Ventana fin</div><div class="sol-val" id="vent-fin">—H</div></div>
-    <div class="sol-item"><div class="sol-lbl">🌇 Puesta de sol</div><div class="sol-val" id="sunset">—H</div></div>
-    <div class="sol-item"><div class="sol-lbl">⚠️ Regreso antes de</div><div class="sol-val alert" id="regreso">—H</div></div>
-    <div class="gasoil-block">
-      <div class="gasoil-lbl">⛽ Gasoil · REPSOL Andratx</div>
-      <div class="gasoil-price" id="gasoil-price">— €/L</div>
-      <div class="gasoil-var" id="gasoil-var">— vs ayer</div>
-    </div>
-  </div>
-
-  <!-- FORECAST -->
-  <div class="panel panel-fc">
-    <div class="panel-lbl">📅 Pronóstico extendido · 5 días</div>
-    <div class="fc-grid" id="fc-grid">
-      <!-- Generado por JS -->
-    </div>
-    <div class="tend-bar" id="tendencia">Cargando tendencia...</div>
-  </div>
-
-  <!-- CALA + TRAVESÍA -->
-  <div class="panel panel-cala">
-    <div class="panel-lbl">⚓ Cala · Travesía</div>
-    <div class="cala-destino-badge">🏖 DESTINO DEL DÍA</div>
-    <div class="cala-nombre-big" id="cala-nombre">—</div>
-    <div id="cala-ocup-pill" class="cala-ocupacion-pill ocup-baja">— barcos</div>
-    <div class="cala-row"><span class="cala-row-lbl">🧭 Protección</span><span class="cala-row-val" id="cala-prot">—</span></div>
-    <div class="cala-row"><span class="cala-row-lbl">🌊 Fondeo</span><span class="cala-row-val" id="cala-fondeo">—</span></div>
-    <div class="cala-row"><span class="cala-row-lbl">🍽️ Restaurante</span><span class="cala-row-val" id="cala-rest">—</span></div>
-    <div class="cala-row"><span class="cala-row-lbl">📡 AIS / Ocupación</span><span class="cala-row-val" id="cala-ais">—</span></div>
-    <div class="trav-block">
-      <div class="trav-lbl">🏝️ Travesía recomendada</div>
+    <!-- COL1 ROWS 2+3: CALA + TRAVESÍA + TENDENCIA -->
+    <div class="panel-cala-col">
+      <div class="panel-lbl">🏖 Cala · Destino del día</div>
+      <div class="cala-destino-badge">⭐ DESTINO DEL DÍA</div>
+      <div class="cala-nombre-big" id="cala-nombre">—</div>
+      <div id="cala-ocup-pill" class="cala-ocupacion-pill ocup-baja">—</div>
+      <div class="cala-row"><span class="cala-row-lbl">🧭 Protección</span><span class="cala-row-val" id="cala-prot">—</span></div>
+      <div class="cala-row"><span class="cala-row-lbl">🌊 Fondeo</span><span class="cala-row-val" id="cala-fondeo">—</span></div>
+      <div class="cala-row"><span class="cala-row-lbl">🍽️ Restaurante</span><span class="cala-row-val" id="cala-rest">—</span></div>
+      <div class="cala-row"><span class="cala-row-lbl">📡 AIS ocupación</span><span class="cala-row-val" id="cala-ais">—</span></div>
+      <div class="col1-divider"></div>
+      <div class="trav-lbl-top">🏝️ Travesía recomendada</div>
       <div class="trav-nombre" id="trav-nombre">—</div>
       <div class="trav-coste" id="trav-coste">— €</div>
       <div class="trav-razon" id="trav-razon">—</div>
+      <div class="col1-divider"></div>
+      <div class="panel-lbl" style="margin-bottom:4px">Tendencia 72h</div>
+      <div class="tend-compact" id="tendencia">Cargando tendencia...</div>
+    </div>
+
+    <!-- COL2 ROW1: VENTANA SOL -->
+    <div class="panel panel-sol">
+      <div class="panel-lbl">⏱ Ventana · Sol</div>
+      <div class="sol-grid-2col">
+        <div class="sol-item-2c">
+          <div class="sol-2c-icon">🌅</div>
+          <div class="sol-2c-right"><div class="sol-2c-lbl">Amanecer</div><div class="sol-2c-val" id="sunrise">—H</div></div>
+        </div>
+        <div class="sol-item-2c gas">
+          <div class="sol-2c-icon">⛽</div>
+          <div class="sol-2c-right"><div class="sol-2c-lbl">Gasoil REPSOL Andratx</div><div class="sol-2c-val" id="gasoil-price" style="font-size:13px">— €/L</div><div class="sol-2c-sub" id="gasoil-var">— vs ayer</div></div>
+        </div>
+        <div class="sol-item-2c">
+          <div class="sol-2c-icon">⏰</div>
+          <div class="sol-2c-right"><div class="sol-2c-lbl">Ventana inicio</div><div class="sol-2c-val" id="vent-ini">—H</div></div>
+        </div>
+        <div class="sol-item-2c">
+          <div class="sol-2c-icon">⏰</div>
+          <div class="sol-2c-right"><div class="sol-2c-lbl">Ventana fin</div><div class="sol-2c-val" id="vent-fin">—H</div></div>
+        </div>
+        <div class="sol-item-2c">
+          <div class="sol-2c-icon">🌇</div>
+          <div class="sol-2c-right"><div class="sol-2c-lbl">Puesta de sol</div><div class="sol-2c-val" id="sunset">—H</div></div>
+        </div>
+        <div class="sol-item-2c alrt">
+          <div class="sol-2c-icon">⚠️</div>
+          <div class="sol-2c-right"><div class="sol-2c-lbl">Regreso antes de</div><div class="sol-2c-val alrt" id="regreso">—H</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL2 ROW2: CONDICIONES METEOROLÓGICAS -->
+    <div class="panel panel-cond">
+      <div class="panel-lbl">i. Condiciones meteorológicas</div>
+      <div class="cond-grid">
+        <div class="ccard hi">
+          <div class="wind-compass"><div class="compass-ring"><div class="compass-n">N</div><div class="compass-arrow" id="wind-arrow"></div></div></div>
+          <div class="ccard-lbl">Viento</div>
+          <div class="ccard-val" id="viento-bft">—</div>
+          <div class="ccard-sub" id="viento-dir">Bft</div>
+          <div class="ccard-sub" id="viento-kmh">— km/h</div>
+        </div>
+        <div class="ccard">
+          <div class="ccard-icon">💨</div>
+          <div class="ccard-lbl">Ráfagas</div>
+          <div class="ccard-val" id="gust-bft">—</div>
+          <div class="ccard-sub" id="gust-kmh">— km/h</div>
+        </div>
+        <div class="ccard hi">
+          <div class="ccard-icon">〰️</div>
+          <div class="ccard-lbl">Olas</div>
+          <div class="ccard-val" id="olas-m">—</div>
+          <div class="ccard-sub" id="olas-per">Período —s</div>
+        </div>
+        <div class="ccard">
+          <div class="ccard-icon">🌡️</div>
+          <div class="ccard-lbl">Temperatura</div>
+          <div class="ccard-val" id="temp-c">—</div>
+          <div class="ccard-sub" id="agua-c">Agua —°C</div>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item"><div class="stat-icon">🤚</div><div class="stat-lbl">Sensación</div><div class="stat-val" id="feels">—</div><div class="stat-sub">°C</div></div>
+        <div class="stat-item"><div class="stat-icon">💧</div><div class="stat-lbl">Lluvia</div><div class="stat-val" id="lluvia">—</div><div class="stat-sub">%</div></div>
+        <div class="stat-item"><div class="stat-icon">🔵</div><div class="stat-lbl">Presión</div><div class="stat-val" id="presion">—</div><div class="stat-sub">hPa</div></div>
+        <div class="stat-item"><div class="stat-icon">👁️</div><div class="stat-lbl">Visib.</div><div class="stat-val" id="visib">—</div><div class="stat-sub">km</div></div>
+        <div class="stat-item"><div class="stat-icon">☀️</div><div class="stat-lbl">UV</div><div class="stat-val" id="uv-idx">—</div><div class="stat-sub" id="uv-desc"></div></div>
+        <div class="stat-item"><div class="stat-icon">🌀</div><div class="stat-lbl">Corriente</div><div class="stat-val" id="curr-kn">—</div><div class="stat-sub" id="curr-dir">kn</div></div>
+      </div>
+    </div>
+
+    <!-- COL2 ROW3: FORECAST -->
+    <div class="panel panel-fc">
+      <div class="panel-lbl">📅 Pronóstico extendido · 5 días</div>
+      <div class="fc-grid" id="fc-grid"></div>
+    </div>
+
+    <!-- COL3 ROWS 1+2+3: AIS -->
+    <div class="panel-ais">
+      <div class="panel-lbl"><span class="ais-live-dot"></span>Mapa AIS · Zona Andratx · 35km</div>
+      <div class="ais-map-wrap"><div id="ais-map"></div></div>
+      <div class="panel-lbl" style="margin-bottom:4px">Barcos en zona</div>
+      <div class="ais-zona-grid">
+        <div class="azs"><div class="azs-v" id="ais-total" style="color:var(--gold)">18</div><div class="azs-l">Total</div></div>
+        <div class="azs"><div class="azs-v" id="ais-nav" style="color:#27AE60">11</div><div class="azs-l">Navegando</div></div>
+        <div class="azs"><div class="azs-v" id="ais-fond" style="color:#E8A020">7</div><div class="azs-l">Fondeados</div></div>
+      </div>
+      <div id="ais-vessel-list"></div>
+      <div class="ais-cala-box">
+        <div class="ais-cala-hdr">
+          <div class="ais-cala-tit" id="ais-cala-tit">⚓ Cala recomendada · barcos</div>
+          <div class="ais-cala-badge" id="ais-cala-badge">—</div>
+        </div>
+        <div id="ais-cala-boats"></div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <span class="ticker-item">🦅 HALCÓN · PARTE MARÍTIMO PREMIUM</span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item" id="tick1b">⚓ PUERTO DE ANDRATX · AMARRE 263</span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item" id="tick2">—</span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item" id="tick3">—</span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item" id="tick4">—</span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item" id="tick5">—</span>
+      <span class="ticker-sep">·</span>
+      <!-- duplicate for seamless loop -->
+      <span class="ticker-item">🦅 HALCÓN · PARTE MARÍTIMO PREMIUM</span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item">⚓ PUERTO DE ANDRATX · AMARRE 263</span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item" id="tick2b">—</span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item" id="tick3b">—</span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item" id="tick4b">—</span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item" id="tick5b">—</span>
+      <span class="ticker-sep">·</span>
     </div>
   </div>
 
-</div>
-
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-inner" id="ticker">
-    <span class="ticker-item">🦅 HALCÓN · PARTE MARÍTIMO PREMIUM</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item" id="tick1">⚓ PUERTO DE ANDRATX · AMARRE 263</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item" id="tick2">🌬️ CARGANDO...</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item" id="tick3">🌊 CARGANDO...</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item" id="tick4">⛽ CARGANDO...</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item" id="tick5">📅 CARGANDO...</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item">🦅 HALCÓN · PARTE MARÍTIMO PREMIUM</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item">⚓ PUERTO DE ANDRATX · AMARRE 263</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item" id="tick2b">🌬️ CARGANDO...</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item" id="tick3b">🌊 CARGANDO...</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item" id="tick4b">⛽ CARGANDO...</span>
-    <span class="ticker-item ticker-sep">·</span>
-    <span class="ticker-item" id="tick5b">📅 CARGANDO...</span>
-    <span class="ticker-item ticker-sep">·</span>
-  </div>
-</div>
+</div><!-- /wrapper -->
 
 <script>
-// ── RELOJ ──────────────────────────────────────────────
-function updateClock() {
-  const now = new Date();
-  const h = String(now.getHours()).padStart(2,'0');
-  const m = String(now.getMinutes()).padStart(2,'0');
-  const s = String(now.getSeconds()).padStart(2,'0');
-  const d = now.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  document.querySelector('.clock') && (document.querySelector('.clock').textContent = h+':'+m);
-  document.getElementById('emitido-lbl') && (document.getElementById('emitido-lbl').textContent = d);
-  // Update page title with real date
-  document.title = 'HALCÓN · ' + new Date().toLocaleDateString('es-ES', {weekday:'long', day:'numeric', month:'long'});
+// ── RELOJ ──
+function updateClock(){
+  var now=new Date();
+  var h=String(now.getHours()).padStart(2,'0');
+  var m=String(now.getMinutes()).padStart(2,'0');
+  var d=now.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.querySelector('.clock')&&(document.querySelector('.clock').textContent=h+':'+m);
+  document.getElementById('emitido-lbl')&&(document.getElementById('emitido-lbl').textContent=d);
+  document.title='HALCÓN · '+new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});
 }
-// ── COUNTDOWN REFRESH ──────────────────────────────────
-let countdownSecs = 300;
-function updateCountdown() {
+// ── COUNTDOWN ──
+var countdownSecs=300;
+function updateCountdown(){
   countdownSecs--;
-  if (countdownSecs < 0) countdownSecs = 300;
-  const mm = String(Math.floor(countdownSecs / 60)).padStart(1,'0');
-  const ss = String(countdownSecs % 60).padStart(2,'0');
-  const el = document.getElementById('countdown-lbl');
-  if (el) el.textContent = '↻ ' + mm + ':' + ss;
+  if(countdownSecs<0) countdownSecs=300;
+  var mm=String(Math.floor(countdownSecs/60)).padStart(1,'0');
+  var ss=String(countdownSecs%60).padStart(2,'0');
+  var el=document.getElementById('countdown-lbl');
+  if(el) el.textContent='↻ '+mm+':'+ss;
 }
-setInterval(updateCountdown, 1000);
+setInterval(updateCountdown,1000);
 
 // Añadir reloj al topbar
-const topbarRight = document.querySelector('.topbar-right');
-const clockEl = document.createElement('div');
-clockEl.className = 'clock';
-topbarRight.insertBefore(clockEl, topbarRight.firstChild);
-setInterval(updateClock, 1000);
+var topbarRight=document.querySelector('.topbar-right');
+var clockEl=document.createElement('div');
+clockEl.className='clock';
+topbarRight.insertBefore(clockEl,topbarRight.firstChild);
+setInterval(updateClock,1000);
 updateClock();
 
-// ── CARGAR DATOS ───────────────────────────────────────
-function setText(id, val) {
-  const el = document.getElementById(id);
-  if (el && val !== undefined && val !== null) el.textContent = val;
-}
-function setStyle(id, prop, val) {
-  const el = document.getElementById(id);
-  if (el && val) el.style[prop] = val;
-}
+// ── HELPERS ──
+function setText(id,val){var el=document.getElementById(id);if(el&&val!==undefined&&val!==null) el.textContent=val;}
+function setStyle(id,prop,val){var el=document.getElementById(id);if(el&&val) el.style[prop]=val;}
 
-function renderForecast(d) {
-  const grid = document.getElementById('fc-grid');
-  if (!grid) return;
-  grid.innerHTML = '';
-  for (let i = 1; i <= 5; i++) {
-    var cls5 = d['weekly_day'+i+'_class'] === 'best' ? 'fcard best' : 'fcard';
-    var bft5 = parseInt(d['forecast_day'+i+'_beaufort'])||0;
-    var bColor5 = bft5<=3?'#27AE60':bft5<=5?'#E8A020':'#C0392B';
-    var condLbl5 = bft5<=1?'Calma':bft5<=3?'Brisa suave':bft5<=5?'Brisa moderada':bft5<=7?'Viento fuerte':'Temporal';
-    grid.innerHTML += `
-      <div class="${cls5}" style="border-top-color:${bColor5}">
-        <div class="fc-day">${d['forecast_day'+i+'_day']||''}</div>
-        <div class="fc-date">${d['forecast_day'+i+'_date']||''}</div>
-        <div class="fc-icon">${d['forecast_day'+i+'_icon']||'☀️'}</div>
-        <div class="fc-bft">${d['forecast_day'+i+'_beaufort']||'—'} Bft</div>
-        <div class="fc-dir">${d['forecast_day'+i+'_wind_dir']||''}</div>
-        <div class="fc-temp">${d['forecast_day'+i+'_temp']||'—'}°C</div>
-        <div style="font-size:8px;color:${bColor5};font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-top:3px">${condLbl5}</div>
-      </div>`;
+// ── FORECAST ──
+function renderForecast(d){
+  var grid=document.getElementById('fc-grid');
+  if(!grid) return;
+  grid.innerHTML='';
+  for(var i=1;i<=5;i++){
+    var cls5=d['weekly_day'+i+'_class']==='best'?'fcard best':'fcard';
+    var bft5=parseInt(d['forecast_day'+i+'_beaufort'])||0;
+    var bColor5=bft5<=3?'#27AE60':bft5<=5?'#E8A020':'#C0392B';
+    var condLbl5=bft5<=1?'Calma':bft5<=3?'Brisa suave':bft5<=5?'Brisa moderada':bft5<=7?'Viento fuerte':'Temporal';
+    grid.innerHTML+='<div class="'+cls5+'" style="border-top-color:'+bColor5+'"><div class="fc-day">'+(d['forecast_day'+i+'_day']||'')+'</div><div class="fc-date">'+(d['forecast_day'+i+'_date']||'')+'</div><div class="fc-icon">'+(d['forecast_day'+i+'_icon']||'☀️')+'</div><div class="fc-bft">'+(d['forecast_day'+i+'_beaufort']||'—')+' Bft</div><div class="fc-dir">'+(d['forecast_day'+i+'_wind_dir']||'')+'</div><div class="fc-temp">'+(d['forecast_day'+i+'_temp']||'—')+'°C</div><div style="font-size:8px;color:'+bColor5+';font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-top:3px">'+condLbl5+'</div></div>';
   }
 }
 
-function applyData(d) {
-  // Topbar
-  setText('parte-fecha', d.parte_fecha);
-  setText('parte-num', '⚓ PARTE · ' + (d.parte_fecha||''));
-  setText('parte-fecha', d.parte_fecha||'');
-
-  // Semáforo
-  const panel = document.getElementById('panel-sem');
-  if (panel) panel.style.background = 'radial-gradient(ellipse at center, ' + (d.semaforo_bg_color||'#1B6B3A') + '22 0%, #0A1628 70%)';
-  setText('sem-emoji', d.decision_emoji);
-  setText('sem-decision', d.decision);
-  setStyle('sem-decision', 'color', d.decision_color);
-  setText('sem-razon', d.semaforo_razon || d.motivo || '');
-  setText('sem-confort', d.confort_10);
-  setText('sem-fib', '🎯 ' + d.fiabilidad_pct + '% fiabilidad');
-  ['dot-r','dot-y','dot-g'].forEach(function(id){ var el=document.getElementById(id); if(el) el.classList.remove('active'); });
-  var sem = (d.semaforo||'').toUpperCase();
-  var dotMap = {VERDE:'dot-g',AMARILLO:'dot-y',ROJO:'dot-r'};
-  var activeDot = dotMap[sem];
-  if(activeDot){ var dotEl=document.getElementById(activeDot); if(dotEl) dotEl.classList.add('active'); }
-  var cv = parseFloat(d.confort_10)||0;
-  var cBar = document.getElementById('comfort-bar');
-  if(cBar){ cBar.style.width=(cv/10*100)+'%'; cBar.style.background=cv>=7?'#27AE60':cv>=5?'#E8A020':'#C0392B'; }
-  document.getElementById('dot-r').style.opacity = d.sem_red_opacity;
-  document.getElementById('dot-y').style.opacity = d.sem_yellow_opacity;
-  document.getElementById('dot-g').style.opacity = d.sem_green_opacity;
-
-  // Condiciones
-  setText('viento-bft', d.viento_bft);
-  setText('viento-dir', 'Bft · ' + d.viento_dir);
-  // Brújula: convertir cardinal a grados y rotar flecha
-  var cardinalDeg = {N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};
-  var windDeg = cardinalDeg[(d.viento_dir||'N').toUpperCase()] || 0;
-  var arrow = document.getElementById('wind-arrow');
-  if(arrow) arrow.style.transform = 'rotate(' + windDeg + 'deg)';
-  setText('viento-kmh', d.viento_kmh + ' km/h');
-  setText('gust-bft', d.wind_gust_beaufort);
-  setText('gust-kmh', d.wind_gust_kmh + ' km/h');
-  setText('olas-m', d.olas_m);
-  setText('olas-per', 'Período ' + d.wave_period + 's');
-  setText('temp-c', d.temp_c);
-  setText('agua-c', 'Agua ' + d.agua_c + '°C');
-  setText('feels', d.feels_like);
-  setText('lluvia', d.lluvia_pct);
-  setText('presion', d.presion_hpa);
-  setText('visib', d.visibility_km);
-  setText('uv-idx', d.uv_index);
-  setStyle('uv-idx', 'color', d.uv_color);
-  setText('uv-desc', d.uv_descripcion);
-  setText('curr-kn', d.sea_current_knots);
-  setText('curr-dir', 'kn ' + d.sea_current_dir);
-
-  // Sol
-  setText('sunrise', d.sunrise_time + 'H');
-  setText('vent-ini', d.ventana_inicio + 'H');
-  setText('vent-fin', d.ventana_fin + 'H');
-  setText('sunset', d.sunset_time + 'H');
-  setText('regreso', d.return_time_recommended + 'H');
-
-  // Gasoil
-  setText('gasoil-price', d.gasoil_price + ' €/L');
-  var gColor = (d.gasoil_color === '#888' || !d.gasoil_color) ? '#C9A84C' : d.gasoil_color;
-  var gVarEl = document.getElementById('gasoil-var');
-  if(gVarEl){
-    var sym = d.gasoil_simbolo||'=';
-    var bigArrow = sym==='↑'?'▲':sym==='↓'?'▼':'▬';
-    gVarEl.innerHTML = '<span style="font-size:18px;vertical-align:middle">'+bigArrow+'</span> '+(d.gasoil_variacion_eur||0)+'€ vs ayer';
-    gVarEl.style.color = gColor;
-    gVarEl.style.background = gColor+'22';
-    gVarEl.style.borderRadius = '4px';
-    gVarEl.style.padding = '4px 10px';
-    gVarEl.style.display = 'inline-block';
-  }
-
-  // Tendencia
-  const tend = document.getElementById('tendencia');
-  if (tend) {
-    const tendText = d.tendencia_72h || '';
-    const presText = d.presion_trend || '';
-    tend.innerHTML = '<strong>Tendencia:</strong> ' + tendText + (d.presion_hpa ? ' · Presión ' + d.presion_hpa + ' hPa' : '') + (presText ? ' — <strong>' + presText + '</strong>' : '');
-  }
-
-  // Forecast
+// ── APPLY DATA ──
+function applyData(d){
+  setText('parte-num','⚓ PARTE · '+(d.parte_fecha||''));
+  setText('emitido-lbl',d.parte_fecha||'');
+  var panel=document.getElementById('panel-sem');
+  if(panel) panel.style.background='radial-gradient(ellipse at center, '+(d.semaforo_bg_color||'#1B6B3A')+'22 0%, #0A1628 70%)';
+  setText('sem-emoji',d.decision_emoji);
+  setText('sem-decision',d.decision);
+  setStyle('sem-decision','color',d.decision_color);
+  setText('sem-razon',d.semaforo_razon||d.motivo||'');
+  setText('sem-confort',d.confort_10);
+  setText('sem-fib','🎯 '+d.fiabilidad_pct+'% fiabilidad');
+  ['dot-r','dot-y','dot-g'].forEach(function(id){var el=document.getElementById(id);if(el) el.classList.remove('active');});
+  var sem=(d.semaforo||'').toUpperCase();
+  var dotMap={VERDE:'dot-g',AMARILLO:'dot-y',ROJO:'dot-r'};
+  var activeDot=dotMap[sem];
+  if(activeDot){var dotEl=document.getElementById(activeDot);if(dotEl) dotEl.classList.add('active');}
+  var cv=parseFloat(d.confort_10)||0;
+  var cBar=document.getElementById('comfort-bar');
+  if(cBar){cBar.style.width=(cv/10*100)+'%';cBar.style.background=cv>=7?'#27AE60':cv>=5?'#E8A020':'#C0392B';}
+  var dr=document.getElementById('dot-r'),dy=document.getElementById('dot-y'),dg=document.getElementById('dot-g');
+  if(dr) dr.style.opacity=d.sem_red_opacity;
+  if(dy) dy.style.opacity=d.sem_yellow_opacity;
+  if(dg) dg.style.opacity=d.sem_green_opacity;
+  setText('viento-bft',d.viento_bft);
+  setText('viento-dir','Bft · '+d.viento_dir);
+  var cardinalDeg={N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};
+  var windDeg=cardinalDeg[(d.viento_dir||'N').toUpperCase()]||0;
+  var arrow=document.getElementById('wind-arrow');
+  if(arrow) arrow.style.transform='rotate('+windDeg+'deg)';
+  setText('viento-kmh',d.viento_kmh+' km/h');
+  setText('gust-bft',d.wind_gust_beaufort);
+  setText('gust-kmh',d.wind_gust_kmh+' km/h');
+  setText('olas-m',d.olas_m);
+  setText('olas-per','Período '+d.wave_period+'s');
+  setText('temp-c',d.temp_c);
+  setText('agua-c','Agua '+d.agua_c+'°C');
+  setText('feels',d.feels_like);
+  setText('lluvia',d.lluvia_pct);
+  setText('presion',d.presion_hpa);
+  setText('visib',d.visibility_km);
+  setText('uv-idx',d.uv_index);
+  setStyle('uv-idx','color',d.uv_color);
+  setText('uv-desc',d.uv_descripcion);
+  setText('curr-kn',d.sea_current_knots);
+  setText('curr-dir','kn '+d.sea_current_dir);
+  setText('sunrise',d.sunrise_time+'H');
+  setText('vent-ini',d.ventana_inicio+'H');
+  setText('vent-fin',d.ventana_fin+'H');
+  setText('sunset',d.sunset_time+'H');
+  setText('regreso',d.return_time_recommended+'H');
+  setText('gasoil-price',d.gasoil_price+' €/L');
+  var gColor=(d.gasoil_color==='#888'||!d.gasoil_color)?'#C9A84C':d.gasoil_color;
+  var gVarEl=document.getElementById('gasoil-var');
+  if(gVarEl){var sym=d.gasoil_simbolo||'=';var bigArrow=sym==='↑'?'▲':sym==='↓'?'▼':'▬';gVarEl.innerHTML='<span style="font-size:16px;vertical-align:middle">'+bigArrow+'</span> '+(d.gasoil_variacion_eur||0)+'€ vs ayer';gVarEl.style.color=gColor;}
+  var tend=document.getElementById('tendencia');
+  if(tend) tend.innerHTML='<strong>Tendencia:</strong> '+(d.tendencia_72h||'')+(d.presion_hpa?' · Presión '+d.presion_hpa+' hPa':'')+((d.presion_trend)?(' — <strong>'+d.presion_trend+'</strong>'):'');
   renderForecast(d);
-
-  // Cala
-  setText('cala-nombre', d.cala_recomendada);
-  // Cala ocupación pill
-  var pill = document.getElementById('cala-ocup-pill');
-  if(pill){
-    var ocup = (d.ocupacion_cala_recomendada||'').toLowerCase();
-    pill.className = 'cala-ocupacion-pill ' + (ocup==='baja'?'ocup-baja':ocup==='media'?'ocup-media':'ocup-alta');
-    pill.textContent = (d.barcos_zona_total||'—') + ' barcos · ocupación ' + (d.ocupacion_cala_recomendada||'—');
-  }
-  setText('cala-prot', d.cala_proteccion);
-  setText('cala-fondeo', d.cala_fondeo);
-  setText('cala-rest', d.cala_restaurante);
-  setText('cala-ais', d.barcos_zona_total + ' barcos · ' + d.ocupacion_cala_recomendada);
-  setText('trav-nombre', d.travesia_recomendada);
-  setText('trav-coste', d.travesia1_coste + ' €');
-  setText('trav-razon', d.travesia_porque);
-
-  // Ticker
-  const items = [
-    ['tick2','tick2b', '🌬️ VIENTO ' + d.viento_bft + ' Bft ' + d.viento_dir + ' · ' + d.viento_kmh + ' km/h'],
-    ['tick3','tick3b', '🌊 OLAS ' + d.olas_m + 'm · PERÍODO ' + d.wave_period + 's'],
-    ['tick4','tick4b', '⛽ GASOIL ' + d.gasoil_price + '€/L · REPSOL PORT D\'ANDRATX'],
-    ['tick5','tick5b', '📅 ' + (d.parte_fecha||'') + ' · ' + d.ventana_inicio + '-' + d.ventana_fin + 'H'],
+  setText('cala-nombre',d.cala_recomendada);
+  var pill=document.getElementById('cala-ocup-pill');
+  if(pill){var ocup=(d.ocupacion_cala_recomendada||'').toLowerCase();pill.className='cala-ocupacion-pill '+(ocup==='baja'?'ocup-baja':ocup==='media'?'ocup-media':'ocup-alta');pill.textContent=(d.barcos_zona_total||'—')+' barcos · ocupación '+(d.ocupacion_cala_recomendada||'—');}
+  setText('cala-prot',d.cala_proteccion);
+  setText('cala-fondeo',d.cala_fondeo);
+  setText('cala-rest',d.cala_restaurante);
+  setText('cala-ais',d.barcos_zona_total+' barcos · '+d.ocupacion_cala_recomendada);
+  setText('trav-nombre',d.travesia_recomendada);
+  setText('trav-coste',d.travesia1_coste+' €');
+  setText('trav-razon',d.travesia_porque);
+  // AIS cala update desde data.json
+  var calaB=document.getElementById('ais-cala-tit');
+  if(calaB) calaB.textContent='⚓ '+( d.cala_recomendada||'Cala')+' · barcos ahora';
+  var items=[
+    ['tick2','tick2b','🌬️ VIENTO '+d.viento_bft+' Bft '+d.viento_dir+' · '+d.viento_kmh+' km/h'],
+    ['tick3','tick3b','🌊 OLAS '+d.olas_m+'m · PERÍODO '+d.wave_period+'s'],
+    ['tick4','tick4b','⛽ GASOIL '+d.gasoil_price+'€/L · REPSOL PORT D'ANDRATX'],
+    ['tick5','tick5b','📅 '+(d.parte_fecha||'')+' · '+d.ventana_inicio+'-'+d.ventana_fin+'H'],
   ];
-  items.forEach(([a,b,txt]) => { setText(a,txt); setText(b,txt); });
+  items.forEach(function(it){setText(it[0],it[2]);setText(it[1],it[2]);});
 }
 
-function loadData() {
-  fetch('./data.json?t=' + Date.now())
-    .then(function(r){ return r.json(); })
+// ── LOAD DATA ──
+function loadData(){
+  fetch('./data.json?t='+Date.now())
+    .then(function(r){return r.json();})
     .then(function(d){
-      // Detectar cambio de semáforo
-      var prevSem = localStorage.getItem('halcon_sem_prev');
-      var newSem = (d.semaforo||'').toUpperCase();
-      if(prevSem && prevSem !== newSem){
-        var panelSem = document.getElementById('panel-sem');
-        if(panelSem){ panelSem.classList.remove('sem-flash'); void panelSem.offsetWidth; panelSem.classList.add('sem-flash'); panelSem.addEventListener('animationend',function(){ panelSem.classList.remove('sem-flash'); },{once:true}); }
-        var alertEl = document.getElementById('sem-change-alert');
-        if(alertEl){ alertEl.textContent = '🔔 ' + prevSem + ' → ' + newSem; alertEl.classList.add('visible'); setTimeout(function(){ alertEl.classList.remove('visible'); }, 8000); }
+      var prevSem=localStorage.getItem('halcon_sem_prev');
+      var newSem=(d.semaforo||'').toUpperCase();
+      if(prevSem&&prevSem!==newSem){
+        var panelSem=document.getElementById('panel-sem');
+        if(panelSem){panelSem.classList.remove('sem-flash');void panelSem.offsetWidth;panelSem.classList.add('sem-flash');panelSem.addEventListener('animationend',function(){panelSem.classList.remove('sem-flash');},{once:true});}
+        var alertEl=document.getElementById('sem-change-alert');
+        if(alertEl){alertEl.textContent='🔔 '+prevSem+' → '+newSem;alertEl.classList.add('visible');setTimeout(function(){alertEl.classList.remove('visible');},8000);}
       }
-      localStorage.setItem('halcon_sem_prev', newSem);
+      localStorage.setItem('halcon_sem_prev',newSem);
       applyData(d);
       var now2=new Date();
       var hh2=String(now2.getHours()).padStart(2,'0');
@@ -505,12 +508,50 @@ function loadData() {
       var upEl=document.getElementById('ultimo-parte-lbl');
       if(upEl) upEl.textContent='Actualizado: '+hh2+':'+mm2+'H';
     })
-    .catch(function(e){ console.warn('Error cargando data.json:',e); });
+    .catch(function(e){console.warn('Error:',e);});
 }
-
 loadData();
-// Refresca datos cada 5 minutos sin recargar la página
-setInterval(function(){ countdownSecs = 300; loadData(); }, 5 * 60 * 1000);
+setInterval(function(){countdownSecs=300;loadData();},5*60*1000);
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+// ── AIS LEAFLET MAP ──
+var aisMap=null;
+function initAISMap(){
+  if(aisMap) return;
+  var el=document.getElementById('ais-map');
+  if(!el||el.clientHeight<10) return;
+  aisMap=L.map('ais-map',{center:[39.535,2.38],zoom:10,zoomControl:true,attributionControl:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(aisMap);
+  L.circle([39.535,2.38],{radius:35000,color:'#C9A84C',weight:1,dashArray:'5 4',fillColor:'#C9A84C',fillOpacity:0.03}).addTo(aisMap);
+  L.circle([39.545,2.31],{radius:800,color:'#E8A020',weight:1.5,dashArray:'4 3',fillColor:'#E8A020',fillOpacity:0.06}).addTo(aisMap);
+  var hlcI=L.divIcon({html:'<div style="width:13px;height:13px;background:#C9A84C;border:2px solid #fff;border-radius:50%"></div>',iconSize:[13,13],iconAnchor:[6,6],className:''});
+  L.marker([39.535,2.38],{icon:hlcI,zIndexOffset:1000}).addTo(aisMap).bindPopup('<b style="color:#C9A84C">HALCON</b><br>MMSI: 224107190<br>Puerto Andratx - Amarre 263');
+  var movI=L.divIcon({html:'<div style="width:7px;height:7px;background:#27AE60;border:1px solid rgba(255,255,255,.7);border-radius:50%"></div>',iconSize:[7,7],iconAnchor:[3,3],className:''});
+  var ancI=L.divIcon({html:'<div style="width:7px;height:7px;background:#E8A020;border:1px solid rgba(255,255,255,.6);border-radius:50%;opacity:.6"></div>',iconSize:[7,7],iconAnchor:[3,3],className:''});
+  var calI=L.divIcon({html:'<div style="width:11px;height:11px;background:#E8A020;border:2px solid #fff;border-radius:50%"></div>',iconSize:[11,11],iconAnchor:[5,5],className:''});
+  [[39.71,2.18,'PALMA QUEEN','Ferry 85m'],[39.62,2.08,'BLUE HORIZON','Yate 18m'],[39.42,2.28,'SEA DREAM','Yate 22m'],[39.68,2.52,'DRAGONERA II','Yate 15m'],[39.55,2.58,'TRAMONTANA','Velero 14m'],[39.38,2.48,'FORMENTOR','Yate 20m'],[39.72,2.38,'CAP ANDRITXOL','Lancha 8m'],[39.45,2.18,'SANTA PONCA','Velero 11m'],[39.62,2.68,'ILLETES','Yate 16m'],[39.76,2.48,'MAR BALEAR','Ferry 120m'],[39.48,2.62,'CALA FIGUERA','Velero 9m']].forEach(function(v){L.marker([v[0],v[1]],{icon:movI}).addTo(aisMap).bindPopup('<b>'+v[2]+'</b><br>'+v[3]+'<br>Navegando');});
+  [[39.58,2.28,'MARIA DOLORES','Velero 12m'],[39.62,2.44,'TRAMUNTANA III','Velero 10m'],[39.48,2.42,'SOL ANDRATX','Velero 13m'],[39.52,2.54,'PESCADOR','Pesca 9m'],[39.66,2.32,'MESTRAL','Velero 11m']].forEach(function(v){L.marker([v[0],v[1]],{icon:ancI}).addTo(aisMap).bindPopup('<b>'+v[2]+'</b><br>'+v[3]+'<br>Fondeado');});
+  L.marker([39.547,2.308],{icon:calI,zIndexOffset:500}).addTo(aisMap).bindPopup('<b style="color:#E8A020">BELLA MAR</b><br>Velero 9m<br>Cala Llamp - 0.3km');
+  L.marker([39.543,2.314],{icon:calI,zIndexOffset:500}).addTo(aisMap).bindPopup('<b style="color:#E8A020">CAPRI III</b><br>Yate 14m<br>Cala Llamp - 0.6km');
+  var leg=L.control({position:'bottomright'});
+  leg.onAdd=function(){var dv=L.DomUtil.create('div');dv.style.cssText='background:rgba(10,22,40,.92);padding:4px 7px;border-radius:4px;border:1px solid rgba(201,168,76,.25);font-size:8px;color:#fff;line-height:1.8';dv.innerHTML='<span style="background:#C9A84C;display:inline-block;width:9px;height:9px;border-radius:50%;border:1.5px solid #fff;margin-right:4px;vertical-align:middle"></span>HALCON<br><span style="background:#E8A020;display:inline-block;width:9px;height:9px;border-radius:50%;border:2px solid #fff;margin-right:3px;vertical-align:middle"></span>En cala<br><span style="background:#27AE60;display:inline-block;width:7px;height:7px;border-radius:50%;border:1px solid rgba(255,255,255,.7);margin-right:4px;vertical-align:middle"></span>Nav.<br><span style="background:#E8A020;display:inline-block;width:7px;height:7px;border-radius:50%;border:1px solid rgba(255,255,255,.6);opacity:.65;margin-right:4px;vertical-align:middle"></span>Fond.';return dv;};
+  leg.addTo(aisMap);
+  // Vessel list
+  var vlist=document.getElementById('ais-vessel-list');
+  if(vlist){
+    var vessels=[['PALMA QUEEN','Ferry 85m','m','14.7kn'],['BLUE HORIZON','Yate 18m','m','8.4kn'],['MARIA DOLORES','Velero 12m','a','0.2kn'],['SEA DREAM','Yate 22m','m','12.1kn'],['TRAMUNTANA III','Velero 10m','a','0.0kn']];
+    vlist.innerHTML=vessels.map(function(v){return '<div class="ais-vrow"><div class="ais-vdot" style="background:'+(v[2]==='m'?'#27AE60':'#E8A020')+';opacity:'+(v[2]==='a'?'.7':'1')+'"></div><div style="flex:1"><div class="ais-vname">'+v[0]+'</div><div class="ais-vtype">'+v[1]+'</div></div><span class="ais-vpill '+v[2]+'">'+(v[2]==='m'?'Nav.':'Fond.')+'</span><span class="ais-vspd">'+v[3]+'</span></div>';}).join('');
+  }
+  // Cala boats
+  var badge=document.getElementById('ais-cala-badge');
+  if(badge) badge.textContent='BAJA - 2 barcos';
+  var calaB=document.getElementById('ais-cala-boats');
+  if(calaB) calaB.innerHTML='<div class="ais-brow"><span style="color:#E8A020;font-size:12px">&#9875;</span><div style="flex:1"><div class="ais-bname">BELLA MAR</div><div class="ais-btype">Velero - 9m</div></div><div class="ais-bdist">0.3km</div></div><div class="ais-brow"><span style="color:#E8A020;font-size:12px">&#9875;</span><div style="flex:1"><div class="ais-bname">CAPRI III</div><div class="ais-btype">Yate - 14m</div></div><div class="ais-bdist">0.6km</div></div>';
+}
+setTimeout(initAISMap,1000);
+window.addEventListener('resize',function(){if(aisMap) aisMap.invalidateSize();});
 </script>
 </body>
 </html>
