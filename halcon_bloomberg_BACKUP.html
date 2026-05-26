@@ -66,11 +66,11 @@
   .ccard-sub{font-size:11px;color:var(--white60);font-weight:600;margin-top:3px}
   .ccard-det{font-size:9px;color:var(--white30);margin-top:2px}
   .stats-bar{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}
-  .sbar{background:var(--white10);padding:8px 6px;text-align:center;border-top:2px solid var(--gold30)}
-  .sbar-icon{font-size:14px;margin-bottom:3px}
+  .sbar{background:var(--white10);padding:28px 6px;text-align:center;border-top:2px solid var(--gold30)}
+  .sbar-icon{font-size:28px;margin-bottom:6px}
   .sbar-lbl{font-size:7px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:2px}
-  .sbar-val{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--white)}
-  .sbar-sub{font-size:8px;color:var(--white30);margin-top:1px}
+  .sbar-val{font-family:'Poppins',sans-serif;font-size:30px;font-weight:700;color:var(--white)}
+  .sbar-sub{font-size:11px;color:var(--white30);margin-top:3px}
 
   /* SOL + GASOIL */
   .panel-sol{grid-column:3;grid-row:1;background:var(--navy3);overflow:hidden}
@@ -94,7 +94,10 @@
   .fc-date{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--white)}
   .fc-icon{font-size:20px}
   .fc-bft{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:var(--gold)}
-  .fc-dir{font-size:11px;font-weight:600;color:var(--white60)}
+  .fc-dir{font-size:10px;font-weight:600;color:var(--white60)}
+  .fc-compass{width:32px;height:32px;border-radius:50%;border:2px solid rgba(201,168,76,.4);position:relative;display:flex;align-items:center;justify-content:center;margin:3px auto;background:rgba(255,255,255,.05)}
+  .fc-compass-n{position:absolute;top:2px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:800;color:var(--gold);line-height:1}
+  .fc-compass-arr{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:14px solid var(--gold);transform-origin:50% 75%;transition:transform .5s ease}
   .fc-temp{font-size:10px;color:var(--white30)}
   .tend-bar{margin-top:8px;background:rgba(0,0,0,0.2);border-left:3px solid var(--gold);padding:9px 12px;font-size:11px;color:rgba(255,255,255,0.85);line-height:1.5;flex-shrink:0}
   .tend-bar strong{color:var(--gold)}
@@ -365,6 +368,10 @@ function renderForecast(d) {
         <div class="fc-date">${d['forecast_day'+i+'_date']||''}</div>
         <div class="fc-icon">${d['forecast_day'+i+'_icon']||'☀️'}</div>
         <div class="fc-bft">${d['forecast_day'+i+'_beaufort']||'—'} Bft</div>
+        <div class="fc-compass">
+          <div class="fc-compass-n">N</div>
+          <div class="fc-compass-arr" style="transform:rotate(${(function(){var cd={N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};return cd[((d['forecast_day'+i+'_wind_dir']||'N')).toUpperCase()]||0})()}deg)"></div>
+        </div>
         <div class="fc-dir">${d['forecast_day'+i+'_wind_dir']||''}</div>
         <div class="fc-temp">${d['forecast_day'+i+'_temp']||'—'}°C</div>
         <div style="font-size:8px;color:${bColor5};font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-top:3px">${condLbl5}</div>
