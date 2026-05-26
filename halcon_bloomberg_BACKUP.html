@@ -29,7 +29,7 @@
   .live-badge{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--go);background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.3);padding:3px 10px;font-weight:700}
 
   /* MAIN GRID */
-  .main{flex:1;display:grid;grid-template-columns:300px 1fr 260px;grid-template-rows:1fr 1fr;gap:1px;background:var(--gold30);overflow:hidden}
+  .main{flex:1;display:grid;grid-template-columns:300px 1fr 260px;grid-template-rows:1.1fr 1.1fr;gap:1px;background:var(--gold30);overflow:hidden}
   .panel{background:var(--navy2);padding:20px 24px;display:flex;flex-direction:column;overflow:hidden}
   .panel-lbl{font-size:8px;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold2);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
   .panel-lbl::after{content:'';flex:1;height:1px;background:var(--gold30)}
@@ -66,27 +66,38 @@
   .ccard-sub{font-size:11px;color:var(--white60);font-weight:600;margin-top:3px}
   .ccard-det{font-size:9px;color:var(--white30);margin-top:2px}
   .stats-bar{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}
-  .sbar{background:var(--white10);padding:28px 6px;text-align:center;border-top:2px solid var(--gold30)}
-  .sbar-icon{font-size:28px;margin-bottom:6px}
-  .sbar-lbl{font-size:7px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:2px}
-  .sbar-val{font-family:'Poppins',sans-serif;font-size:30px;font-weight:700;color:var(--white)}
-  .sbar-sub{font-size:11px;color:var(--white30);margin-top:3px}
+  .sbar{background:var(--white10);padding:10px 6px;text-align:center;border-top:2px solid var(--gold30);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:130px}
+  .sbar-icon{font-size:20px;margin-bottom:3px}
+  .sbar-lbl{font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:2px}
+  .sbar-val{font-family:'Poppins',sans-serif;font-size:26px;font-weight:700;color:var(--white)}
+  .sbar-sub{font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px;font-weight:600}
 
   /* SOL + GASOIL */
   .panel-sol{grid-column:3;grid-row:1;background:var(--navy3);overflow:hidden}
-  .sol-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--white10)}
+  .sol-item{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--white10)}
   .sol-item:last-of-type{border-bottom:none}
   .sol-lbl{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700}
   .sol-val{font-family:'Poppins',sans-serif;font-size:17px;font-weight:700;color:var(--gold)}
   .sol-val.alert{color:#FCA5A5}
-  .gasoil-block{margin-top:10px;background:var(--white10);border:1px solid var(--gold30);padding:10px 8px;text-align:center}
+  .gasoil-block{margin-top:4px;background:var(--white10);border:1px solid var(--gold30);padding:6px 8px;text-align:center}
   .gasoil-lbl{font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold2);font-weight:700;margin-bottom:5px}
-  .gasoil-price{font-family:'Poppins',sans-serif;font-size:24px;font-weight:700;color:var(--white);line-height:1}
+  .gasoil-price{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:var(--white);line-height:1}
   .gasoil-var{font-size:12px;font-weight:700;margin-top:4px;color:var(--gold)}
 
   /* FORECAST */
-  .panel-fc{grid-column:1/3;grid-row:2}
-  .fc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;flex:1}
+  .panel-fc{grid-column:1/3;grid-row:2;display:flex;flex-direction:row;gap:0;overflow:hidden;align-items:stretch}
+  .fc-grid-wrap{flex:4;display:flex;flex-direction:column;padding:14px 14px;min-width:0;overflow:hidden}
+  .fc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;flex:1}
+  .ais-col{flex:1;border-left:2px solid var(--gold30);display:flex;flex-direction:column;background:var(--navy3);overflow:hidden;min-height:0}
+  .ais-col-block{background:var(--navy3);padding:10px 12px;flex:1;display:flex;flex-direction:column;justify-content:center;border-bottom:2px solid var(--gold);position:relative;overflow:hidden;min-height:0}
+  .ais-col-block:last-child{border-bottom:none}
+  .ais-col-lbl{font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--white60);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:4px}
+  .ais-col-block::before{content:'';position:absolute;top:0;left:12px;right:12px;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
+  .ais-live-dot-s{width:5px;height:5px;border-radius:50%;background:#27AE60;animation:aisDs 1.5s ease-in-out infinite;display:inline-block;vertical-align:middle}
+  @keyframes aisDs{0%,100%{opacity:1}50%{opacity:.3}}
+  .ais-col-num{font-family:'Poppins',sans-serif;font-size:36px;font-weight:700;color:var(--gold);line-height:1;margin-bottom:4px}
+  .ais-col-sub{font-size:10px;color:var(--white60);line-height:1.4;font-weight:500}
+  .ais-col-ocup{display:inline-block;font-size:9px;font-weight:700;padding:3px 9px;border-radius:99px;margin-top:5px}
   .fcard{background:var(--white10);border:1px solid var(--white10);border-top:3px solid transparent;padding:12px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative}
   .fcard.best{background:rgba(201,168,76,0.12);border-color:var(--gold30);border-top-color:var(--gold)}
   .fcard.best::before{content:'⭐';position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:13px}
@@ -105,15 +116,15 @@
   /* CALA + TRAVESÍA */
   .panel-cala{grid-column:3;grid-row:2;background:var(--navy3)}
   .cala-nombre{font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:6px}
-  .cala-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--white10);font-size:9px}
+  .cala-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--white10);font-size:9px}
   .cala-row:last-of-type{border-bottom:none}
   .cala-row-lbl{color:rgba(255,255,255,0.7);font-weight:500}
   .cala-row-val{color:var(--white);font-weight:700;text-align:right;max-width:150px}
-  .trav-block{margin-top:12px;background:var(--white10);border:1px solid var(--gold30);padding:10px}
+  .trav-block{margin-top:4px;background:var(--white10);border:1px solid var(--gold30);padding:7px}
   .trav-lbl{font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}
   .trav-nombre{font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;color:var(--white)}
-  .trav-coste{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:var(--gold2);margin-top:3px}
-  .trav-razon{font-size:10px;color:#FFFFFF !important;margin-top:4px;line-height:1.4}
+  .trav-coste{font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;color:var(--gold2);margin-top:2px}
+  .trav-razon{font-size:8px;color:rgba(255,255,255,0.75);margin-top:2px;line-height:1.2}
 
   /* BRÚJULA VIENTO */
   .wind-compass{display:flex;align-items:center;justify-content:center;margin:4px 0 2px}
@@ -126,7 +137,7 @@
   .cala-destino-badge::before{content:'';flex:1;height:1px;background:var(--gold30)}
   .cala-destino-badge::after{content:'';flex:1;height:1px;background:var(--gold30)}
   .cala-nombre-big{font-family:'Poppins',sans-serif;font-size:20px;font-weight:800;color:var(--gold);margin-bottom:4px;line-height:1.1;text-shadow:0 0 20px rgba(201,168,76,.3)}
-  .cala-ocupacion-pill{display:inline-block;font-size:9px;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+  .cala-ocupacion-pill{display:inline-block;font-size:8px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
   .ocup-baja{background:rgba(39,174,96,.2);color:#27AE60;border:1px solid rgba(39,174,96,.4)}
   .ocup-media{background:rgba(232,160,32,.2);color:#E8A020;border:1px solid rgba(232,160,32,.4)}
   .ocup-alta{background:rgba(192,57,43,.2);color:#C0392B;border:1px solid rgba(192,57,43,.4)}
@@ -150,6 +161,7 @@
       <div class="brand-sub">Puerto de Andratx · Amarre 263</div>
     </div>
     <div class="divider-v"></div>
+    <button onclick="if(!document.fullscreenElement){document.documentElement.requestFullscreen();this.textContent='✕';}else{document.exitFullscreen();this.textContent='⛶';}" title="Pantalla completa" style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.35);color:#C9A84C;font-size:18px;width:36px;height:36px;border-radius:4px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center">⛶</button>
     <div>
       <div class="brand-sub">Parte Marítimo Premium</div>
       <div id="parte-fecha" style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px">—</div>
@@ -163,6 +175,7 @@
       <div class="countdown" id="countdown-lbl">↻ 5:00</div>
     </div>
     <div class="divider-v"></div>
+    <button onclick="if(!document.fullscreenElement){document.documentElement.requestFullscreen();this.textContent='✕';}else{document.exitFullscreen();this.textContent='⛶';}" title="Pantalla completa" style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.35);color:#C9A84C;font-size:18px;width:36px;height:36px;border-radius:4px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center">⛶</button>
     <div class="live-badge">● EN VIVO</div>
   </div>
 </div>
@@ -251,13 +264,45 @@
     </div>
   </div>
 
-  <!-- FORECAST -->
+  <!-- FORECAST + AIS COL -->
   <div class="panel panel-fc">
-    <div class="panel-lbl">📅 Pronóstico extendido · 5 días</div>
-    <div class="fc-grid" id="fc-grid">
-      <!-- Generado por JS -->
+    <div class="fc-grid-wrap">
+      <div class="panel-lbl">📅 Pronóstico extendido · 5 días</div>
+      <div class="fc-grid" id="fc-grid"></div>
+      <div class="tend-bar" id="tendencia">Cargando tendencia...</div>
     </div>
-    <div class="tend-bar" id="tendencia">Cargando tendencia...</div>
+    <div class="ais-col">
+      <div class="ais-col-block">
+        <div class="ais-col-lbl"><span class="ais-live-dot-s"></span>Zona Andratx · 35km</div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:nowrap">
+          <div style="font-family:Poppins,sans-serif;font-size:38px;font-weight:700;color:#C9A84C;line-height:1" id="ais-zona-total">—</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.4)">barcos</div>
+          <div style="width:1px;height:24px;background:rgba(201,168,76,.25)"></div>
+          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.5)">Nav. <b style="color:#27AE60;font-size:16px" id="ais-nav">—</b></span>
+          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.5)">Fond. <b style="color:#E8A020;font-size:16px" id="ais-fond">—</b></span>
+        </div>
+      </div>
+      <div class="ais-col-block">
+        <div class="ais-col-lbl">⚓ Cala recomendada</div>
+        <div style="font-size:10px;font-weight:700;color:var(--gold);margin-bottom:5px" id="ais-cala-nombre-s">—</div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:nowrap">
+          <div style="font-family:Poppins,sans-serif;font-size:38px;font-weight:700;color:#C9A84C;line-height:1" id="ais-cala-n">—</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.4)">barcos fondeados</div>
+          <div class="ais-col-ocup ocup-baja" id="ais-cala-ocup-s">—</div>
+        </div>
+      </div>
+      <div class="ais-col-block">
+        <div class="ais-col-lbl">🏝️ Travesía · destino</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="ais-col-num" id="ais-trav-n" style="font-size:32px">—</div>
+          <div>
+            <div style="font-size:9px;color:rgba(255,255,255,.4)">barcos fond.</div>
+            <div style="font-size:10px;font-weight:700;color:var(--gold)" id="ais-trav-nombre-s">—</div>
+            <div style="font-size:8px;color:rgba(255,255,255,.3);margin-top:2px">🦅 HALCÓN · Amarre 263</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- CALA + TRAVESÍA -->
@@ -269,7 +314,6 @@
     <div class="cala-row"><span class="cala-row-lbl">🧭 Protección</span><span class="cala-row-val" id="cala-prot">—</span></div>
     <div class="cala-row"><span class="cala-row-lbl">🌊 Fondeo</span><span class="cala-row-val" id="cala-fondeo">—</span></div>
     <div class="cala-row"><span class="cala-row-lbl">🍽️ Restaurante</span><span class="cala-row-val" id="cala-rest">—</span></div>
-    <div class="cala-row"><span class="cala-row-lbl">📡 AIS / Ocupación</span><span class="cala-row-val" id="cala-ais">—</span></div>
     <div class="trav-block">
       <div class="trav-lbl">🏝️ Travesía recomendada</div>
       <div class="trav-nombre" id="trav-nombre">—</div>
@@ -477,6 +521,15 @@ function applyData(d) {
   setText('cala-fondeo', d.cala_fondeo);
   setText('cala-rest', d.cala_restaurante);
   setText('cala-ais', d.barcos_zona_total + ' barcos · ' + d.ocupacion_cala_recomendada);
+  setText('ais-zona-total', d.barcos_zona_total || '—');
+  setText('ais-nav', d.barcos_zona_total ? Math.round(d.barcos_zona_total * 0.6) : '—');
+  setText('ais-fond', d.barcos_zona_total ? Math.round(d.barcos_zona_total * 0.4) : '—');
+  setText('ais-cala-n', d.barcos_fondeados || '—');
+  setText('ais-cala-nombre-s', d.cala_recomendada || '—');
+  var aisOcup=document.getElementById('ais-cala-ocup-s');
+  if(aisOcup){var oc=(d.ocupacion_cala_recomendada||'').toLowerCase();aisOcup.className='ais-col-ocup '+(oc==='baja'?'ocup-baja':oc==='media'?'ocup-media':'ocup-alta');aisOcup.textContent=(d.ocupacion_cala_recomendada||'—');}
+  setText('ais-trav-n', '—');
+  setText('ais-trav-nombre-s', d.travesia_recomendada || '—');
   setText('trav-nombre', d.travesia_recomendada);
   setText('trav-coste', d.travesia1_coste + ' €');
   setText('trav-razon', d.travesia_porque);
@@ -518,6 +571,25 @@ function loadData() {
 loadData();
 // Refresca datos cada 5 minutos sin recargar la página
 setInterval(function(){ countdownSecs = 300; loadData(); }, 5 * 60 * 1000);
+
+// ── FULLSCREEN ──
+var btnFs=document.getElementById('btn-fs');
+if(btnFs){
+  btnFs.addEventListener('click',function(){
+    if(!document.fullscreenElement){
+      document.documentElement.requestFullscreen().catch(function(){});
+      btnFs.textContent='✕';
+      btnFs.title='Salir pantalla completa';
+    } else {
+      document.exitFullscreen();
+      btnFs.textContent='⛶';
+      btnFs.title='Pantalla completa';
+    }
+  });
+  document.addEventListener('fullscreenchange',function(){
+    if(!document.fullscreenElement){btnFs.textContent='⛶';btnFs.title='Pantalla completa';}
+  });
+}
 </script>
 </body>
 </html>
