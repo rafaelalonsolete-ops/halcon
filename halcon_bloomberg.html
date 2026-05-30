@@ -526,8 +526,10 @@ function applyData(d) {
   var aisCala = d.barcos_fondeados;
   var aisValido = aisZona && aisZona > 0 && aisZona < 500 && aisCala !== undefined && aisCala <= 25;
   setText('ais-zona-total', aisValido ? aisZona : '—');
-  setText('ais-nav', aisValido ? Math.round(aisZona * 0.6) : '—');
-  setText('ais-fond', aisValido ? Math.round(aisZona * 0.4) : '—');
+  var aisNav = (aisValido && d.barcos_zona_navegando !== undefined && d.barcos_zona_navegando > 0) ? d.barcos_zona_navegando : (aisValido ? Math.round(aisZona * 0.6) : '—');
+  var aisFond = (aisValido && d.barcos_zona_fondeados !== undefined && d.barcos_zona_fondeados > 0) ? d.barcos_zona_fondeados : (aisValido ? Math.round(aisZona * 0.4) : '—');
+  setText('ais-nav', aisNav);
+  setText('ais-fond', aisFond);
   setText('ais-cala-n', aisValido ? aisCala : '—');
   setText('ais-cala-nombre-s', d.cala_recomendada || '—');
   var aisOcup=document.getElementById('ais-cala-ocup-s');
