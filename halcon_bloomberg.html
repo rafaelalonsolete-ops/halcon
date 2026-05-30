@@ -550,6 +550,8 @@ function applyData(d) {
   items.forEach(([a,b,txt]) => { setText(a,txt); setText(b,txt); });
 }
 
+}
+
 function loadData() {
   fetch('./data.json?t=' + Date.now())
     .then(function(r){ return r.json(); })
@@ -572,7 +574,6 @@ function loadData() {
       if(upEl) upEl.textContent='Actualizado: '+hh2+':'+mm2+'H';
     })
     .catch(function(e){ console.warn('Error cargando data.json:',e); });
-}
 }
 
 loadData();
