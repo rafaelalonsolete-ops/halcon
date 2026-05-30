@@ -573,12 +573,12 @@ function loadData() {
     })
     .catch(function(e){ console.warn('Error cargando data.json:',e); });
 }
+}
 
 loadData();
 // Refresca datos cada 5 minutos sin recargar la página
 setInterval(function(){ countdownSecs = 300; loadData(); }, 5 * 60 * 1000);
 
-}
 // ── FULLSCREEN ──
 var btnFs=document.getElementById('btn-fs');
 if(btnFs){
