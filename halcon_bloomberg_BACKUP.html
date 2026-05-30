@@ -550,6 +550,8 @@ function applyData(d) {
   items.forEach(([a,b,txt]) => { setText(a,txt); setText(b,txt); });
 }
 
+}
+
 function loadData() {
   fetch('./data.json?t=' + Date.now())
     .then(function(r){ return r.json(); })
