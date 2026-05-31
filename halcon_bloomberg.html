@@ -271,43 +271,26 @@
       <div class="fc-grid" id="fc-grid"></div>
       <div class="tend-bar" id="tendencia">Cargando tendencia...</div>
     </div>
-    <div class="ais-col">
-      <div class="ais-col-block">
-        <div class="ais-col-lbl"><span class="ais-live-dot-s"></span>Zona Andratx · 35km</div>
-        <div style="display:flex;align-items:center;gap:12px;flex-wrap:nowrap">
-          <div style="font-family:Poppins,sans-serif;font-size:38px;font-weight:700;color:#C9A84C;line-height:1" id="ais-zona-total">—</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.4)">barcos</div>
-          <div style="width:1px;height:24px;background:rgba(201,168,76,.25)"></div>
-          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.5)">Nav. <b style="color:#27AE60;font-size:16px" id="ais-nav">—</b></span>
-          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.5)">Fond. <b style="color:#E8A020;font-size:16px" id="ais-fond">—</b></span>
-        </div>
-      </div>
-      <div class="ais-col-block">
-        <div class="ais-col-lbl">⚓ Cala recomendada</div>
-        <div style="font-size:10px;font-weight:700;color:var(--gold);margin-bottom:5px" id="ais-cala-nombre-s">—</div>
-        <div style="display:flex;align-items:center;gap:12px;flex-wrap:nowrap">
-          <div style="font-family:Poppins,sans-serif;font-size:38px;font-weight:700;color:#C9A84C;line-height:1" id="ais-cala-n">—</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.4)">barcos fondeados</div>
-          <div class="ais-col-ocup ocup-baja" id="ais-cala-ocup-s">—</div>
-        </div>
-      </div>
-      <div class="ais-col-block">
-        <div class="ais-col-lbl">🏝️ Travesía · destino</div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <div class="ais-col-num" id="ais-trav-n" style="font-size:32px">—</div>
-          <div>
-            <div style="font-size:9px;color:rgba(255,255,255,.4)">barcos fond.</div>
-            <div style="font-size:10px;font-weight:700;color:var(--gold)" id="ais-trav-nombre-s">—</div>
-            <div style="font-size:8px;color:rgba(255,255,255,.3);margin-top:2px">🦅 HALCÓN · Amarre 263</div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- CALA + TRAVESÍA -->
-  <div class="panel panel-cala">
+  <div class="panel panel-cala" style="overflow-y:auto">
     <div class="panel-lbl">⚓ Cala · Travesía</div>
+    <!-- ZONA ANDRATX — integrado aquí, entre gasoil y cala-travesía -->
+    <div style="background:var(--white10);border:1px solid var(--gold30);padding:7px 10px;margin-bottom:10px">
+      <div style="font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:5px">
+        <span class="ais-live-dot-s"></span>Zona Andratx · 35km
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap">
+        <div style="font-family:Poppins,sans-serif;font-size:34px;font-weight:700;color:#C9A84C;line-height:1" id="ais-zona-total">—</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4)">barcos</div>
+        <div style="width:1px;height:24px;background:rgba(201,168,76,.25)"></div>
+        <div>
+          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.5)">Nav. <b style="color:#27AE60;font-size:15px" id="ais-nav">—</b></div>
+          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.5)">Fond. <b style="color:#E8A020;font-size:15px" id="ais-fond">—</b></div>
+        </div>
+      </div>
+    </div>
     <div class="cala-destino-badge">🏖 DESTINO DEL DÍA</div>
     <div class="cala-nombre-big" id="cala-nombre">—</div>
     <div id="cala-ocup-pill" class="cala-ocupacion-pill ocup-baja">— barcos</div>
