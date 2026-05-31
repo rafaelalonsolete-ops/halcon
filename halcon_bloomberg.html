@@ -516,9 +516,7 @@ function applyData(d) {
   setText('ais-cala-n', aisValido ? aisCala : '—');
   setText('ais-cala-nombre-s', d.cala_recomendada || '—');
   var aisOcup=document.getElementById('ais-cala-ocup-s');
-  if(aisOcup){if(!aisValido){aisOcup.textContent='Sin datos';aisOcup.className='ais-col-ocup ocup-media';}else{var oc=(d.ocupacion_cala_recomendada||'').toLowerCase();aisOcup.className='ais-col-ocup '+(oc==='baja'?'ocup-baja':oc==='media'?'ocup-media':'ocup-alta');aisOcup.textContent=(d.ocupacion_cala_recomendada||'—');}
-  setText('ais-trav-n', '—');
-  setText('ais-trav-nombre-s', d.travesia_recomendada || '—');
+  if(aisOcup){if(!aisValido){aisOcup.textContent='Sin datos';aisOcup.className='ais-col-ocup ocup-media';}else{var oc=(d.ocupacion_cala_recomendada||'').toLowerCase();aisOcup.className='ais-col-ocup '+(oc==='baja'?'ocup-baja':oc==='media'?'ocup-media':'ocup-alta');aisOcup.textContent=(d.ocupacion_cala_recomendada||'—');}}
   setText('trav-nombre', d.travesia_recomendada);
   setText('trav-coste', d.travesia1_coste + ' €');
   setText('trav-razon', d.travesia_porque);
