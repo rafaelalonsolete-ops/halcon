@@ -164,14 +164,12 @@
     <button onclick="if(!document.fullscreenElement){document.documentElement.requestFullscreen();this.textContent='✕';}else{document.exitFullscreen();this.textContent='⛶';}" title="Pantalla completa" style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.35);color:#C9A84C;font-size:18px;width:36px;height:36px;border-radius:4px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center">⛶</button>
     <div>
       <div class="brand-sub">Parte Marítimo Premium</div>
-      <div id="parte-fecha" style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px">—</div>
     </div>
   </div>
   <div class="topbar-center" id="parte-num">CARGANDO PARTE...</div>
   <div class="topbar-right">
     <div>
-      <div class="date-lbl" id="emitido-lbl">—</div>
-      <div class="date-lbl" id="ultimo-parte-lbl" style="margin-top:2px;color:rgba(255,255,255,0.35)">—</div>
+      <div class="date-lbl" id="ultimo-parte-lbl" style="color:rgba(255,255,255,0.35)">—</div>
       <div class="countdown" id="countdown-lbl">↻ 5:00</div>
     </div>
     <div class="divider-v"></div>
@@ -346,7 +344,6 @@ function updateClock() {
   const s = String(now.getSeconds()).padStart(2,'0');
   const d = now.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   document.querySelector('.clock') && (document.querySelector('.clock').textContent = h+':'+m);
-  document.getElementById('emitido-lbl') && (document.getElementById('emitido-lbl').textContent = d);
   // Update page title with real date
   document.title = 'HALCÓN · ' + new Date().toLocaleDateString('es-ES', {weekday:'long', day:'numeric', month:'long'});
 }
@@ -408,9 +405,7 @@ function renderForecast(d) {
 
 function applyData(d) {
   // Topbar
-  setText('parte-fecha', d.parte_fecha);
   setText('parte-num', '⚓ PARTE · ' + (d.parte_fecha||''));
-  setText('parte-fecha', d.parte_fecha||'');
 
   // Semáforo
   const panel = document.getElementById('panel-sem');
