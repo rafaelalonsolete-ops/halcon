@@ -164,14 +164,12 @@
     <button onclick="if(!document.fullscreenElement){document.documentElement.requestFullscreen();this.textContent='✕';}else{document.exitFullscreen();this.textContent='⛶';}" title="Pantalla completa" style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.35);color:#C9A84C;font-size:18px;width:36px;height:36px;border-radius:4px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center">⛶</button>
     <div>
       <div class="brand-sub">Parte Marítimo Premium</div>
-      <div id="parte-fecha" style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px">—</div>
     </div>
   </div>
   <div class="topbar-center" id="parte-num">CARGANDO PARTE...</div>
   <div class="topbar-right">
     <div>
-      <div class="date-lbl" id="emitido-lbl">—</div>
-      <div class="date-lbl" id="ultimo-parte-lbl" style="margin-top:2px;color:rgba(255,255,255,0.35)">—</div>
+      <div class="date-lbl" id="ultimo-parte-lbl" style="color:rgba(255,255,255,0.35)">—</div>
       <div class="countdown" id="countdown-lbl">↻ 5:00</div>
     </div>
     <div class="divider-v"></div>
@@ -271,43 +269,26 @@
       <div class="fc-grid" id="fc-grid"></div>
       <div class="tend-bar" id="tendencia">Cargando tendencia...</div>
     </div>
-    <div class="ais-col">
-      <div class="ais-col-block">
-        <div class="ais-col-lbl"><span class="ais-live-dot-s"></span>Zona Andratx · 35km</div>
-        <div style="display:flex;align-items:center;gap:12px;flex-wrap:nowrap">
-          <div style="font-family:Poppins,sans-serif;font-size:38px;font-weight:700;color:#C9A84C;line-height:1" id="ais-zona-total">—</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.4)">barcos</div>
-          <div style="width:1px;height:24px;background:rgba(201,168,76,.25)"></div>
-          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.5)">Nav. <b style="color:#27AE60;font-size:16px" id="ais-nav">—</b></span>
-          <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,.5)">Fond. <b style="color:#E8A020;font-size:16px" id="ais-fond">—</b></span>
-        </div>
-      </div>
-      <div class="ais-col-block">
-        <div class="ais-col-lbl">⚓ Cala recomendada</div>
-        <div style="font-size:10px;font-weight:700;color:var(--gold);margin-bottom:5px" id="ais-cala-nombre-s">—</div>
-        <div style="display:flex;align-items:center;gap:12px;flex-wrap:nowrap">
-          <div style="font-family:Poppins,sans-serif;font-size:38px;font-weight:700;color:#C9A84C;line-height:1" id="ais-cala-n">—</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.4)">barcos fondeados</div>
-          <div class="ais-col-ocup ocup-baja" id="ais-cala-ocup-s">—</div>
-        </div>
-      </div>
-      <div class="ais-col-block">
-        <div class="ais-col-lbl">🏝️ Travesía · destino</div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <div class="ais-col-num" id="ais-trav-n" style="font-size:32px">—</div>
-          <div>
-            <div style="font-size:9px;color:rgba(255,255,255,.4)">barcos fond.</div>
-            <div style="font-size:10px;font-weight:700;color:var(--gold)" id="ais-trav-nombre-s">—</div>
-            <div style="font-size:8px;color:rgba(255,255,255,.3);margin-top:2px">🦅 HALCÓN · Amarre 263</div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- CALA + TRAVESÍA -->
-  <div class="panel panel-cala">
+  <div class="panel panel-cala" style="overflow-y:auto">
     <div class="panel-lbl">⚓ Cala · Travesía</div>
+    <!-- ZONA ANDRATX — integrado aquí, entre gasoil y cala-travesía -->
+    <div style="background:var(--white10);border:1px solid var(--gold30);padding:7px 10px;margin-bottom:10px">
+      <div style="font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:5px">
+        <span class="ais-live-dot-s"></span>Zona Andratx · 35km
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:nowrap">
+        <div style="font-family:Poppins,sans-serif;font-size:34px;font-weight:700;color:#C9A84C;line-height:1" id="ais-zona-total">—</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4)">barcos</div>
+        <div style="width:1px;height:24px;background:rgba(201,168,76,.25)"></div>
+        <div>
+          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.5)">Nav. <b style="color:#27AE60;font-size:15px" id="ais-nav">—</b></div>
+          <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.5)">Fond. <b style="color:#E8A020;font-size:15px" id="ais-fond">—</b></div>
+        </div>
+      </div>
+    </div>
     <div class="cala-destino-badge">🏖 DESTINO DEL DÍA</div>
     <div class="cala-nombre-big" id="cala-nombre">—</div>
     <div id="cala-ocup-pill" class="cala-ocupacion-pill ocup-baja">— barcos</div>
@@ -363,7 +344,6 @@ function updateClock() {
   const s = String(now.getSeconds()).padStart(2,'0');
   const d = now.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   document.querySelector('.clock') && (document.querySelector('.clock').textContent = h+':'+m);
-  document.getElementById('emitido-lbl') && (document.getElementById('emitido-lbl').textContent = d);
   // Update page title with real date
   document.title = 'HALCÓN · ' + new Date().toLocaleDateString('es-ES', {weekday:'long', day:'numeric', month:'long'});
 }
@@ -425,9 +405,7 @@ function renderForecast(d) {
 
 function applyData(d) {
   // Topbar
-  setText('parte-fecha', d.parte_fecha);
   setText('parte-num', '⚓ PARTE · ' + (d.parte_fecha||''));
-  setText('parte-fecha', d.parte_fecha||'');
 
   // Semáforo
   const panel = document.getElementById('panel-sem');
@@ -533,9 +511,7 @@ function applyData(d) {
   setText('ais-cala-n', aisValido ? aisCala : '—');
   setText('ais-cala-nombre-s', d.cala_recomendada || '—');
   var aisOcup=document.getElementById('ais-cala-ocup-s');
-  if(aisOcup){if(!aisValido){aisOcup.textContent='Sin datos';aisOcup.className='ais-col-ocup ocup-media';}else{var oc=(d.ocupacion_cala_recomendada||'').toLowerCase();aisOcup.className='ais-col-ocup '+(oc==='baja'?'ocup-baja':oc==='media'?'ocup-media':'ocup-alta');aisOcup.textContent=(d.ocupacion_cala_recomendada||'—');}
-  setText('ais-trav-n', '—');
-  setText('ais-trav-nombre-s', d.travesia_recomendada || '—');
+  if(aisOcup){if(!aisValido){aisOcup.textContent='Sin datos';aisOcup.className='ais-col-ocup ocup-media';}else{var oc=(d.ocupacion_cala_recomendada||'').toLowerCase();aisOcup.className='ais-col-ocup '+(oc==='baja'?'ocup-baja':oc==='media'?'ocup-media':'ocup-alta');aisOcup.textContent=(d.ocupacion_cala_recomendada||'—');}}
   setText('trav-nombre', d.travesia_recomendada);
   setText('trav-coste', d.travesia1_coste + ' €');
   setText('trav-razon', d.travesia_porque);
@@ -548,8 +524,6 @@ function applyData(d) {
     ['tick5','tick5b', '📅 ' + (d.parte_fecha||'') + ' · ' + d.ventana_inicio + '-' + d.ventana_fin + 'H'],
   ];
   items.forEach(([a,b,txt]) => { setText(a,txt); setText(b,txt); });
-}
-
 }
 
 function loadData() {
