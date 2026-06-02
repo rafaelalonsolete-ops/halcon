@@ -382,15 +382,22 @@ function renderForecast(d) {
   const grid = document.getElementById('fc-grid');
   if (!grid) return;
   grid.innerHTML = '';
+  // Días de la semana en español para calcular si Claude no los manda
+  var diasES = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
+  var hoy = new Date();
   for (let i = 1; i <= 5; i++) {
     var cls5 = d['weekly_day'+i+'_class'] === 'best' ? 'fcard best' : 'fcard';
     var bft5 = parseInt(d['forecast_day'+i+'_beaufort'])||0;
     var bColor5 = bft5<=3?'#27AE60':bft5<=5?'#E8A020':'#C0392B';
     var condLbl5 = bft5<=1?'Calma':bft5<=3?'Brisa suave':bft5<=5?'Brisa moderada':bft5<=7?'Viento fuerte':'Temporal';
+    // Calcular fecha del navegador si Claude no la manda
+    var diaNav = new Date(hoy); diaNav.setDate(hoy.getDate() + i);
+    var dayLabel = d['forecast_day'+i+'_day'] || diasES[diaNav.getDay()];
+    var dateLabel = d['forecast_day'+i+'_date'] || (diaNav.getDate()+'/'+(diaNav.getMonth()+1));
     grid.innerHTML += `
       <div class="${cls5}" style="border-top-color:${bColor5}">
-        <div class="fc-day">${d['forecast_day'+i+'_day']||''}</div>
-        <div class="fc-date">${d['forecast_day'+i+'_date']||''}</div>
+        <div class="fc-day">${dayLabel}</div>
+        <div class="fc-date">${dateLabel}</div>
         <div class="fc-icon">${d['forecast_day'+i+'_icon']||'☀️'}</div>
         <div class="fc-bft">${d['forecast_day'+i+'_beaufort']||'—'} Bft</div>
         <div class="fc-compass">
@@ -455,11 +462,11 @@ function applyData(d) {
   setText('curr-dir', 'kn ' + d.sea_current_dir);
 
   // Sol
-  setText('sunrise', d.sunrise_time + 'H');
-  setText('vent-ini', d.ventana_inicio + 'H');
-  setText('vent-fin', d.ventana_fin + 'H');
-  setText('sunset', d.sunset_time + 'H');
-  setText('regreso', d.return_time_recommended + 'H');
+  setText('sunrise', d.sunrise_time ? d.sunrise_time + 'H' : '—H');
+  setText('vent-ini', d.ventana_inicio ? d.ventana_inicio + 'H' : '—H');
+  setText('vent-fin', d.ventana_fin ? d.ventana_fin + 'H' : '—H');
+  setText('sunset', d.sunset_time ? d.sunset_time + 'H' : '—H');
+  setText('regreso', d.return_time_recommended ? d.return_time_recommended + 'H' : '—H');
 
   // Gasoil
   setText('gasoil-price', d.gasoil_price + ' €/L');
