@@ -532,7 +532,7 @@ function applyData(d) {
 }
 
 function loadData() {
-  fetch('https://rafaelalonsolete-ops.github.io/halcon/data.json?t=' + Date.now())
+  fetch('https://raw.githubusercontent.com/rafaelalonsolete-ops/halcon/main/data.json?t=' + Date.now())
     .then(function(r){ return r.json(); })
     .then(function(d){
       // Detectar cambio de semáforo
