@@ -437,29 +437,33 @@ function applyData(d) {
   document.getElementById('dot-g').style.opacity = d.sem_green_opacity;
 
   // Condiciones
-  setText('viento-bft', d.viento_bft);
-  setText('viento-dir', 'Bft · ' + d.viento_dir);
+  // Helper: devuelve valor o '—' si null/undefined/vacío
+  var v = function(x){ return (x !== null && x !== undefined && x !== '') ? x : '—'; };
+  var vn = function(x, suffix){ return (x !== null && x !== undefined && x !== '') ? x + suffix : '—'; };
+
+  setText('viento-bft', v(d.viento_bft));
+  setText('viento-dir', d.viento_dir ? 'Bft · ' + d.viento_dir : 'Bft · —');
   // Brújula: convertir cardinal a grados y rotar flecha
   var cardinalDeg = {N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};
   var windDeg = cardinalDeg[(d.viento_dir||'N').toUpperCase()] || 0;
   var arrow = document.getElementById('wind-arrow');
   if(arrow) arrow.style.transform = 'rotate(' + windDeg + 'deg)';
-  setText('viento-kmh', d.viento_kmh + ' km/h');
-  setText('gust-bft', d.wind_gust_beaufort);
-  setText('gust-kmh', d.wind_gust_kmh + ' km/h');
-  setText('olas-m', d.olas_m);
-  setText('olas-per', 'Período ' + d.wave_period + 's');
-  setText('temp-c', d.temp_c);
-  setText('agua-c', 'Agua ' + d.agua_c + '°C');
-  setText('feels', d.feels_like);
-  setText('lluvia', d.lluvia_pct);
-  setText('presion', d.presion_hpa);
-  setText('visib', d.visibility_km);
-  setText('uv-idx', d.uv_index);
-  setStyle('uv-idx', 'color', d.uv_color);
-  setText('uv-desc', d.uv_descripcion);
-  setText('curr-kn', d.sea_current_knots);
-  setText('curr-dir', 'kn ' + d.sea_current_dir);
+  setText('viento-kmh', vn(d.viento_kmh, ' km/h'));
+  setText('gust-bft', v(d.wind_gust_beaufort));
+  setText('gust-kmh', vn(d.wind_gust_kmh, ' km/h'));
+  setText('olas-m', v(d.olas_m));
+  setText('olas-per', d.wave_period ? 'Período ' + d.wave_period + 's' : 'Período —');
+  setText('temp-c', v(d.temp_c));
+  setText('agua-c', d.agua_c ? 'Agua ' + d.agua_c + '°C' : 'Agua —°C');
+  setText('feels', v(d.feels_like));
+  setText('lluvia', v(d.lluvia_pct));
+  setText('presion', v(d.presion_hpa));
+  setText('visib', v(d.visibility_km));
+  setText('uv-idx', v(d.uv_index));
+  setStyle('uv-idx', 'color', d.uv_color || '#888');
+  setText('uv-desc', v(d.uv_descripcion));
+  setText('curr-kn', v(d.sea_current_knots));
+  setText('curr-dir', d.sea_current_dir ? 'kn ' + d.sea_current_dir : '—');
 
   // Sol
   setText('sunrise', d.sunrise_time ? d.sunrise_time + 'H' : '—H');
@@ -526,8 +530,8 @@ function applyData(d) {
 
   // Ticker
   const items = [
-    ['tick2','tick2b', '🌬️ VIENTO ' + d.viento_bft + ' Bft ' + d.viento_dir + ' · ' + d.viento_kmh + ' km/h'],
-    ['tick3','tick3b', '🌊 OLAS ' + d.olas_m + 'm · PERÍODO ' + d.wave_period + 's'],
+    ['tick2','tick2b', '🌬️ VIENTO ' + (d.viento_bft||'—') + ' Bft ' + (d.viento_dir||'—') + ' · ' + (d.viento_kmh||'—') + ' km/h'],
+    ['tick3','tick3b', '🌊 OLAS ' + (d.olas_m||'—') + 'm · PERÍODO ' + (d.wave_period||'—') + 's'],
     ['tick4','tick4b', '⛽ GASOIL ' + d.gasoil_price + '€/L · REPSOL PORT D\'ANDRATX'],
     ['tick5','tick5b', '📅 ' + (d.parte_fecha||'') + ' · ' + d.ventana_inicio + '-' + d.ventana_fin + 'H'],
   ];
