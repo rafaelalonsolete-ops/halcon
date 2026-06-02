@@ -164,7 +164,6 @@
     <button onclick="if(!document.fullscreenElement){document.documentElement.requestFullscreen();this.textContent='✕';}else{document.exitFullscreen();this.textContent='⛶';}" title="Pantalla completa" style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.35);color:#C9A84C;font-size:18px;width:36px;height:36px;border-radius:4px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center">⛶</button>
     <div>
       <div class="brand-sub">Parte Marítimo Premium</div>
-      <div id="parte-fecha" style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px">—</div>
     </div>
   </div>
   <div class="topbar-center" id="parte-num">CARGANDO PARTE...</div>
@@ -408,9 +407,7 @@ function renderForecast(d) {
 
 function applyData(d) {
   // Topbar
-  setText('parte-fecha', d.parte_fecha);
   setText('parte-num', '⚓ PARTE · ' + (d.parte_fecha||''));
-  setText('parte-fecha', d.parte_fecha||'');
 
   // Semáforo
   const panel = document.getElementById('panel-sem');
