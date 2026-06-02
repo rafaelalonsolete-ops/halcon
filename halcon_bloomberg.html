@@ -341,11 +341,12 @@ function updateClock() {
   const now = new Date();
   const h = String(now.getHours()).padStart(2,'0');
   const m = String(now.getMinutes()).padStart(2,'0');
-  const s = String(now.getSeconds()).padStart(2,'0');
-  const d = now.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const fechaReal = now.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const fechaCap = fechaReal.charAt(0).toUpperCase() + fechaReal.slice(1);
   document.querySelector('.clock') && (document.querySelector('.clock').textContent = h+':'+m);
-  // Update page title with real date
-  document.title = 'HALCÓN · ' + new Date().toLocaleDateString('es-ES', {weekday:'long', day:'numeric', month:'long'});
+  var parteNum = document.getElementById('parte-num');
+  if(parteNum) parteNum.textContent = '\u2693 PARTE \u00b7 ' + fechaCap;
+  document.title = 'HALC\u00d3N \u00b7 ' + fechaCap;
 }
 // ── COUNTDOWN REFRESH ──────────────────────────────────
 let countdownSecs = 300;
@@ -405,7 +406,7 @@ function renderForecast(d) {
 
 function applyData(d) {
   // Topbar
-  setText('parte-num', '⚓ PARTE · ' + (d.parte_fecha||''));
+  // parte-num lo actualiza updateClock() con fecha real del navegador
 
   // Semáforo
   const panel = document.getElementById('panel-sem');
