@@ -635,7 +635,7 @@ body {
         <div class="ais-grid">
           <div class="ais-item">
             <div class="ais-num" style="color:var(--green)" id="m-nav">—</div>
-            <div class="ais-lbl">Navegando</div>
+            <div class="ais-lbl" id="m-nav-lbl">Navegando</div>
           </div>
           <div class="ais-item">
             <div class="ais-num" style="color:var(--orange)" id="m-fond">—</div>
@@ -878,8 +878,15 @@ function applyData(d) {
   }
 
   // CALA + AIS
-  setText('m-nav', v(d.barcos_zona_navegando));
-  setText('m-fond', v(d.barcos_zona_fondeados));
+  var navLbl = document.getElementById('m-nav-lbl');
+  if (d.barcos_zona_navegando) {
+    setText('m-nav', d.barcos_zona_navegando);
+    if(navLbl) navLbl.textContent = 'Navegando';
+  } else {
+    setText('m-nav', d.barcos_zona_total || '—');
+    if(navLbl) navLbl.textContent = 'Total zona';
+  }
+  setText('m-fond', d.barcos_zona_fondeados || '—');
   setText('m-cala-nombre', v(d.cala_recomendada));
   setText('m-cala-barcos', v(d.barcos_fondeados));
   const ocupEl = document.getElementById('m-cala-ocup');
