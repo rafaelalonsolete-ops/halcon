@@ -395,6 +395,78 @@ body {
   padding: 0 4px;
 }
 .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--white10); }
+
+/* CONFORT BAR */
+.confort-wrap {
+  background: var(--white10);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+}
+.confort-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.confort-num {
+  font-family: 'Poppins', sans-serif;
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1;
+}
+.confort-desc { font-size: 13px; color: var(--white60); font-weight: 600; }
+.confort-bar-bg {
+  height: 12px;
+  border-radius: 6px;
+  background: var(--white10);
+  overflow: hidden;
+  margin-top: 8px;
+}
+.confort-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width .6s ease, background .6s ease;
+}
+.confort-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--white30);
+  margin-top: 4px;
+}
+
+/* CONTACTOS */
+.contact-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--white10);
+  text-decoration: none;
+  color: inherit;
+}
+.contact-item:last-child { border-bottom: none; }
+.contact-left { display: flex; align-items: center; gap: 12px; }
+.contact-icon {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.contact-name { font-size: 14px; font-weight: 600; color: var(--white); }
+.contact-num { font-size: 12px; color: var(--white30); margin-top: 1px; }
+.contact-call {
+  background: var(--green-bg);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  flex-shrink: 0;
+}
 </style>
 </head>
 <body>
@@ -436,6 +508,31 @@ body {
         <div class="sem-pill" id="sem-confort-pill">— /10 confort</div>
         <div class="sem-pill" id="sem-fib-pill">— % fiabilidad</div>
         <div class="sem-pill" id="sem-ventana-pill">—</div>
+      </div>
+    </div>
+
+
+    <!-- CONFORT VISUAL -->
+    <div class="card">
+      <div class="confort-wrap">
+        <div class="confort-header">
+          <div>
+            <div style="font-size:11px;color:var(--white30);font-weight:600;text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px">🌡️ Índice de confort</div>
+            <div class="confort-num" id="m-confort-num">—</div>
+            <div class="confort-desc" id="m-confort-desc">—</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:11px;color:var(--white30)">Fiabilidad</div>
+            <div style="font-family:Poppins,sans-serif;font-size:28px;font-weight:700;color:var(--gold)" id="m-fib-num">—</div>
+            <div style="font-size:11px;color:var(--white30)">%</div>
+          </div>
+        </div>
+        <div class="confort-bar-bg">
+          <div class="confort-bar-fill" id="m-confort-bar" style="width:0%"></div>
+        </div>
+        <div class="confort-labels">
+          <span>😰 0</span><span>😐 5</span><span>😎 10</span>
+        </div>
       </div>
     </div>
 
@@ -576,6 +673,72 @@ body {
       <div class="tendencia" id="m-tendencia">—</div>
     </div>
 
+
+    <!-- CONTACTOS EMERGENCIA -->
+    <div class="section-divider">📞 Emergencias · Contactos</div>
+    <div class="card">
+      <a class="contact-item" href="tel:900202202">
+        <div class="contact-left">
+          <div class="contact-icon" style="background:rgba(231,76,60,.15)">🚨</div>
+          <div>
+            <div class="contact-name">Salvamento Marítimo</div>
+            <div class="contact-num">900 202 202 · Gratuito 24h</div>
+          </div>
+        </div>
+        <span class="contact-call">Llamar</span>
+      </a>
+      <a class="contact-item" href="tel:112">
+        <div class="contact-left">
+          <div class="contact-icon" style="background:rgba(231,76,60,.15)">🆘</div>
+          <div>
+            <div class="contact-name">Emergencias</div>
+            <div class="contact-num">112 · Gratuito 24h</div>
+          </div>
+        </div>
+        <span class="contact-call">Llamar</span>
+      </a>
+      <a class="contact-item" href="tel:+34971674208">
+        <div class="contact-left">
+          <div class="contact-icon" style="background:rgba(39,174,96,.12)">⚓</div>
+          <div>
+            <div class="contact-name">Puerto Andratx</div>
+            <div class="contact-num">+34 971 674 208</div>
+          </div>
+        </div>
+        <span class="contact-call">Llamar</span>
+      </a>
+      <a class="contact-item" href="tel:+34971401111">
+        <div class="contact-left">
+          <div class="contact-icon" style="background:rgba(201,168,76,.12)">🏥</div>
+          <div>
+            <div class="contact-name">Hospital Son Espases</div>
+            <div class="contact-num">+34 971 205 000</div>
+          </div>
+        </div>
+        <span class="contact-call">Llamar</span>
+      </a>
+      <a class="contact-item" href="tel:+34971674200">
+        <div class="contact-left">
+          <div class="contact-icon" style="background:rgba(201,168,76,.12)">⛽</div>
+          <div>
+            <div class="contact-name">REPSOL Port d'Andratx</div>
+            <div class="contact-num">+34 971 674 200</div>
+          </div>
+        </div>
+        <span class="contact-call">Llamar</span>
+      </a>
+      <a class="contact-item" href="https://www.marinetraffic.com/en/ais/details/ships/mmsi:224107190" target="_blank">
+        <div class="contact-left">
+          <div class="contact-icon" style="background:rgba(39,174,96,.12)">🛥️</div>
+          <div>
+            <div class="contact-name">HALCÓN en MarineTraffic</div>
+            <div class="contact-num">MMSI: 224107190</div>
+          </div>
+        </div>
+        <span class="contact-call" style="background:rgba(201,168,76,.12);color:var(--gold);border-color:var(--gold-border)">Ver</span>
+      </a>
+    </div>
+
     <!-- REFRESH -->
     <button class="refresh-btn" onclick="loadData()">
       🔄 Actualizar parte
@@ -652,6 +815,27 @@ function applyData(d) {
   setText('m-visib', v(d.visibility_km));
   const uvEl = document.getElementById('m-uv');
   if (uvEl) { uvEl.textContent = v(d.uv_index); uvEl.style.color = d.uv_color || 'var(--red)'; }
+
+
+  // CONFORT VISUAL
+  const confort = d.confort_10 || 0;
+  const confortEl = document.getElementById('m-confort-num');
+  const confortDesc = document.getElementById('m-confort-desc');
+  const confortBar = document.getElementById('m-confort-bar');
+  const confortDescs = ['Peligroso','Muy malo','Malo','Limitado','Aceptable','Moderado','Bueno','Muy bueno','Excelente','Excepcional','Perfecto'];
+  const confortColors = ['#e74c3c','#e74c3c','#c0392b','#e67e22','#e67e22','#f39c12','#f1c40f','#2ecc71','#27ae60','#1abc9c','#16a085'];
+  if (confortEl) {
+    confortEl.textContent = confort;
+    confortEl.style.color = confortColors[Math.min(confort,10)];
+  }
+  if (confortDesc) confortDesc.textContent = confortDescs[Math.min(confort,10)] || '—';
+  if (confortBar) {
+    confortBar.style.width = (confort * 10) + '%';
+    confortBar.style.background = 'linear-gradient(90deg, #e74c3c 0%, #f39c12 40%, #27ae60 80%, #1abc9c 100%)';
+    confortBar.style.backgroundSize = '1000% 100%';
+    confortBar.style.backgroundPosition = (100 - confort * 10) + '% 0';
+  }
+  setText('m-fib-num', d.fiabilidad_pct || '—');
 
   // SOL + GASOIL
   setText('m-sunrise', d.sunrise_time ? d.sunrise_time + 'H' : '—H');
