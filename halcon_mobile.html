@@ -846,9 +846,15 @@ body {
     </div>
 
     <!-- REFRESH -->
-    <button class="refresh-btn" onclick="loadData()">
-      🔄 Actualizar parte
-    </button>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="refresh-btn" id="refresh-btn" onclick="manualRefresh()" style="flex:1">
+        🔄 Actualizar parte
+      </button>
+      <div style="background:var(--white10);border:1px solid var(--gold-border);border-radius:var(--radius);padding:14px 16px;text-align:center;min-width:80px">
+        <div style="font-size:10px;color:var(--white30);font-weight:600">Próx. act.</div>
+        <div style="font-family:Poppins,sans-serif;font-size:16px;font-weight:700;color:var(--gold)" id="m-countdown">5:00</div>
+      </div>
+    </div>
 
     <div style="text-align:center;font-size:11px;color:var(--white30);padding:8px 0">
       🦅 HALCÓN · Puerto de Andratx · Amarre 263
@@ -1046,26 +1052,54 @@ function applyData(d) {
 }
 
 function loadData() {
-  fetch('https://raw.githubusercontent.com/rafaelalonsolete-ops/halcon/main/data.json?t=' + Date.now())
+  return fetch('https://raw.githubusercontent.com/rafaelalonsolete-ops/halcon/main/data.json?t=' + Date.now())
     .then(r => r.json())
     .then(d => {
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
+      var loadEl = document.getElementById('loading');
+      if (loadEl) loadEl.style.display = 'none';
+      var appEl = document.getElementById('app');
+      if (appEl) appEl.style.display = 'block';
       applyData(d);
     })
     .catch(e => {
       console.warn('Error cargando datos:', e);
-      document.getElementById('loading').innerHTML = '<div style="color:var(--white60);text-align:center;padding:20px">⚠️ Error cargando datos.<br>Comprueba la conexión.</div>';
+      var loadEl = document.getElementById('loading');
+      if (loadEl && loadEl.style.display !== 'none') {
+        loadEl.innerHTML = '<div style="color:var(--white60);text-align:center;padding:20px">⚠️ Error cargando datos.<br>Comprueba la conexión.</div>';
+      }
     });
+}
+
+// Countdown
+var countdownSecs = 300;
+function updateCountdown() {
+  countdownSecs--;
+  if (countdownSecs <= 0) {
+    countdownSecs = 300;
+    loadData();
+  }
+  var m = Math.floor(countdownSecs / 60);
+  var s = String(countdownSecs % 60).padStart(2,'0');
+  var el = document.getElementById('m-countdown');
+  if (el) el.textContent = m + ':' + s;
+}
+
+function manualRefresh() {
+  var btn = document.getElementById('refresh-btn');
+  if (btn) { btn.textContent = '⏳ Cargando...'; btn.disabled = true; }
+  countdownSecs = 300;
+  loadData().finally(function() {
+    if (btn) { btn.textContent = '🔄 Actualizar parte'; btn.disabled = false; }
+  });
 }
 
 // Clock
 setInterval(updateClock, 1000);
+setInterval(updateCountdown, 1000);
 updateClock();
 
 // Load data
 loadData();
-setInterval(loadData, 5 * 60 * 1000);
 
 var gasoilPrecio = 1.84;
 function calcCombustible() {
