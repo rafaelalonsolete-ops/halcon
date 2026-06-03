@@ -220,29 +220,33 @@ body {
 .fc-scroll::-webkit-scrollbar { display: none; }
 .fc-day {
   flex-shrink: 0;
-  width: 80px;
+  width: 130px;
   background: var(--white10);
   border-radius: var(--radius-sm);
-  padding: 12px 8px;
+  padding: 14px 12px;
   text-align: center;
   border: 1px solid transparent;
+  border-top: 3px solid transparent;
 }
 .fc-day.best {
   background: var(--gold-faint);
   border-color: var(--gold-border);
+  border-top-color: var(--gold);
 }
-.fc-day-name { font-size: 10px; font-weight: 700; color: var(--white30); text-transform: uppercase; letter-spacing: .08em; }
-.fc-day-date { font-size: 12px; font-weight: 600; color: var(--white60); margin-bottom: 6px; }
-.fc-icon { font-size: 22px; margin: 4px 0; }
+.fc-day-name { font-size: 11px; font-weight: 700; color: var(--white30); text-transform: uppercase; letter-spacing: .08em; }
+.fc-day-date { font-size: 13px; font-weight: 600; color: var(--white60); margin-bottom: 6px; }
+.fc-icon { font-size: 26px; margin: 6px 0; }
 .fc-bft {
   font-family: 'Poppins', sans-serif;
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 700;
-  color: var(--gold);
+  line-height: 1;
 }
-.fc-bft-lbl { font-size: 9px; color: var(--white30); }
-.fc-temp { font-size: 12px; color: var(--white60); margin-top: 4px; font-weight: 500; }
-.fc-cond { font-size: 9px; font-weight: 700; margin-top: 3px; }
+.fc-bft-sub { font-size: 11px; color: var(--white30); margin-top: 1px; }
+.fc-detail-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-top: 1px solid var(--white10); margin-top: 4px; }
+.fc-detail-lbl { font-size: 10px; color: var(--white30); }
+.fc-detail-val { font-size: 11px; font-weight: 600; color: var(--white60); }
+.fc-cond { font-size: 11px; font-weight: 700; margin-top: 6px; padding: 3px 8px; border-radius: 20px; display: inline-block; }
 
 /* CALA */
 .cala-header {
@@ -864,15 +868,23 @@ function applyData(d) {
       const dayLbl = d['forecast_day'+i+'_day'] || dias[dNav.getDay()];
       const dateLbl = d['forecast_day'+i+'_date'] || (dNav.getDate()+'/'+(dNav.getMonth()+1));
       const star = d['weekly_day'+i+'_class'] === 'best' ? '⭐ ' : '';
+      const condBg5 = bft<=2?'rgba(39,174,96,.12)':bft<=3?'rgba(232,160,32,.12)':'rgba(231,76,60,.12)';
       fcGrid.innerHTML += `
-        <div class="${cls}">
+        <div class="${cls}" style="border-top-color:${color}">
           <div class="fc-day-name">${star}${dayLbl}</div>
           <div class="fc-day-date">${dateLbl}</div>
           <div class="fc-icon">${d['forecast_day'+i+'_icon'] || '☀️'}</div>
           <div class="fc-bft" style="color:${color}">${bft || '—'}</div>
-          <div class="fc-bft-lbl">Bft · ${d['forecast_day'+i+'_wind_dir'] || '—'}</div>
-          <div class="fc-temp">${d['forecast_day'+i+'_temp'] || '—'}°C</div>
-          <div class="fc-cond" style="color:${color}">${cond}</div>
+          <div class="fc-bft-sub">Bft · ${d['forecast_day'+i+'_wind_dir'] || '—'}</div>
+          <div class="fc-cond" style="color:${color};background:${condBg5}">${cond}</div>
+          <div class="fc-detail-row">
+            <span class="fc-detail-lbl">🌡️ Temp</span>
+            <span class="fc-detail-val">${d['forecast_day'+i+'_temp'] || '—'}°C</span>
+          </div>
+          <div class="fc-detail-row">
+            <span class="fc-detail-lbl">💨 Dir</span>
+            <span class="fc-detail-val">${d['forecast_day'+i+'_wind_dir'] || '—'}</span>
+          </div>
         </div>`;
     }
   }
