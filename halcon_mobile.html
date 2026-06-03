@@ -471,6 +471,32 @@ body {
   text-decoration: none;
   flex-shrink: 0;
 }
+
+/* FICHA BARCO */
+.barco-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.barco-item { background: var(--white10); border-radius: var(--radius-sm); padding: 10px 12px; }
+.barco-lbl { font-size: 10px; color: var(--white30); font-weight: 600; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 3px; }
+.barco-val { font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 700; color: var(--white); }
+.barco-sub { font-size: 11px; color: var(--white60); }
+
+/* CALCULADORA */
+.calc-input-wrap { display: flex; align-items: center; gap: 10px; background: var(--white10); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 10px; }
+.calc-input { background: none; border: none; outline: none; font-family: 'Poppins', sans-serif; font-size: 28px; font-weight: 700; color: var(--gold); width: 80px; text-align: center; }
+.calc-input::placeholder { color: rgba(201,168,76,.3); }
+.calc-lbl { font-size: 13px; color: var(--white30); }
+.calc-result { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.calc-res-item { background: var(--white10); border-radius: var(--radius-sm); padding: 12px; text-align: center; }
+.calc-res-num { font-family: 'Poppins', sans-serif; font-size: 22px; font-weight: 700; color: var(--gold); }
+.calc-res-lbl { font-size: 11px; color: var(--white30); margin-top: 2px; }
+
+/* MEJOR DÍA */
+.best-day-card { background: var(--gold-faint); border: 1px solid var(--gold-border); border-radius: var(--radius-sm); padding: 14px; display: flex; align-items: center; gap: 14px; }
+.best-day-star { font-size: 32px; }
+.best-day-nombre { font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 800; color: var(--gold); }
+.best-day-desc { font-size: 12px; color: var(--white60); margin-top: 2px; }
+
+/* MARINETRAFFIC BTN */
+.mt-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: rgba(39,174,96,.12); border: 1px solid rgba(39,174,96,.3); color: var(--green); border-radius: var(--radius); padding: 14px; font-size: 14px; font-weight: 700; text-decoration: none; }
 </style>
 </head>
 <body>
@@ -743,6 +769,82 @@ body {
       </a>
     </div>
 
+
+    <!-- MINI-FICHA BARCO -->
+    <div class="section-divider">🛥️ HALCÓN · Ficha técnica</div>
+    <div class="card">
+      <div class="barco-grid">
+        <div class="barco-item">
+          <div class="barco-lbl">Eslora</div>
+          <div class="barco-val">17.36m</div>
+        </div>
+        <div class="barco-item">
+          <div class="barco-lbl">Motores</div>
+          <div class="barco-val">2 motores</div>
+        </div>
+        <div class="barco-item">
+          <div class="barco-lbl">Velocidad crucero</div>
+          <div class="barco-val">18–20 kn</div>
+        </div>
+        <div class="barco-item">
+          <div class="barco-lbl">Consumo</div>
+          <div class="barco-val">222 L/h</div>
+          <div class="barco-sub">a velocidad crucero</div>
+        </div>
+        <div class="barco-item">
+          <div class="barco-lbl">Capacidad</div>
+          <div class="barco-val">3.425 L</div>
+        </div>
+        <div class="barco-item">
+          <div class="barco-lbl">Amarre</div>
+          <div class="barco-val">263</div>
+          <div class="barco-sub">Puerto Andratx</div>
+        </div>
+      </div>
+      <a class="mt-btn" style="margin-top:10px" href="https://www.marinetraffic.com/en/ais/details/ships/mmsi:224107190" target="_blank">
+        📍 Ver HALCÓN en MarineTraffic
+      </a>
+    </div>
+
+    <!-- CALCULADORA COMBUSTIBLE -->
+    <div class="section-divider">⛽ Calculadora de combustible</div>
+    <div class="card">
+      <div class="calc-input-wrap">
+        <input class="calc-input" type="number" id="calc-nm" placeholder="0" min="1" max="500" oninput="calcCombustible()">
+        <div class="calc-lbl">millas náuticas (nm)</div>
+      </div>
+      <div class="calc-result">
+        <div class="calc-res-item">
+          <div class="calc-res-num" id="calc-litros">—</div>
+          <div class="calc-res-lbl">Litros</div>
+        </div>
+        <div class="calc-res-item">
+          <div class="calc-res-num" id="calc-coste">—</div>
+          <div class="calc-res-lbl">Coste (€)</div>
+        </div>
+        <div class="calc-res-item">
+          <div class="calc-res-num" id="calc-tiempo">—</div>
+          <div class="calc-res-lbl">Tiempo aprox.</div>
+        </div>
+        <div class="calc-res-item">
+          <div class="calc-res-num" id="calc-litros-km">—</div>
+          <div class="calc-res-lbl">L/km</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEJOR DÍA -->
+    <div class="section-divider">⭐ Mejor día para salir</div>
+    <div class="card" id="best-day-wrap">
+      <div class="best-day-card">
+        <div class="best-day-star">⭐</div>
+        <div>
+          <div class="best-day-nombre" id="best-day-nombre">—</div>
+          <div class="best-day-desc" id="best-day-desc">—</div>
+        </div>
+      </div>
+    </div>
+
     <!-- REFRESH -->
     <button class="refresh-btn" onclick="loadData()">
       🔄 Actualizar parte
@@ -875,7 +977,7 @@ function applyData(d) {
           <div class="fc-day-date">${dateLbl}</div>
           <div class="fc-icon">${d['forecast_day'+i+'_icon'] || '☀️'}</div>
           <div class="fc-bft" style="color:${color}">${bft || '—'}</div>
-          <div class="fc-bft-sub">Bft · ${d['forecast_day'+i+'_wind_dir'] || '—'}</div>
+          <div class="fc-bft-sub">Beaufort</div>
           <div class="fc-cond" style="color:${color};background:${condBg5}">${cond}</div>
           <div class="fc-detail-row">
             <span class="fc-detail-lbl">🌡️ Temp</span>
@@ -919,6 +1021,25 @@ function applyData(d) {
   // TENDENCIA
   setText('m-tendencia', v(d.tendencia_72h));
 
+
+  // MEJOR DÍA
+  var bestI = 0, bestBft = 99;
+  for(var bi=1;bi<=5;bi++){
+    var bb = parseInt(d['forecast_day'+bi+'_beaufort'])||99;
+    if(bb < bestBft){ bestBft=bb; bestI=bi; }
+  }
+  if(bestI>0){
+    var bNombre = d['forecast_day'+bestI+'_day']||'—';
+    var bDate = d['forecast_day'+bestI+'_date']||'';
+    var bBft = d['forecast_day'+bestI+'_beaufort']||'—';
+    var bDir = d['forecast_day'+bestI+'_wind_dir']||'—';
+    var bTemp = d['forecast_day'+bestI+'_temp']||'—';
+    setText('best-day-nombre', bNombre + (bDate?' · '+bDate:''));
+    setText('best-day-desc', bBft+' Bft · '+bDir+' · '+bTemp+'°C — Mejor condición de la semana');
+  }
+  // Precio gasoil para calculadora
+  if(d.gasoil_price) gasoilPrecio = d.gasoil_price;
+
   // Updated
   const now = new Date();
   setText('h-updated', 'Act. ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0') + 'H');
@@ -945,6 +1066,32 @@ updateClock();
 // Load data
 loadData();
 setInterval(loadData, 5 * 60 * 1000);
+
+var gasoilPrecio = 1.84;
+function calcCombustible() {
+  const nm = parseFloat(document.getElementById('calc-nm').value) || 0;
+  if (!nm) {
+    ['calc-litros','calc-coste','calc-tiempo','calc-litros-km'].forEach(id => {
+      var el = document.getElementById(id); if(el) el.textContent = '—';
+    });
+    return;
+  }
+  // 222 L/h a 19 kn promedio
+  const horas = nm / 19;
+  const litros = Math.round(horas * 222);
+  const coste = (litros * gasoilPrecio).toFixed(0);
+  const mins = Math.round(horas * 60);
+  const hh = Math.floor(mins/60);
+  const mm = String(mins%60).padStart(2,'0');
+  const kmNm = nm * 1.852;
+  const lKm = (litros / kmNm).toFixed(1);
+  var el;
+  el=document.getElementById('calc-litros'); if(el) el.textContent=litros+'L';
+  el=document.getElementById('calc-coste'); if(el) el.textContent=coste+'€';
+  el=document.getElementById('calc-tiempo'); if(el) el.textContent=(hh>0?hh+'h ':'')+mm+'min';
+  el=document.getElementById('calc-litros-km'); if(el) el.textContent=lKm;
+}
+
 </script>
 </body>
 </html>
