@@ -386,24 +386,30 @@ function renderForecast(d) {
   const grid = document.getElementById('fc-grid');
   if (!grid) return;
   grid.innerHTML = '';
+  var hoy = new Date();
   for (let i = 1; i <= 5; i++) {
     var cls5 = d['weekly_day'+i+'_class'] === 'best' ? 'fcard best' : 'fcard';
     var bft5 = parseInt(d['forecast_day'+i+'_beaufort'])||0;
-    var bColor5 = bft5<=3?'#27AE60':bft5<=5?'#E8A020':'#C0392B';
-    var condLbl5 = bft5<=1?'Calma':bft5<=3?'Brisa suave':bft5<=5?'Brisa moderada':bft5<=7?'Viento fuerte':'Temporal';
+    var bColor5 = bft5<=2?'#27AE60':bft5<=3?'#E8A020':'#C0392B';
+    var condLbl5 = bft5<=1?'🟢 Calma':bft5<=2?'🟢 Brisa suave':bft5<=3?'🟡 Brisa suave':bft5<=4?'🟡 Brisa mod.':'🔴 Viento fuerte';
+    var star5 = d['weekly_day'+i+'_class']==='best'?'⭐ ':'';
+    var diaNav5=new Date(hoy);diaNav5.setDate(hoy.getDate()+i);
+    var diasES5=['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
+    var dayLbl5=d['forecast_day'+i+'_day']||diasES5[diaNav5.getDay()];
+    var dateLbl5=d['forecast_day'+i+'_date']||(diaNav5.getDate()+'/'+(diaNav5.getMonth()+1));
     grid.innerHTML += `
       <div class="${cls5}" style="border-top-color:${bColor5}">
-        <div class="fc-day">${d['forecast_day'+i+'_day']||''}</div>
-        <div class="fc-date">${d['forecast_day'+i+'_date']||''}</div>
-        <div class="fc-icon">${d['forecast_day'+i+'_icon']||'☀️'}</div>
-        <div class="fc-bft">${d['forecast_day'+i+'_beaufort']||'—'} Bft</div>
+        <div class="fc-day">${star5}${dayLbl5}</div>
+        <div class="fc-date">${dateLbl5}</div>
+        <div class="fc-icon" style="font-size:22px;margin:3px 0">${d['forecast_day'+i+'_icon']||'☀️'}</div>
+        <div class="fc-bft" style="color:${bColor5}">${d['forecast_day'+i+'_beaufort']||'—'} Bft</div>
         <div class="fc-compass">
           <div class="fc-compass-n">N</div>
           <div class="fc-compass-arr" style="transform:rotate(${(function(){var cd={N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};return cd[((d['forecast_day'+i+'_wind_dir']||'N')).toUpperCase()]||0})()}deg)"></div>
         </div>
         <div class="fc-dir">${d['forecast_day'+i+'_wind_dir']||''}</div>
         <div class="fc-temp">${d['forecast_day'+i+'_temp']||'—'}°C</div>
-        <div style="font-size:8px;color:${bColor5};font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-top:3px">${condLbl5}</div>
+        <div style="font-size:9px;color:${bColor5};font-weight:700;margin-top:4px">${condLbl5}</div>
       </div>`;
   }
 }
