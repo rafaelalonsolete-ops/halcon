@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="HALCÓN">
+<meta name="theme-color" content="#0a1628">
+<title>🦅 HALCÓN · Parte Marítimo</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1628;
+  --navy2: #0f1f3a;
+  --navy3: #1a2f4a;
+  --gold: #C9A84C;
+  --gold2: #e8c46a;
+  --gold-faint: rgba(201,168,76,.12);
+  --gold-border: rgba(201,168,76,.25);
+  --white: rgba(255,255,255,.95);
+  --white60: rgba(255,255,255,.88);
+  --white30: rgba(255,255,255,.75);
+  --white10: rgba(255,255,255,.10);
+  --green: #27AE60;
+  --green-bg: rgba(39,174,96,.12);
+  --green-border: rgba(39,174,96,.3);
+  --orange: #E8A020;
+  --orange-bg: rgba(232,160,32,.12);
+  --red: #e74c3c;
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  padding-bottom: env(safe-area-inset-bottom, 20px);
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(180deg, rgba(10,22,40,1) 0%, rgba(10,22,40,0.95) 100%);
+  padding: 52px 20px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--gold-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px);
+}
+.header-brand { display: flex; align-items: center; gap: 10px; }
+.header-logo { font-family: 'Poppins', sans-serif; font-size: 22px; font-weight: 900; color: var(--gold); }
+.header-sub { font-size: 11px; color: var(--white30); font-weight: 500; }
+.header-right { text-align: right; }
+.header-date { font-size: 12px; color: var(--gold2); font-weight: 600; }
+.header-time { font-size: 22px; font-weight: 700; font-family: 'Poppins', sans-serif; color: var(--white); line-height: 1; }
+.header-updated { font-size: 10px; color: var(--white30); }
+
+/* SCROLL CONTAINER */
+.scroll { padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 12px; }
+
+/* CARDS */
+.card {
+  background: var(--navy2);
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,.06);
+}
+.card-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--white30);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* SEMAFORO CARD */
+.sem-card {
+  border-radius: var(--radius);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.sem-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top left, rgba(255,255,255,.04) 0%, transparent 70%);
+}
+.sem-decision {
+  font-family: 'Poppins', sans-serif;
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+.sem-razon {
+  font-size: 14px;
+  color: rgba(255,255,255,.8);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+.sem-meta {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.sem-pill {
+  background: rgba(255,255,255,.12);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.sem-dots {
+  display: flex;
+  gap: 6px;
+  margin-top: 14px;
+}
+.sem-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  transition: opacity .3s;
+}
+
+/* CONDICIONES GRID */
+.cond-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.cond-item {
+  background: var(--white10);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cond-icon { font-size: 18px; margin-bottom: 4px; }
+.cond-val {
+  font-family: 'Poppins', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1;
+}
+.cond-lbl { font-size: 11px; color: var(--white30); font-weight: 500; }
+.cond-sub { font-size: 12px; color: var(--white60); font-weight: 600; margin-top: 2px; }
+
+/* STATS ROW */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+.stat-item {
+  background: var(--white10);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  text-align: center;
+}
+.stat-val { font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 700; }
+.stat-lbl { font-size: 10px; color: var(--white30); margin-top: 2px; }
+
+/* VENTANA SOL */
+.sol-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.sol-item {
+  background: var(--white10);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sol-icon { font-size: 22px; }
+.sol-lbl { font-size: 11px; color: var(--white30); }
+.sol-val { font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 700; color: var(--gold); }
+
+/* GASOIL */
+.gasoil-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.gasoil-price {
+  font-family: 'Poppins', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--gold);
+}
+.gasoil-var { font-size: 14px; font-weight: 600; margin-top: 2px; }
+
+/* FORECAST */
+.fc-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.fc-scroll::-webkit-scrollbar { display: none; }
+.fc-day {
+  flex-shrink: 0;
+  width: 130px;
+  background: var(--white10);
+  border-radius: var(--radius-sm);
+  padding: 14px 12px;
+  text-align: center;
+  border: 1px solid transparent;
+  border-top: 3px solid transparent;
+}
+.fc-day.best {
+  background: var(--gold-faint);
+  border-color: var(--gold-border);
+  border-top-color: var(--gold);
+}
+.fc-day-name { font-size: 11px; font-weight: 700; color: var(--white30); text-transform: uppercase; letter-spacing: .08em; }
+.fc-day-date { font-size: 13px; font-weight: 600; color: var(--white60); margin-bottom: 6px; }
+.fc-icon { font-size: 26px; margin: 6px 0; }
+.fc-bft {
+  font-family: 'Poppins', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+.fc-bft-sub { font-size: 11px; color: var(--white30); margin-top: 1px; }
+.fc-detail-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-top: 1px solid var(--white10); margin-top: 4px; }
+.fc-detail-lbl { font-size: 10px; color: var(--white30); }
+.fc-detail-val { font-size: 11px; font-weight: 600; color: var(--white60); }
+.fc-cond { font-size: 11px; font-weight: 700; margin-top: 6px; padding: 3px 8px; border-radius: 20px; display: inline-block; }
+
+/* CALA */
+.cala-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.cala-nombre {
+  font-family: 'Poppins', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--gold);
+}
+.ocup-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.ocup-baja { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.ocup-media { background: var(--orange-bg); color: var(--orange); border: 1px solid rgba(232,160,32,.3); }
+.ocup-alta { background: rgba(231,76,60,.12); color: var(--red); border: 1px solid rgba(231,76,60,.3); }
+
+.cala-info { display: flex; flex-direction: column; gap: 6px; }
+.cala-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--white10);
+  gap: 8px;
+}
+.cala-row:last-child { border-bottom: none; }
+.cala-lbl { font-size: 13px; color: var(--white30); flex-shrink: 0; }
+.cala-val { font-size: 13px; font-weight: 600; color: var(--white60); text-align: right; }
+
+/* AIS */
+.ais-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.ais-item {
+  background: var(--white10);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  text-align: center;
+}
+.ais-num {
+  font-family: 'Poppins', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+.ais-lbl { font-size: 11px; color: var(--white30); margin-top: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
+
+/* TRAVESIA */
+.trav-nombre {
+  font-family: 'Poppins', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+.trav-coste {
+  font-family: 'Poppins', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.trav-razon { font-size: 13px; color: var(--white60); line-height: 1.5; }
+
+/* TENDENCIA */
+.tendencia {
+  font-size: 14px;
+  color: var(--white60);
+  line-height: 1.6;
+  padding: 12px;
+  background: var(--white10);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--gold);
+}
+
+/* REFRESH BTN */
+.refresh-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--gold-faint);
+  border: 1px solid var(--gold-border);
+  color: var(--gold);
+  border-radius: var(--radius);
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  width: 100%;
+  transition: background .2s;
+}
+.refresh-btn:active { background: rgba(201,168,76,.2); }
+
+/* LOADING */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  flex-direction: column;
+  gap: 16px;
+}
+.loading-text { font-size: 16px; color: var(--white60); }
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid var(--gold-border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ALERTA */
+.alerta-banner {
+  background: rgba(231,76,60,.15);
+  border: 1px solid rgba(231,76,60,.4);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  display: none;
+}
+
+/* FADE IN */
+.fade-in { animation: fadeIn .4s ease forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--white30);
+  padding: 0 4px;
+}
+.section-divider::after { content: ''; flex: 1; height: 1px; background: var(--white10); }
+
+/* CONFORT BAR */
+.confort-wrap {
+  background: var(--white10);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+}
+.confort-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.confort-num {
+  font-family: 'Poppins', sans-serif;
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1;
+}
+.confort-desc { font-size: 13px; color: var(--white60); font-weight: 600; }
+.confort-bar-bg {
+  height: 12px;
+  border-radius: 6px;
+  background: var(--white10);
+  overflow: hidden;
+  margin-top: 8px;
+}
+.confort-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width .6s ease, background .6s ease;
+}
+.confort-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--white30);
+  margin-top: 4px;
+}
+
+/* CONTACTOS */
+.contact-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--white10);
+  text-decoration: none;
+  color: inherit;
+}
+.contact-item:last-child { border-bottom: none; }
+.contact-left { display: flex; align-items: center; gap: 12px; }
+.contact-icon {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.contact-name { font-size: 14px; font-weight: 600; color: var(--white); }
+.contact-num { font-size: 12px; color: var(--white30); margin-top: 1px; }
+.contact-call {
+  background: var(--green-bg);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+/* FICHA BARCO */
+.barco-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.barco-item { background: var(--white10); border-radius: var(--radius-sm); padding: 10px 12px; }
+.barco-lbl { font-size: 10px; color: var(--white30); font-weight: 600; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 3px; }
+.barco-val { font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 700; color: var(--white); }
+.barco-sub { font-size: 11px; color: var(--white60); }
+
+/* CALCULADORA */
+.calc-input-wrap { display: flex; align-items: center; gap: 10px; background: var(--white10); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 10px; }
+.calc-input { background: none; border: none; outline: none; font-family: 'Poppins', sans-serif; font-size: 28px; font-weight: 700; color: var(--gold); width: 80px; text-align: center; }
+.calc-input::placeholder { color: rgba(201,168,76,.3); }
+.calc-lbl { font-size: 13px; color: var(--white30); }
+.calc-result { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.calc-res-item { background: var(--white10); border-radius: var(--radius-sm); padding: 12px; text-align: center; }
+.calc-res-num { font-family: 'Poppins', sans-serif; font-size: 22px; font-weight: 700; color: var(--gold); }
+.calc-res-lbl { font-size: 11px; color: var(--white30); margin-top: 2px; }
+
+/* MEJOR DÍA */
+.best-day-card { background: var(--gold-faint); border: 1px solid var(--gold-border); border-radius: var(--radius-sm); padding: 14px; display: flex; align-items: center; gap: 14px; }
+.best-day-star { font-size: 32px; }
+.best-day-nombre { font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 800; color: var(--gold); }
+.best-day-desc { font-size: 12px; color: var(--white60); margin-top: 2px; }
+
+/* MARINETRAFFIC BTN */
+.mt-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: rgba(39,174,96,.12); border: 1px solid rgba(39,174,96,.3); color: var(--green); border-radius: var(--radius); padding: 14px; font-size: 14px; font-weight: 700; text-decoration: none; }
+
+.fc-compass{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(201,168,76,.4);position:relative;display:flex;align-items:center;justify-content:center;margin:4px auto;background:rgba(255,255,255,.04)}
+.fc-compass-n{position:absolute;top:1px;left:50%;transform:translateX(-50%);font-size:6px;font-weight:800;color:#C9A84C;line-height:1}
+.fc-compass-arr{width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-bottom:11px solid #C9A84C;transform-origin:50% 75%}
+.fc-dir-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-top:1px solid rgba(255,255,255,.10);margin-top:4px}
+</style>
+</head>
+<body>
+
+<div id="loading" class="loading">
+  <div class="spinner"></div>
+  <div class="loading-text">Cargando parte HALCÓN...</div>
+</div>
+
+<div id="app" style="display:none">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-brand">
+      <div>
+        <div class="header-logo">🦅 HALCÓN</div>
+        <div class="header-sub">Puerto de Andratx · Amarre 263</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-date" id="h-fecha">—</div>
+      <div class="header-time" id="h-reloj">—</div>
+      <div class="header-updated" id="h-updated">Actualizando...</div>
+    </div>
+  </div>
+
+  <div class="scroll">
+
+    <!-- SEMÁFORO -->
+    <div class="sem-card fade-in" id="sem-card">
+      <div class="sem-dots">
+        <div class="sem-dot" id="dot-r" style="background:#e74c3c"></div>
+        <div class="sem-dot" id="dot-y" style="background:#E8A020"></div>
+        <div class="sem-dot" id="dot-g" style="background:#27AE60"></div>
+      </div>
+      <div class="sem-decision" id="sem-decision" style="margin-top:10px">—</div>
+      <div class="sem-razon" id="sem-razon">Cargando datos...</div>
+      <div class="sem-meta">
+        <div class="sem-pill" id="sem-confort-pill">— /10 confort</div>
+        <div class="sem-pill" id="sem-fib-pill">— % fiabilidad</div>
+        <div class="sem-pill" id="sem-ventana-pill">—</div>
+      </div>
+    </div>
+
+
+    <!-- CONFORT VISUAL -->
+    <div class="card">
+      <div class="confort-wrap">
+        <div class="confort-header">
+          <div>
+            <div style="font-size:11px;color:var(--white30);font-weight:600;text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px">🌡️ Índice de confort</div>
+            <div class="confort-num" id="m-confort-num">—</div>
+            <div class="confort-desc" id="m-confort-desc">—</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:11px;color:var(--white30)">Fiabilidad</div>
+            <div style="font-family:Poppins,sans-serif;font-size:28px;font-weight:700;color:var(--gold)" id="m-fib-num">—</div>
+            <div style="font-size:11px;color:var(--white30)">%</div>
+          </div>
+        </div>
+        <div class="confort-bar-bg">
+          <div class="confort-bar-fill" id="m-confort-bar" style="width:0%"></div>
+        </div>
+        <div class="confort-labels">
+          <span>😰 0</span><span>😐 5</span><span>😎 10</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALERTA -->
+    <div class="alerta-banner" id="alerta-banner"></div>
+
+    <!-- CONDICIONES -->
+    <div class="section-divider">🌊 Condiciones</div>
+    <div class="card">
+      <div class="cond-grid">
+        <div class="cond-item">
+          <div class="cond-icon">💨</div>
+          <div class="cond-val" id="m-viento-bft">—</div>
+          <div class="cond-lbl">Viento Bft</div>
+          <div class="cond-sub" id="m-viento-kmh">— km/h · —</div>
+        </div>
+        <div class="cond-item">
+          <div class="cond-icon">🌊</div>
+          <div class="cond-val" id="m-olas">—</div>
+          <div class="cond-lbl">Olas (m)</div>
+          <div class="cond-sub" id="m-periodo">Período — s</div>
+        </div>
+        <div class="cond-item">
+          <div class="cond-icon">🌡️</div>
+          <div class="cond-val" id="m-temp">—</div>
+          <div class="cond-lbl">Temp aire °C</div>
+          <div class="cond-sub" id="m-agua">Agua — °C</div>
+        </div>
+        <div class="cond-item">
+          <div class="cond-icon">💨</div>
+          <div class="cond-icon" style="font-size:14px;margin-bottom:0">Ráfagas</div>
+          <div class="cond-val" id="m-rafagas">—</div>
+          <div class="cond-lbl">Bft máx</div>
+          <div class="cond-sub" id="m-rafagas-kmh">— km/h</div>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-val" id="m-presion" style="color:var(--gold)">—</div>
+          <div class="stat-lbl">hPa</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="m-visib" style="color:var(--green)">—</div>
+          <div class="stat-lbl">km visib.</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="m-uv" style="color:var(--red)">—</div>
+          <div class="stat-lbl">UV</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VENTANA SOL + GASOIL -->
+    <div class="section-divider">☀️ Ventana · ⛽ Gasoil</div>
+    <div class="card">
+      <div class="sol-grid">
+        <div class="sol-item">
+          <div class="sol-icon">🌅</div>
+          <div><div class="sol-lbl">Amanecer</div><div class="sol-val" id="m-sunrise">—H</div></div>
+        </div>
+        <div class="sol-item">
+          <div class="sol-icon">🌇</div>
+          <div><div class="sol-lbl">Puesta de sol</div><div class="sol-val" id="m-sunset">—H</div></div>
+        </div>
+        <div class="sol-item">
+          <div class="sol-icon">⛵</div>
+          <div><div class="sol-lbl">Ventana inicio</div><div class="sol-val" id="m-vini">—H</div></div>
+        </div>
+        <div class="sol-item">
+          <div class="sol-icon">🏠</div>
+          <div><div class="sol-lbl">Regreso antes de</div><div class="sol-val" id="m-regreso">—H</div></div>
+        </div>
+      </div>
+      <div style="margin-top:12px;background:var(--gold-faint);border:1px solid var(--gold-border);border-radius:var(--radius-sm);padding:12px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:11px;color:var(--white30);font-weight:600;text-transform:uppercase;letter-spacing:.12em">⛽ Gasoil · REPSOL Andratx</div>
+          <div class="gasoil-price" id="m-gasoil">—</div>
+        </div>
+        <div style="text-align:right">
+          <div class="gasoil-var" id="m-gasoil-var">—</div>
+          <div style="font-size:11px;color:var(--white30)">vs ayer</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRONÓSTICO -->
+    <div class="section-divider">📅 Pronóstico 5 días</div>
+    <div class="card" style="padding:16px 16px 12px">
+      <div class="fc-scroll" id="m-fc-grid">
+        <!-- generado por JS -->
+      </div>
+    </div>
+
+    <!-- CALA + AIS -->
+    <div class="section-divider">⚓ Cala · AIS</div>
+    <div class="card">
+      <!-- AIS zona -->
+      <div style="background:var(--white10);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:12px">
+        <div style="font-size:10px;color:var(--white30);font-weight:600;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px">📡 Zona Andratx · 35km</div>
+        <div class="ais-grid">
+          <div class="ais-item">
+            <div class="ais-num" style="color:var(--green)" id="m-nav">—</div>
+            <div class="ais-lbl" id="m-nav-lbl">Navegando</div>
+          </div>
+          <div class="ais-item">
+            <div class="ais-num" style="color:var(--orange)" id="m-fond">—</div>
+            <div class="ais-lbl">Fondeados</div>
+          </div>
+        </div>
+      </div>
+      <!-- Cala recomendada -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div class="cala-nombre" id="m-cala-nombre">—</div>
+        <div class="ocup-pill ocup-baja" id="m-cala-ocup">—</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div style="font-family:Poppins,sans-serif;font-size:28px;font-weight:700;color:var(--gold)" id="m-cala-barcos">—</div>
+        <div style="font-size:12px;color:var(--white30)">barcos fondeados<br>en la cala</div>
+      </div>
+      <div class="cala-info">
+        <div class="cala-row"><span class="cala-lbl">🧭 Protección</span><span class="cala-val" id="m-cala-prot">—</span></div>
+        <div class="cala-row"><span class="cala-lbl">🌊 Fondeo</span><span class="cala-val" id="m-cala-fondeo">—</span></div>
+        <div class="cala-row"><span class="cala-lbl">🍽️ Restaurante</span><span class="cala-val" id="m-cala-rest">—</span></div>
+      </div>
+    </div>
+
+    <!-- TRAVESÍA -->
+    <div class="section-divider">🏝️ Travesía recomendada</div>
+    <div class="card">
+      <div class="trav-nombre" id="m-trav-nombre">—</div>
+      <div class="trav-coste" id="m-trav-coste">—</div>
+      <div class="trav-razon" id="m-trav-razon">—</div>
+    </div>
+
+    <!-- TENDENCIA -->
+    <div class="section-divider">📊 Tendencia 72h</div>
+    <div class="card">
+      <div class="tendencia" id="m-tendencia">—</div>
+    </div>
+
+
+    <!-- CONTACTOS EMERGENCIA -->
+    <div class="section-divider">📞 Emergencias · Contactos</div>
+    <div class="card">
+      <a class="contact-item" href="tel:900202202">
+        <div class="contact-left">
+          <div class="contact-icon" style="background:rgba(231,76,60,.15)">🚨</div>
+          <div>
+            <div class="contact-name">Salvamento Marítimo</div>
+            <div class="contact-num">900 202 202 · Gratuito 24h</div>
+          </div>
+        </div>
+        <span class="contact-call">Llamar</span>
+      </a>
+      <a class="contact-item" href="tel:112">
+        <div class="contact-left">
+          <div class="contact-icon" style="background:rgba(231,76,60,.15)">🆘</div>
+          <div>
+            <div class="contact-name">Emergencias</div>
+            <div class="contact-num">112 · Gratuito 24h</div>
+          </div>
+        </div>
+        <span class="contact-call">Llamar</span>
+      </a>
+      <a class="contact-item" href="tel:+34971671721">
+        <div class="contact-left">
+          <div class="contact-icon" style="background:rgba(39,174,96,.12)">⚓</div>
+          <div>
+            <div class="contact-name">Club de Vela Port d'Andratx</div>
+            <div class="contact-num">+34 971 671 721</div>
+          </div>
+        </div>
+        <span class="contact-call">Llamar</span>
+      </a>
+      <a class="contact-item" href="tel:+34971776136">
+        <div class="contact-left">
+          <div class="contact-icon" style="background:rgba(39,174,96,.12)">🏖️</div>
+          <div>
+            <div class="contact-name">Marina Port Andratx</div>
+            <div class="contact-num">+34 971 776 136</div>
+          </div>
+        </div>
+        <span class="contact-call">Llamar</span>
+      </a>
+      <a class="contact-item" href="tel:+34971205000">
+        <div class="contact-left">
+          <div class="contact-icon" style="background:rgba(201,168,76,.12)">🏥</div>
+          <div>
+            <div class="contact-name">Hospital Son Espases</div>
+            <div class="contact-num">+34 971 205 000</div>
+          </div>
+        </div>
+        <span class="contact-call">Llamar</span>
+      </a>
+      <a class="contact-item" href="https://www.marinetraffic.com/en/ais/details/ships/mmsi:224107190" target="_blank">
+        <div class="contact-left">
+          <div class="contact-icon" style="background:rgba(39,174,96,.12)">🛥️</div>
+          <div>
+            <div class="contact-name">HALCÓN en MarineTraffic</div>
+            <div class="contact-num">MMSI: 224107190</div>
+          </div>
+        </div>
+        <span class="contact-call" style="background:rgba(201,168,76,.12);color:var(--gold);border-color:var(--gold-border)">Ver</span>
+      </a>
+    </div>
+
+
+    <!-- MINI-FICHA BARCO -->
+    <div class="section-divider">🛥️ HALCÓN · Ficha técnica</div>
+    <div class="card">
+      <div class="barco-grid">
+        <div class="barco-item">
+          <div class="barco-lbl">Eslora</div>
+          <div class="barco-val">17.36m</div>
+        </div>
+        <div class="barco-item">
+          <div class="barco-lbl">Motores</div>
+          <div class="barco-val">2 motores</div>
+        </div>
+        <div class="barco-item">
+          <div class="barco-lbl">Velocidad crucero</div>
+          <div class="barco-val">18–20 kn</div>
+        </div>
+        <div class="barco-item">
+          <div class="barco-lbl">Consumo</div>
+          <div class="barco-val">222 L/h</div>
+          <div class="barco-sub">a velocidad crucero</div>
+        </div>
+        <div class="barco-item">
+          <div class="barco-lbl">Capacidad</div>
+          <div class="barco-val">3.425 L</div>
+        </div>
+        <div class="barco-item">
+          <div class="barco-lbl">Amarre</div>
+          <div class="barco-val">263</div>
+          <div class="barco-sub">Puerto Andratx</div>
+        </div>
+      </div>
+      <a class="mt-btn" style="margin-top:10px" href="https://www.marinetraffic.com/en/ais/details/ships/mmsi:224107190" target="_blank">
+        📍 Ver HALCÓN en MarineTraffic
+      </a>
+    </div>
+
+    <!-- CALCULADORA COMBUSTIBLE -->
+    <div class="section-divider">⛽ Calculadora de combustible</div>
+    <div class="card">
+      <div class="calc-input-wrap">
+        <input class="calc-input" type="number" id="calc-nm" placeholder="0" min="1" max="500" oninput="calcCombustible()">
+        <div class="calc-lbl">millas náuticas (nm)</div>
+      </div>
+      <div class="calc-result">
+        <div class="calc-res-item">
+          <div class="calc-res-num" id="calc-litros">—</div>
+          <div class="calc-res-lbl">Litros</div>
+        </div>
+        <div class="calc-res-item">
+          <div class="calc-res-num" id="calc-coste">—</div>
+          <div class="calc-res-lbl">Coste (€)</div>
+        </div>
+        <div class="calc-res-item">
+          <div class="calc-res-num" id="calc-tiempo">—</div>
+          <div class="calc-res-lbl">Tiempo aprox.</div>
+        </div>
+        <div class="calc-res-item">
+          <div class="calc-res-num" id="calc-litros-km">—</div>
+          <div class="calc-res-lbl">L/km</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEJOR DÍA -->
+    <div class="section-divider">⭐ Mejor día para salir</div>
+    <div class="card" id="best-day-wrap">
+      <div class="best-day-card">
+        <div class="best-day-star">⭐</div>
+        <div>
+          <div class="best-day-nombre" id="best-day-nombre">—</div>
+          <div class="best-day-desc" id="best-day-desc">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REFRESH -->
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="refresh-btn" id="refresh-btn" onclick="manualRefresh()" style="flex:1">
+        🔄 Actualizar parte
+      </button>
+      <div style="background:var(--white10);border:1px solid var(--gold-border);border-radius:var(--radius);padding:14px 16px;text-align:center;min-width:80px">
+        <div style="font-size:10px;color:var(--white30);font-weight:600">Próx. act.</div>
+        <div style="font-family:Poppins,sans-serif;font-size:16px;font-weight:700;color:var(--gold)" id="m-countdown">5:00</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;font-size:11px;color:var(--white30);padding:8px 0">
+      🦅 HALCÓN · Puerto de Andratx · Amarre 263
+    </div>
+
+  </div>
+</div>
+
+<script>
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = (val !== null && val !== undefined && val !== '') ? val : '—';
+}
+
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const fecha = now.toLocaleDateString('es-ES', {weekday:'long', day:'numeric', month:'long'});
+  const fechaCap = fecha.charAt(0).toUpperCase() + fecha.slice(1);
+  setText('h-reloj', h + ':' + m);
+  setText('h-fecha', fechaCap);
+}
+
+function v(x) { return (x !== null && x !== undefined && x !== '') ? x : '—'; }
+function vn(x, suffix) { return (x !== null && x !== undefined && x !== '' && x !== 0) ? x + suffix : '—'; }
+
+function applyData(d) {
+  // SEMÁFORO
+  const semColors = { VERDE: '#1B6B3A', AMARILLO: '#7C4A00', ROJO: '#7B1818' };
+  const semCard = document.getElementById('sem-card');
+  if (semCard) semCard.style.background = semColors[d.semaforo] || '#1B6B3A';
+
+  setText('sem-decision', d.decision);
+  const sdEl = document.getElementById('sem-decision');
+  if (sdEl) {
+    sdEl.style.color = d.decision_color || '#fff';
+    sdEl.style.fontSize = d.decision && d.decision.length > 7 ? '36px' : '48px';
+  }
+  setText('sem-razon', d.semaforo_razon);
+  setText('sem-confort-pill', (d.confort_10 || '—') + '/10 confort');
+  setText('sem-fib-pill', (d.fiabilidad_pct || '—') + '% fiabilidad');
+  setText('sem-ventana-pill', d.ventana_descripcion || '—');
+
+  // DOTS semáforo
+  const dotR = document.getElementById('dot-r');
+  const dotY = document.getElementById('dot-y');
+  const dotG = document.getElementById('dot-g');
+  if (dotR) dotR.style.opacity = d.sem_red_opacity || 0.2;
+  if (dotY) dotY.style.opacity = d.sem_yellow_opacity || 0.2;
+  if (dotG) dotG.style.opacity = d.sem_green_opacity || 0.2;
+
+  // ALERTA SEMÁFORO
+  const alertaBanner = document.getElementById('alerta-banner');
+  if (alertaBanner && d.alerta_semaforo_activa === 'SI' && d.alerta_semaforo_mensaje) {
+    alertaBanner.textContent = d.alerta_semaforo_mensaje;
+    alertaBanner.style.display = 'block';
+  }
+
+  // CONDICIONES
+  setText('m-viento-bft', v(d.viento_bft));
+  setText('m-viento-kmh', (d.viento_kmh || '—') + ' km/h · ' + (d.viento_dir || '—'));
+  setText('m-olas', v(d.olas_m));
+  setText('m-periodo', 'Período ' + (d.wave_period || '—') + 's');
+  setText('m-temp', v(d.temp_c));
+  setText('m-agua', 'Agua ' + (d.agua_c || '—') + '°C');
+  setText('m-rafagas', v(d.wind_gust_beaufort));
+  setText('m-rafagas-kmh', (d.wind_gust_kmh || '—') + ' km/h');
+  setText('m-presion', v(d.presion_hpa));
+  setText('m-visib', v(d.visibility_km));
+  const uvEl = document.getElementById('m-uv');
+  if (uvEl) { uvEl.textContent = v(d.uv_index); uvEl.style.color = d.uv_color || 'var(--red)'; }
+
+
+  // CONFORT VISUAL
+  const confort = d.confort_10 || 0;
+  const confortEl = document.getElementById('m-confort-num');
+  const confortDesc = document.getElementById('m-confort-desc');
+  const confortBar = document.getElementById('m-confort-bar');
+  const confortDescs = ['Peligroso','Muy malo','Malo','Limitado','Aceptable','Moderado','Bueno','Muy bueno','Excelente','Excepcional','Perfecto'];
+  const confortColors = ['#e74c3c','#e74c3c','#c0392b','#e67e22','#e67e22','#f39c12','#f1c40f','#2ecc71','#27ae60','#1abc9c','#16a085'];
+  if (confortEl) {
+    confortEl.textContent = confort;
+    confortEl.style.color = confortColors[Math.min(confort,10)];
+  }
+  if (confortDesc) confortDesc.textContent = confortDescs[Math.min(confort,10)] || '—';
+  if (confortBar) {
+    confortBar.style.width = (confort * 10) + '%';
+    confortBar.style.background = 'linear-gradient(90deg, #e74c3c 0%, #f39c12 40%, #27ae60 80%, #1abc9c 100%)';
+    confortBar.style.backgroundSize = '1000% 100%';
+    confortBar.style.backgroundPosition = (100 - confort * 10) + '% 0';
+  }
+  setText('m-fib-num', d.fiabilidad_pct || '—');
+
+  // SOL + GASOIL
+  setText('m-sunrise', d.sunrise_time ? d.sunrise_time + 'H' : '—H');
+  setText('m-sunset', d.sunset_time ? d.sunset_time + 'H' : '—H');
+  setText('m-vini', d.ventana_inicio ? d.ventana_inicio + 'H' : '—H');
+  setText('m-regreso', d.return_time_recommended ? d.return_time_recommended + 'H' : '—H');
+  setText('m-gasoil', d.gasoil_price ? d.gasoil_price.toFixed(3) + ' €/L' : '—');
+  const gvarEl = document.getElementById('m-gasoil-var');
+  if (gvarEl) {
+    gvarEl.textContent = (d.gasoil_simbolo || '=') + ' ' + (d.gasoil_variacion_eur || '0.00') + '€';
+    gvarEl.style.color = d.gasoil_color || '#888';
+  }
+
+  // FORECAST
+  const fcGrid = document.getElementById('m-fc-grid');
+  if (fcGrid) {
+    fcGrid.innerHTML = '';
+    const dias = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
+    const hoy = new Date();
+    for (let i = 1; i <= 5; i++) {
+      const bft = d['forecast_day'+i+'_beaufort'] || 0;
+      const cls = d['weekly_day'+i+'_class'] === 'best' ? 'fc-day best' : 'fc-day';
+      const color = bft <= 2 ? 'var(--green)' : bft <= 3 ? 'var(--gold)' : 'var(--red)';
+      const cond = bft <= 1 ? 'Calma' : bft <= 2 ? 'Brisa' : bft <= 3 ? 'Suave' : bft <= 4 ? 'Moderada' : 'Fuerte';
+      const dNav = new Date(hoy); dNav.setDate(hoy.getDate() + i);
+      const dayLbl = d['forecast_day'+i+'_day'] || dias[dNav.getDay()];
+      const dateLbl = d['forecast_day'+i+'_date'] || (dNav.getDate()+'/'+(dNav.getMonth()+1));
+      const star = d['weekly_day'+i+'_class'] === 'best' ? '⭐ ' : '';
+      const condBg5 = bft<=2?'rgba(39,174,96,.12)':bft<=3?'rgba(232,160,32,.12)':'rgba(231,76,60,.12)';
+      fcGrid.innerHTML += `
+        <div class="${cls}" style="border-top-color:${color}">
+          <div class="fc-day-name">${star}${dayLbl}</div>
+          <div class="fc-day-date">${dateLbl}</div>
+          <div class="fc-icon">${d['forecast_day'+i+'_icon'] || '☀️'}</div>
+          <div class="fc-bft" style="color:${color}">${bft || '—'}</div>
+          <div class="fc-bft-sub">Beaufort</div>
+          <div class="fc-cond" style="color:${color};background:${condBg5}">${cond}</div>
+          <div class="fc-dir-row">
+            <span class="fc-detail-lbl">💨 Dir</span>
+            <div style="display:flex;align-items:center;gap:4px">
+              <div class="fc-compass">
+                <div class="fc-compass-n">N</div>
+                <div class="fc-compass-arr" style="transform:rotate(${(function(){var cd={N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};return cd[((d['forecast_day'+i+'_wind_dir']||'N')).toUpperCase()]||0})()}deg)"></div>
+              </div>
+              <span class="fc-detail-val">${d['forecast_day'+i+'_wind_dir']||'—'}</span>
+            </div>
+          </div>
+          <div class="fc-detail-row">
+            <span class="fc-detail-lbl">🌡️ Temp</span>
+            <span class="fc-detail-val">${d['forecast_day'+i+'_temp'] || '—'}°C</span>
+          </div>
+        </div>`;
+    }
+  }
+
+  // CALA + AIS
+  var navLbl = document.getElementById('m-nav-lbl');
+  if (d.barcos_zona_navegando) {
+    setText('m-nav', d.barcos_zona_navegando);
+    if(navLbl) navLbl.textContent = 'Navegando';
+  } else {
+    setText('m-nav', d.barcos_zona_total || '—');
+    if(navLbl) navLbl.textContent = 'Total zona';
+  }
+  setText('m-fond', d.barcos_zona_fondeados || '—');
+  setText('m-cala-nombre', v(d.cala_recomendada));
+  setText('m-cala-barcos', v(d.barcos_fondeados));
+  const ocupEl = document.getElementById('m-cala-ocup');
+  if (ocupEl) {
+    const oc = (d.ocupacion_cala_recomendada || '').toLowerCase();
+    ocupEl.textContent = d.ocupacion_cala_recomendada || '—';
+    ocupEl.className = 'ocup-pill ' + (oc === 'baja' ? 'ocup-baja' : oc === 'media' ? 'ocup-media' : 'ocup-alta');
+  }
+  setText('m-cala-prot', v(d.cala_proteccion));
+  setText('m-cala-fondeo', v(d.cala_fondeo));
+  setText('m-cala-rest', v(d.cala_restaurante));
+
+  // TRAVESÍA
+  setText('m-trav-nombre', v(d.travesia_recomendada));
+  setText('m-trav-coste', d.travesia1_coste ? d.travesia1_coste + ' €' : '—');
+  setText('m-trav-razon', v(d.travesia_porque));
+
+  // TENDENCIA
+  setText('m-tendencia', v(d.tendencia_72h));
+
+
+  // MEJOR DÍA
+  var bestI = 0, bestBft = 99;
+  for(var bi=1;bi<=5;bi++){
+    var bb = parseInt(d['forecast_day'+bi+'_beaufort'])||99;
+    if(bb < bestBft){ bestBft=bb; bestI=bi; }
+  }
+  if(bestI>0){
+    var bNombre = d['forecast_day'+bestI+'_day']||'—';
+    var bDate = d['forecast_day'+bestI+'_date']||'';
+    var bBft = d['forecast_day'+bestI+'_beaufort']||'—';
+    var bDir = d['forecast_day'+bestI+'_wind_dir']||'—';
+    var bTemp = d['forecast_day'+bestI+'_temp']||'—';
+    setText('best-day-nombre', bNombre + (bDate?' · '+bDate:''));
+    setText('best-day-desc', bBft+' Bft · '+bDir+' · '+bTemp+'°C — Mejor condición de la semana');
+  }
+  // Precio gasoil para calculadora
+  if(d.gasoil_price) gasoilPrecio = d.gasoil_price;
+
+  // Updated
+  const now = new Date();
+  setText('h-updated', 'Act. ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0') + 'H');
+}
+
+function loadData() {
+  return fetch('https://raw.githubusercontent.com/rafaelalonsolete-ops/halcon/main/data.json?t=' + Date.now())
+    .then(r => r.json())
+    .then(d => {
+      var loadEl = document.getElementById('loading');
+      if (loadEl) loadEl.style.display = 'none';
+      var appEl = document.getElementById('app');
+      if (appEl) appEl.style.display = 'block';
+      applyData(d);
+    })
+    .catch(e => {
+      console.warn('Error cargando datos:', e);
+      var loadEl = document.getElementById('loading');
+      if (loadEl && loadEl.style.display !== 'none') {
+        loadEl.innerHTML = '<div style="color:var(--white60);text-align:center;padding:20px">⚠️ Error cargando datos.<br>Comprueba la conexión.</div>';
+      }
+    });
+}
+
+// Countdown
+var countdownSecs = 300;
+function updateCountdown() {
+  countdownSecs--;
+  if (countdownSecs <= 0) {
+    countdownSecs = 300;
+    loadData();
+  }
+  var m = Math.floor(countdownSecs / 60);
+  var s = String(countdownSecs % 60).padStart(2,'0');
+  var el = document.getElementById('m-countdown');
+  if (el) el.textContent = m + ':' + s;
+}
+
+function manualRefresh() {
+  var btn = document.getElementById('refresh-btn');
+  if (btn) { btn.textContent = '⏳ Cargando...'; btn.disabled = true; }
+  countdownSecs = 300;
+  loadData().finally(function() {
+    if (btn) { btn.textContent = '🔄 Actualizar parte'; btn.disabled = false; }
+  });
+}
+
+// Clock
+setInterval(updateClock, 1000);
+setInterval(updateCountdown, 1000);
+updateClock();
+
+// Load data
+loadData();
+
+var gasoilPrecio = 1.84;
+function calcCombustible() {
+  const nm = parseFloat(document.getElementById('calc-nm').value) || 0;
+  if (!nm) {
+    ['calc-litros','calc-coste','calc-tiempo','calc-litros-km'].forEach(id => {
+      var el = document.getElementById(id); if(el) el.textContent = '—';
+    });
+    return;
+  }
+  // 222 L/h a 19 kn promedio
+  const horas = nm / 19;
+  const litros = Math.round(horas * 222);
+  const coste = (litros * gasoilPrecio).toFixed(0);
+  const mins = Math.round(horas * 60);
+  const hh = Math.floor(mins/60);
+  const mm = String(mins%60).padStart(2,'0');
+  const kmNm = nm * 1.852;
+  const lKm = (litros / kmNm).toFixed(1);
+  var el;
+  el=document.getElementById('calc-litros'); if(el) el.textContent=litros+'L';
+  el=document.getElementById('calc-coste'); if(el) el.textContent=coste+'€';
+  el=document.getElementById('calc-tiempo'); if(el) el.textContent=(hh>0?hh+'h ':'')+mm+'min';
+  el=document.getElementById('calc-litros-km'); if(el) el.textContent=lKm;
+}
+
+</script>
+</body>
+</html>
