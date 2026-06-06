@@ -913,6 +913,11 @@ body {
       </div>
     </div>
 
+    <!-- BOTON ESC2 -->
+    <button onclick="dispararEsc2()" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(91,60,204,.15);border:1px solid rgba(91,60,204,.4);color:#9B7FE8;border-radius:var(--radius);padding:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;width:100%" id="esc2-btn">
+      🛰️ Generar Parte con AIS ahora
+    </button>
+
     <!-- REFRESH -->
     <div style="display:flex;align-items:center;gap:10px">
       <button class="refresh-btn" id="refresh-btn" onclick="manualRefresh()" style="flex:1">
@@ -1219,6 +1224,23 @@ function calcCombustible() {
   el=document.getElementById('calc-litros-km'); if(el) el.textContent=lKm;
 }
 
+
+function dispararEsc2() {
+  var btn = document.getElementById('esc2-btn');
+  if(btn) { btn.textContent = '⏳ Generando parte...'; btn.disabled = true; }
+  fetch('https://hook.eu1.make.com/l3k6k3ny8ferb3x33vq25pn5hgmwr1ek', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({trigger: 'manual', source: 'halcon_mobile'})
+  })
+  .then(r => {
+    if(btn) { btn.textContent = '✅ Parte solicitado'; btn.disabled = false; }
+    setTimeout(() => { if(btn) btn.textContent = '🛰️ Generar Parte con AIS ahora'; }, 3000);
+  })
+  .catch(e => {
+    if(btn) { btn.textContent = '⚠️ Error — reintenta'; btn.disabled = false; }
+  });
+}
 </script>
 </body>
 </html>
