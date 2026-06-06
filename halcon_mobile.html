@@ -1021,9 +1021,7 @@ function applyData(d) {
   if (confortDesc) confortDesc.textContent = confortDescs[Math.min(confort,10)] || '—';
   if (confortBar) {
     confortBar.style.width = (confort * 10) + '%';
-    confortBar.style.background = 'linear-gradient(90deg, #e74c3c 0%, #f39c12 40%, #27ae60 80%, #1abc9c 100%)';
-    confortBar.style.backgroundSize = '1000% 100%';
-    confortBar.style.backgroundPosition = (100 - confort * 10) + '% 0';
+    confortBar.style.background = confort >= 7 ? '#27AE60' : confort >= 4 ? '#E8A020' : '#e74c3c';
   }
   setText('m-fib-num', d.fiabilidad_pct || '—');
 
