@@ -607,8 +607,12 @@ body {
       </div>
       <div class="stats-row">
         <div class="stat-item">
-          <div class="stat-val" id="m-presion" style="color:var(--gold)">—</div>
+          <div style="display:flex;align-items:baseline;justify-content:center;gap:4px">
+            <div class="stat-val" id="m-presion" style="color:var(--gold)">—</div>
+            <span id="m-presion-flecha" style="font-size:13px;color:var(--gold)">→</span>
+          </div>
           <div class="stat-lbl">hPa presión</div>
+          <div id="m-presion-interp" style="font-size:9px;color:var(--gold);margin-top:2px"></div>
         </div>
         <div class="stat-item">
           <div class="stat-val" id="m-visib" style="color:var(--green)">—</div>
@@ -999,6 +1003,13 @@ function applyData(d) {
   setText('m-rafagas', v(d.wind_gust_beaufort));
   setText('m-rafagas-kmh', (d.wind_gust_kmh || '—') + ' km/h');
   setText('m-presion', v(d.presion_hpa));
+  var mPresColor = d.presion_color || 'var(--gold)';
+  var mPresEl = document.getElementById('m-presion');
+  if(mPresEl) mPresEl.style.color = mPresColor;
+  var mPresFlecha = document.getElementById('m-presion-flecha');
+  if(mPresFlecha) { mPresFlecha.textContent = d.presion_flecha || '→'; mPresFlecha.style.color = mPresColor; }
+  var mPresInterp = document.getElementById('m-presion-interp');
+  if(mPresInterp) { mPresInterp.textContent = d.presion_interpretacion || ''; mPresInterp.style.color = mPresColor; }
   setText('m-visib', v(d.visibility_km));
   setText('m-feels', v(d.feels_like));
   setText('m-lluvia', v(d.lluvia_pct));
@@ -1244,3 +1255,4 @@ function dispararEsc2() {
 </script>
 </body>
 </html>
+
