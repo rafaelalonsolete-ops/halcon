@@ -585,6 +585,12 @@ body {
           <div class="cond-sub" id="m-viento-kmh">— km/h · —</div>
         </div>
         <div class="cond-item">
+          <div class="cond-icon">💨</div>
+          <div class="cond-val" id="m-rafagas">—</div>
+          <div class="cond-lbl">Ráfagas Bft máx</div>
+          <div class="cond-sub" id="m-rafagas-kmh">— km/h</div>
+        </div>
+        <div class="cond-item">
           <div class="cond-icon">🌊</div>
           <div class="cond-val" id="m-olas">—</div>
           <div class="cond-lbl">Olas (m)</div>
@@ -596,18 +602,11 @@ body {
           <div class="cond-lbl">Temp aire °C</div>
           <div class="cond-sub" id="m-agua">Agua — °C</div>
         </div>
-        <div class="cond-item">
-          <div class="cond-icon">💨</div>
-          <div class="cond-icon" style="font-size:14px;margin-bottom:0">Ráfagas</div>
-          <div class="cond-val" id="m-rafagas">—</div>
-          <div class="cond-lbl">Bft máx</div>
-          <div class="cond-sub" id="m-rafagas-kmh">— km/h</div>
-        </div>
       </div>
       <div class="stats-row">
         <div class="stat-item">
           <div class="stat-val" id="m-presion" style="color:var(--gold)">—</div>
-          <div class="stat-lbl">hPa</div>
+          <div class="stat-lbl">hPa presión</div>
         </div>
         <div class="stat-item">
           <div class="stat-val" id="m-visib" style="color:var(--green)">—</div>
@@ -616,6 +615,23 @@ body {
         <div class="stat-item">
           <div class="stat-val" id="m-uv" style="color:var(--red)">—</div>
           <div class="stat-lbl">UV</div>
+        </div>
+      </div>
+      <div class="stats-row" style="margin-top:6px">
+        <div class="stat-item">
+          <div style="font-size:16px;margin-bottom:2px">🤚</div>
+          <div class="stat-val" id="m-feels" style="color:var(--white)">—</div>
+          <div class="stat-lbl">°C sensación</div>
+        </div>
+        <div class="stat-item">
+          <div style="font-size:16px;margin-bottom:2px">💧</div>
+          <div class="stat-val" id="m-lluvia" style="color:var(--white)">—</div>
+          <div class="stat-lbl">% lluvia</div>
+        </div>
+        <div class="stat-item">
+          <div style="font-size:16px;margin-bottom:2px">🌀</div>
+          <div class="stat-val" id="m-curr" style="color:var(--white);font-size:14px">—</div>
+          <div class="stat-lbl" id="m-curr-lbl">kn corriente</div>
         </div>
       </div>
     </div>
@@ -653,6 +669,53 @@ body {
       </div>
     </div>
 
+
+    <!-- DESTINOS DEL DÍA -->
+    <div class="section-divider">📍 Destinos del día</div>
+    <div class="card">
+      <div style="background:var(--white10);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="font-family:Poppins,sans-serif;font-size:15px;font-weight:800;color:var(--gold)" id="m-dest1-nombre">—</div>
+          <div style="font-family:Poppins,sans-serif;font-size:18px;font-weight:700;color:var(--white)" id="m-dest1-coste">—</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:6px">
+          <div style="background:var(--navy2);border-radius:6px;padding:6px;text-align:center">
+            <div style="font-size:9px;color:var(--white60)">Distancia</div>
+            <div style="font-size:13px;font-weight:700;color:var(--white)" id="m-dest1-nm">—</div>
+          </div>
+          <div style="background:var(--navy2);border-radius:6px;padding:6px;text-align:center">
+            <div style="font-size:9px;color:var(--white60)">Tiempo</div>
+            <div style="font-size:13px;font-weight:700;color:var(--white)" id="m-dest1-tiempo">—</div>
+          </div>
+          <div style="background:var(--navy2);border-radius:6px;padding:6px;text-align:center">
+            <div style="font-size:9px;color:var(--white60)">Gasoil</div>
+            <div style="font-size:13px;font-weight:700;color:var(--white)" id="m-dest1-litros">—</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--white60);line-height:1.4" id="m-dest1-razon">—</div>
+      </div>
+      <div style="background:var(--white10);border-radius:var(--radius-sm);padding:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="font-family:Poppins,sans-serif;font-size:15px;font-weight:800;color:var(--gold)" id="m-dest2-nombre">—</div>
+          <div style="font-family:Poppins,sans-serif;font-size:18px;font-weight:700;color:var(--white)" id="m-dest2-coste">—</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:6px">
+          <div style="background:var(--navy2);border-radius:6px;padding:6px;text-align:center">
+            <div style="font-size:9px;color:var(--white60)">Distancia</div>
+            <div style="font-size:13px;font-weight:700;color:var(--white)" id="m-dest2-nm">—</div>
+          </div>
+          <div style="background:var(--navy2);border-radius:6px;padding:6px;text-align:center">
+            <div style="font-size:9px;color:var(--white60)">Tiempo</div>
+            <div style="font-size:13px;font-weight:700;color:var(--white)" id="m-dest2-tiempo">—</div>
+          </div>
+          <div style="background:var(--navy2);border-radius:6px;padding:6px;text-align:center">
+            <div style="font-size:9px;color:var(--white60)">Gasoil</div>
+            <div style="font-size:13px;font-weight:700;color:var(--white)" id="m-dest2-litros">—</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--white60);line-height:1.4" id="m-dest2-razon">—</div>
+      </div>
+    </div>
     <!-- PRONÓSTICO -->
     <div class="section-divider">📅 Pronóstico 5 días</div>
     <div class="card" style="padding:16px 16px 12px">
@@ -850,6 +913,11 @@ body {
       </div>
     </div>
 
+    <!-- BOTON ESC2 -->
+    <button onclick="dispararEsc2()" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(91,60,204,.15);border:1px solid rgba(91,60,204,.4);color:#9B7FE8;border-radius:var(--radius);padding:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;width:100%" id="esc2-btn">
+      🛰️ Generar Parte con AIS ahora
+    </button>
+
     <!-- REFRESH -->
     <div style="display:flex;align-items:center;gap:10px">
       <button class="refresh-btn" id="refresh-btn" onclick="manualRefresh()" style="flex:1">
@@ -930,6 +998,11 @@ function applyData(d) {
   setText('m-rafagas-kmh', (d.wind_gust_kmh || '—') + ' km/h');
   setText('m-presion', v(d.presion_hpa));
   setText('m-visib', v(d.visibility_km));
+  setText('m-feels', v(d.feels_like));
+  setText('m-lluvia', v(d.lluvia_pct));
+  setText('m-curr', v(d.sea_current_knots));
+  var currLbl = document.getElementById('m-curr-lbl');
+  if(currLbl) currLbl.textContent = (d.sea_current_dir || '') + ' corriente';
   const uvEl = document.getElementById('m-uv');
   if (uvEl) { uvEl.textContent = v(d.uv_index); uvEl.style.color = d.uv_color || 'var(--red)'; }
 
@@ -948,9 +1021,7 @@ function applyData(d) {
   if (confortDesc) confortDesc.textContent = confortDescs[Math.min(confort,10)] || '—';
   if (confortBar) {
     confortBar.style.width = (confort * 10) + '%';
-    confortBar.style.background = 'linear-gradient(90deg, #e74c3c 0%, #f39c12 40%, #27ae60 80%, #1abc9c 100%)';
-    confortBar.style.backgroundSize = '1000% 100%';
-    confortBar.style.backgroundPosition = (100 - confort * 10) + '% 0';
+    confortBar.style.background = confort >= 7 ? '#27AE60' : confort >= 4 ? '#E8A020' : '#e74c3c';
   }
   setText('m-fib-num', d.fiabilidad_pct || '—');
 
@@ -1038,6 +1109,20 @@ function applyData(d) {
   // TENDENCIA
   setText('m-tendencia', v(d.tendencia_72h));
 
+
+  // DESTINOS
+  setText('m-dest1-nombre', v(d.destino1_nombre));
+  setText('m-dest1-coste', d.destino1_coste ? d.destino1_coste + ' €' : '—');
+  setText('m-dest1-nm', d.destino1_nm ? d.destino1_nm + ' nm' : '—');
+  setText('m-dest1-tiempo', v(d.destino1_tiempo));
+  setText('m-dest1-litros', d.destino1_litros ? d.destino1_litros + ' L' : '—');
+  setText('m-dest1-razon', v(d.destino1_razon));
+  setText('m-dest2-nombre', v(d.destino2_nombre));
+  setText('m-dest2-coste', d.destino2_coste ? d.destino2_coste + ' €' : '—');
+  setText('m-dest2-nm', d.destino2_nm ? d.destino2_nm + ' nm' : '—');
+  setText('m-dest2-tiempo', v(d.destino2_tiempo));
+  setText('m-dest2-litros', d.destino2_litros ? d.destino2_litros + ' L' : '—');
+  setText('m-dest2-razon', v(d.destino2_razon));
 
   // MEJOR DÍA
   var bestI = 0, bestBft = 99;
@@ -1137,6 +1222,23 @@ function calcCombustible() {
   el=document.getElementById('calc-litros-km'); if(el) el.textContent=lKm;
 }
 
+
+function dispararEsc2() {
+  var btn = document.getElementById('esc2-btn');
+  if(btn) { btn.textContent = '⏳ Generando parte...'; btn.disabled = true; }
+  fetch('https://hook.eu1.make.com/l3k6k3ny8ferb3x33vq25pn5hgmwr1ek', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({trigger: 'manual', source: 'halcon_mobile'})
+  })
+  .then(r => {
+    if(btn) { btn.textContent = '✅ Parte solicitado'; btn.disabled = false; }
+    setTimeout(() => { if(btn) btn.textContent = '🛰️ Generar Parte con AIS ahora'; }, 3000);
+  })
+  .catch(e => {
+    if(btn) { btn.textContent = '⚠️ Error — reintenta'; btn.disabled = false; }
+  });
+}
 </script>
 </body>
 </html>
