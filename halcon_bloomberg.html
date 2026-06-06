@@ -237,7 +237,7 @@
     <div class="stats-bar">
       <div class="sbar"><div class="sbar-icon">🤚</div><div class="sbar-lbl">Sensación</div><div class="sbar-val" id="feels">—</div><div class="sbar-sub">°C</div></div>
       <div class="sbar"><div class="sbar-icon">💧</div><div class="sbar-lbl">Lluvia</div><div class="sbar-val" id="lluvia">—</div><div class="sbar-sub">%</div></div>
-      <div class="sbar"><div class="sbar-icon">🔵</div><div class="sbar-lbl">Presión</div><div class="sbar-val" id="presion">—</div><div class="sbar-sub">hPa</div></div>
+      <div class="sbar"><div class="sbar-icon">🔵</div><div class="sbar-lbl">Presión</div><div class="sbar-val" id="presion" style="display:flex;align-items:baseline;gap:4px"><span id="presion-val">—</span><span id="presion-flecha" style="font-size:14px">→</span></div><div class="sbar-sub" id="presion-interp" style="font-size:9px;margin-top:2px">hPa</div></div>
       <div class="sbar"><div class="sbar-icon">👁️</div><div class="sbar-lbl">Visib.</div><div class="sbar-val" id="visib">—</div><div class="sbar-sub">km</div></div>
       <div class="sbar"><div class="sbar-icon">☀️</div><div class="sbar-lbl">UV</div><div class="sbar-val" id="uv-idx" style="">—</div><div class="sbar-sub" id="uv-desc">—</div></div>
       <div class="sbar"><div class="sbar-icon">🌀</div><div class="sbar-lbl">Corriente</div><div class="sbar-val" id="curr-kn">—</div><div class="sbar-sub" id="curr-dir">kn</div></div>
@@ -458,7 +458,13 @@ function applyData(d) {
   setText('agua-c', 'Agua ' + d.agua_c + '°C');
   setText('feels', d.feels_like);
   setText('lluvia', d.lluvia_pct);
-  setText('presion', d.presion_hpa);
+  setText('presion-val', d.presion_hpa || '—');
+  var presFlecha = document.getElementById('presion-flecha');
+  if(presFlecha) { presFlecha.textContent = d.presion_flecha || '→'; presFlecha.style.color = d.presion_color || '#888'; }
+  var presInterp = document.getElementById('presion-interp');
+  if(presInterp) { presInterp.textContent = 'hPa · ' + (d.presion_interpretacion || ''); presInterp.style.color = d.presion_color || '#888'; }
+  var presVal = document.getElementById('presion-val');
+  if(presVal) presVal.style.color = d.presion_color || 'var(--gold)';
   setText('visib', d.visibility_km);
   setText('uv-idx', d.uv_index);
   setStyle('uv-idx', 'color', d.uv_color);
