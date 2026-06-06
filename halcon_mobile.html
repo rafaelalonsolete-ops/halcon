@@ -104,10 +104,12 @@ body {
   font-weight: 900;
   line-height: 1;
   letter-spacing: -.02em;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0,0,0,.4);
 }
 .sem-razon {
   font-size: 14px;
-  color: rgba(255,255,255,.8);
+  color: rgba(255,255,255,1);
   margin-top: 6px;
   line-height: 1.4;
 }
@@ -964,7 +966,7 @@ function applyData(d) {
   setText('sem-decision', d.decision);
   const sdEl = document.getElementById('sem-decision');
   if (sdEl) {
-    sdEl.style.color = d.decision_color || '#fff';
+    sdEl.style.color = '#ffffff';
     sdEl.style.fontSize = d.decision && d.decision.length > 7 ? '36px' : '48px';
   }
   setText('sem-razon', d.semaforo_razon);
