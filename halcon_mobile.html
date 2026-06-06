@@ -948,9 +948,9 @@ function applyData(d) {
   if (confortDesc) confortDesc.textContent = confortDescs[Math.min(confort,10)] || '—';
   if (confortBar) {
     confortBar.style.width = (confort * 10) + '%';
-    confortBar.style.background = 'linear-gradient(90deg, #e74c3c 0%, #f39c12 40%, #27ae60 80%, #1abc9c 100%)';
-    confortBar.style.backgroundSize = '1000% 100%';
-    confortBar.style.backgroundPosition = (100 - confort * 10) + '% 0';
+    // Color según valor: 0-3 rojo, 4-6 naranja, 7-10 verde
+    var barColor = confort <= 3 ? '#e74c3c' : confort <= 6 ? '#E8A020' : '#27AE60';
+    confortBar.style.background = barColor;
   }
   setText('m-fib-num', d.fiabilidad_pct || '—');
 
