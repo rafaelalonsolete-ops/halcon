@@ -699,6 +699,16 @@ body {
           </div>
         </div>
         <div style="font-size:11px;color:var(--white60);line-height:1.4" id="m-dest1-razon">—</div>
+        <div style="display:flex;gap:8px;margin-top:6px">
+          <div style="flex:1;background:var(--navy2);border-radius:6px;padding:5px 8px;text-align:center">
+            <div style="font-size:9px;color:var(--white60)">🌊 Olas</div>
+            <div style="font-size:12px;font-weight:700;color:var(--white)" id="m-dest1-olas">—</div>
+          </div>
+          <div style="flex:1;background:var(--navy2);border-radius:6px;padding:5px 8px;text-align:center">
+            <div style="font-size:9px;color:var(--white60)">🌬️ Viento</div>
+            <div style="font-size:12px;font-weight:700;color:var(--white)" id="m-dest1-viento">—</div>
+          </div>
+        </div>
       </div>
       <div style="background:var(--white10);border-radius:var(--radius-sm);padding:12px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
@@ -720,6 +730,16 @@ body {
           </div>
         </div>
         <div style="font-size:11px;color:var(--white60);line-height:1.4" id="m-dest2-razon">—</div>
+        <div style="display:flex;gap:8px;margin-top:6px">
+          <div style="flex:1;background:var(--navy2);border-radius:6px;padding:5px 8px;text-align:center">
+            <div style="font-size:9px;color:var(--white60)">🌊 Olas</div>
+            <div style="font-size:12px;font-weight:700;color:var(--white)" id="m-dest2-olas">—</div>
+          </div>
+          <div style="flex:1;background:var(--navy2);border-radius:6px;padding:5px 8px;text-align:center">
+            <div style="font-size:9px;color:var(--white60)">🌬️ Viento</div>
+            <div style="font-size:12px;font-weight:700;color:var(--white)" id="m-dest2-viento">—</div>
+          </div>
+        </div>
       </div>
     </div>
     <!-- PRONÓSTICO -->
@@ -1128,12 +1148,16 @@ function applyData(d) {
   setText('m-dest1-tiempo', v(d.destino1_tiempo));
   setText('m-dest1-litros', d.destino1_litros ? d.destino1_litros + ' L' : '—');
   setText('m-dest1-razon', v(d.destino1_razon));
+  setText('m-dest1-olas', d.destino1_mar_olas ? d.destino1_mar_olas + 'm' : '—');
+  setText('m-dest1-viento', v(d.destino1_mar_viento) || '—');
   setText('m-dest2-nombre', v(d.destino2_nombre));
   setText('m-dest2-coste', d.destino2_coste ? d.destino2_coste + ' €' : '—');
   setText('m-dest2-nm', d.destino2_nm ? d.destino2_nm + ' nm' : '—');
   setText('m-dest2-tiempo', v(d.destino2_tiempo));
   setText('m-dest2-litros', d.destino2_litros ? d.destino2_litros + ' L' : '—');
   setText('m-dest2-razon', v(d.destino2_razon));
+  setText('m-dest2-olas', d.destino2_mar_olas ? d.destino2_mar_olas + 'm' : '—');
+  setText('m-dest2-viento', v(d.destino2_mar_viento) || '—');
 
   // MEJOR DÍA
   var bestI = 0, bestBft = 99;
@@ -1253,3 +1277,4 @@ function dispararEsc2() {
 </script>
 </body>
 </html>
+
