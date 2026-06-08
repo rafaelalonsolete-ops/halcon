@@ -1269,6 +1269,12 @@ function calcCombustible() {
 
 
 function dispararEsc2() {
+  var pwd = prompt('🔐 Contraseña para generar parte AIS:');
+  if (!pwd) return;
+  if (pwd !== 'HALCON2026') {
+    alert('❌ Contraseña incorrecta');
+    return;
+  }
   var btn = document.getElementById('esc2-btn');
   if(btn) { btn.textContent = '⏳ Generando parte...'; btn.disabled = true; }
   fetch('https://hook.eu1.make.com/l3k6k3ny8ferb3x33vq25pn5hgmwr1ek', {
