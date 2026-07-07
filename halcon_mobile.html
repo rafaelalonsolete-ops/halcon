@@ -886,11 +886,11 @@ body {
         </div>
         <div class="barco-item">
           <div class="barco-lbl">Velocidad crucero</div>
-          <div class="barco-val">18–20 kn</div>
+          <div class="barco-val">18 kn</div>
         </div>
         <div class="barco-item">
           <div class="barco-lbl">Consumo</div>
-          <div class="barco-val">222 L/h</div>
+          <div class="barco-val">180 L/h</div>
           <div class="barco-sub">a velocidad crucero</div>
         </div>
         <div class="barco-item">
@@ -1251,7 +1251,7 @@ function calcCombustible() {
     });
     return;
   }
-  // 222 L/h a 19 kn promedio
+  // 180 L/h a 19 kn promedio
   const horas = nm / 19;
   const litros = Math.round(horas * 222);
   const coste = (litros * gasoilPrecio).toFixed(0);
