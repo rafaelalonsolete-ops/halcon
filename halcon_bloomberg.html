@@ -405,7 +405,7 @@ function renderForecast(d) {
         <div class="fc-bft" style="color:${bColor5}">${d['forecast_day'+i+'_beaufort']||'—'} Bft</div>
         <div class="fc-compass">
           <div class="fc-compass-n">N</div>
-          <div class="fc-compass-arr" style="transform:rotate(${(function(){var cd={N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};return ((cd[((d['forecast_day'+i+'_wind_dir']||'N')).toUpperCase()]||0)+180)})()}deg)"></div>
+          <div class="fc-compass-arr" style="transform:rotate(${(function(){var cd={N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};return (cd[((d['forecast_day'+i+'_wind_dir']||'N')).toUpperCase()]||0)})()}deg)"></div>
         </div>
         <div class="fc-dir">${d['forecast_day'+i+'_wind_dir']||''}</div>
         <div class="fc-temp">${d['forecast_day'+i+'_temp']||'—'}°C</div>
@@ -446,7 +446,7 @@ function applyData(d) {
   setText('viento-dir', 'Bft · ' + d.viento_dir);
   // Brújula: convertir cardinal a grados y rotar flecha
   var cardinalDeg = {N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};
-  var windDeg = (cardinalDeg[(d.viento_dir||'N').toUpperCase()] || 0) + 180;
+  var windDeg = cardinalDeg[(d.viento_dir||'N').toUpperCase()] || 0;
   var arrow = document.getElementById('wind-arrow');
   if(arrow) arrow.style.transform = 'rotate(' + windDeg + 'deg)';
   setText('viento-kmh', d.viento_kmh + ' km/h');
