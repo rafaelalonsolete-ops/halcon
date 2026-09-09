@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HALCÓN · Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=JetBrains+Mono:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=JetBrains+Mono:wght@400;500;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --navy:#0A1628;--navy2:#0F2540;--navy3:#1B3A5C;
@@ -13,17 +13,17 @@
     --go:#27AE60;--warn:#E8A020;--stop:#C0392B;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--navy);font-family:'Poppins',sans-serif;color:var(--white);width:100vw;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+  body{background:var(--navy);font-family:'Figtree',sans-serif;color:var(--white);width:100vw;height:100vh;overflow:hidden;display:flex;flex-direction:column}
 
   /* TOP BAR */
   .topbar{background:var(--navy2);border-bottom:1px solid var(--gold30);padding:10px 36px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
-  .brand{font-family:'Poppins',sans-serif;font-size:26px;font-weight:900;color:var(--gold);letter-spacing:-0.02em}
+  .brand{font-family:'Figtree',sans-serif;font-size:26px;font-weight:900;color:var(--gold);letter-spacing:-0.02em}
   .brand-sub{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.65);font-weight:600}
   .divider-v{width:1px;height:32px;background:var(--gold30)}
   .topbar-left{display:flex;align-items:center;gap:18px}
   .topbar-center{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:600}
   .topbar-right{display:flex;align-items:center;gap:16px}
-  .clock{font-family:'Poppins',sans-serif;font-size:22px;font-weight:700;color:var(--gold)}
+  .clock{font-family:'Figtree',sans-serif;font-size:22px;font-weight:700;color:var(--gold)}
   .date-lbl{font-size:10px;color:var(--white30);text-align:right;font-weight:500}
   .countdown{font-size:11px;color:var(--gold);text-align:center;font-weight:700;letter-spacing:0.05em;margin-top:3px;opacity:0.85}
   .live-badge{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--go);background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.3);padding:3px 10px;font-weight:700}
@@ -46,12 +46,12 @@
   .sem-dot.active{opacity:1;animation:semPulse 1.8s ease-in-out infinite}
   @keyframes semPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
   .sem-emoji{font-size:28px;margin-bottom:8px}
-  .sem-decision{font-family:'Poppins',sans-serif;font-size:56px;font-weight:900;line-height:1;letter-spacing:-0.02em;margin-bottom:6px;white-space:nowrap;overflow:hidden;width:100%;text-align:center}
+  .sem-decision{font-family:'Figtree',sans-serif;font-size:56px;font-weight:900;line-height:1;letter-spacing:-0.02em;margin-bottom:6px;white-space:nowrap;overflow:hidden;width:100%;text-align:center}
   .sem-razon{font-size:11px;color:rgba(255,255,255,0.85);text-align:center;line-height:1.5;max-width:240px}
   .sem-confort{margin-top:14px;display:flex;align-items:baseline;gap:4px}
   .comfort-bar-wrap{width:150px;height:7px;background:rgba(255,255,255,0.1);border-radius:4px;margin-top:10px;overflow:hidden}
   .comfort-bar-fill{height:100%;border-radius:4px;transition:width 1s ease,background 1s ease}
-  .sem-num{font-family:'Poppins',sans-serif;font-size:44px;font-weight:900;color:var(--gold);line-height:1}
+  .sem-num{font-family:'Figtree',sans-serif;font-size:44px;font-weight:900;color:var(--gold);line-height:1}
   .sem-lbl{font-size:10px;color:rgba(255,255,255,0.85);letter-spacing:0.12em;text-transform:uppercase;font-weight:600}
   .sem-fib{margin-top:10px;font-size:10px;color:rgba(255,255,255,0.85);letter-spacing:0.12em;text-transform:uppercase}
 
@@ -62,14 +62,14 @@
   .ccard.hi{border-top-color:var(--gold);background:var(--gold10)}
   .ccard-icon{font-size:22px;margin-bottom:6px}
   .ccard-lbl{font-size:7px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:4px}
-  .ccard-val{font-family:'Poppins',sans-serif;font-size:32px;font-weight:700;color:var(--white);line-height:1}
+  .ccard-val{font-family:'Figtree',sans-serif;font-size:32px;font-weight:700;color:var(--white);line-height:1}
   .ccard-sub{font-size:11px;color:var(--white60);font-weight:600;margin-top:3px}
   .ccard-det{font-size:9px;color:var(--white30);margin-top:2px}
   .stats-bar{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}
   .sbar{background:var(--white10);padding:10px 6px;text-align:center;border-top:2px solid var(--gold30);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:130px}
   .sbar-icon{font-size:20px;margin-bottom:3px}
   .sbar-lbl{font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:2px}
-  .sbar-val{font-family:'Poppins',sans-serif;font-size:26px;font-weight:700;color:var(--white)}
+  .sbar-val{font-family:'Figtree',sans-serif;font-size:26px;font-weight:700;color:var(--white)}
   .sbar-sub{font-size:11px;color:rgba(255,255,255,0.75);margin-top:2px;font-weight:600}
 
   /* SOL + GASOIL */
@@ -77,11 +77,11 @@
   .sol-item{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--white10)}
   .sol-item:last-of-type{border-bottom:none}
   .sol-lbl{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.75);font-weight:700}
-  .sol-val{font-family:'Poppins',sans-serif;font-size:17px;font-weight:700;color:var(--gold)}
+  .sol-val{font-family:'Figtree',sans-serif;font-size:17px;font-weight:700;color:var(--gold)}
   .sol-val.alert{color:#FCA5A5}
   .gasoil-block{margin-top:4px;background:var(--white10);border:1px solid var(--gold30);padding:6px 8px;text-align:center}
   .gasoil-lbl{font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold2);font-weight:700;margin-bottom:5px}
-  .gasoil-price{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:var(--white);line-height:1}
+  .gasoil-price{font-family:'Figtree',sans-serif;font-size:18px;font-weight:700;color:var(--white);line-height:1}
   .gasoil-var{font-size:12px;font-weight:700;margin-top:4px;color:var(--gold)}
 
   /* FORECAST */
@@ -95,16 +95,16 @@
   .ais-col-block::before{content:'';position:absolute;top:0;left:12px;right:12px;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
   .ais-live-dot-s{width:5px;height:5px;border-radius:50%;background:#27AE60;animation:aisDs 1.5s ease-in-out infinite;display:inline-block;vertical-align:middle}
   @keyframes aisDs{0%,100%{opacity:1}50%{opacity:.3}}
-  .ais-col-num{font-family:'Poppins',sans-serif;font-size:36px;font-weight:700;color:var(--gold);line-height:1;margin-bottom:4px}
+  .ais-col-num{font-family:'Figtree',sans-serif;font-size:36px;font-weight:700;color:var(--gold);line-height:1;margin-bottom:4px}
   .ais-col-sub{font-size:10px;color:var(--white60);line-height:1.4;font-weight:500}
   .ais-col-ocup{display:inline-block;font-size:9px;font-weight:700;padding:3px 9px;border-radius:99px;margin-top:5px}
   .fcard{background:var(--white10);border:1px solid var(--white10);border-top:3px solid transparent;padding:12px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative}
   .fcard.best{background:rgba(201,168,76,0.12);border-color:var(--gold30);border-top-color:var(--gold)}
   .fcard.best::before{content:'⭐';position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:13px}
   .fc-day{font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700}
-  .fc-date{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--white)}
+  .fc-date{font-family:'Figtree',sans-serif;font-size:15px;font-weight:700;color:var(--white)}
   .fc-icon{font-size:20px}
-  .fc-bft{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:var(--gold)}
+  .fc-bft{font-family:'Figtree',sans-serif;font-size:18px;font-weight:700;color:var(--gold)}
   .fc-dir{font-size:10px;font-weight:600;color:var(--white60)}
   .fc-compass{width:32px;height:32px;border-radius:50%;border:2px solid rgba(201,168,76,.4);position:relative;display:flex;align-items:center;justify-content:center;margin:3px auto;background:rgba(255,255,255,.05)}
   .fc-compass-n{position:absolute;top:2px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:800;color:var(--gold);line-height:1}
@@ -115,15 +115,15 @@
 
   /* CALA + TRAVESÍA */
   .panel-cala{grid-column:3;grid-row:2;background:var(--navy3)}
-  .cala-nombre{font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:6px}
+  .cala-nombre{font-family:'Figtree',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:6px}
   .cala-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--white10);font-size:9px}
   .cala-row:last-of-type{border-bottom:none}
   .cala-row-lbl{color:rgba(255,255,255,0.7);font-weight:500}
   .cala-row-val{color:var(--white);font-weight:700;text-align:right;max-width:150px}
   .trav-block{margin-top:4px;background:var(--white10);border:1px solid var(--gold30);padding:7px}
   .trav-lbl{font-size:8px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px}
-  .trav-nombre{font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;color:var(--white)}
-  .trav-coste{font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;color:var(--gold2);margin-top:2px}
+  .trav-nombre{font-family:'Figtree',sans-serif;font-size:16px;font-weight:700;color:var(--white)}
+  .trav-coste{font-family:'Figtree',sans-serif;font-size:16px;font-weight:700;color:var(--gold2);margin-top:2px}
   .trav-razon{font-size:8px;color:rgba(255,255,255,0.75);margin-top:2px;line-height:1.2}
 
   /* BRÚJULA VIENTO */
@@ -136,7 +136,7 @@
   .cala-destino-badge{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}
   .cala-destino-badge::before{content:'';flex:1;height:1px;background:var(--gold30)}
   .cala-destino-badge::after{content:'';flex:1;height:1px;background:var(--gold30)}
-  .cala-nombre-big{font-family:'Poppins',sans-serif;font-size:20px;font-weight:800;color:var(--gold);margin-bottom:4px;line-height:1.1;text-shadow:0 0 20px rgba(201,168,76,.3)}
+  .cala-nombre-big{font-family:'Figtree',sans-serif;font-size:20px;font-weight:800;color:var(--gold);margin-bottom:4px;line-height:1.1;text-shadow:0 0 20px rgba(201,168,76,.3)}
   .cala-ocupacion-pill{display:inline-block;font-size:8px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
   .ocup-baja{background:rgba(39,174,96,.2);color:#27AE60;border:1px solid rgba(39,174,96,.4)}
   .ocup-media{background:rgba(232,160,32,.2);color:#E8A020;border:1px solid rgba(232,160,32,.4)}
@@ -278,19 +278,19 @@
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
         <div style="text-align:center;padding:4px 0;border-right:1px solid rgba(201,168,76,.25)">
-          <div style="font-family:Poppins,sans-serif;font-size:22px;font-weight:700;color:#27AE60;line-height:1" id="ais-nav">—</div>
+          <div style="font-family:Figtree,sans-serif;font-size:22px;font-weight:700;color:#27AE60;line-height:1" id="ais-nav">—</div>
           <div style="font-size:8px;font-weight:600;color:rgba(255,255,255,.3);margin-top:2px;text-transform:uppercase;letter-spacing:.1em">Navegando</div>
         </div>
         <div style="text-align:center;padding:4px 0">
-          <div style="font-family:Poppins,sans-serif;font-size:22px;font-weight:700;color:#E8A020;line-height:1" id="ais-fond">—</div>
+          <div style="font-family:Figtree,sans-serif;font-size:22px;font-weight:700;color:#E8A020;line-height:1" id="ais-fond">—</div>
           <div style="font-size:8px;font-weight:600;color:rgba(255,255,255,.3);margin-top:2px;text-transform:uppercase;letter-spacing:.1em">Fondeados</div>
         </div>
       </div>
     </div>
     <div class="cala-destino-badge">🏖 DESTINO DEL DÍA</div>
-    <div style="font-family:Poppins,sans-serif;font-size:15px;font-weight:800;color:var(--gold);margin-bottom:4px;line-height:1.1" id="cala-nombre">—</div>
+    <div style="font-family:Figtree,sans-serif;font-size:15px;font-weight:800;color:var(--gold);margin-bottom:4px;line-height:1.1" id="cala-nombre">—</div>
     <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
-      <div style="font-family:Poppins,sans-serif;font-size:22px;font-weight:700;color:var(--gold);line-height:1" id="ais-cala-n">—</div>
+      <div style="font-family:Figtree,sans-serif;font-size:22px;font-weight:700;color:var(--gold);line-height:1" id="ais-cala-n">—</div>
       <div>
         <div style="font-size:9px;color:rgba(255,255,255,.3)">barcos fondeados</div>
         <div style="margin-top:2px"><div id="cala-ocup-pill" class="cala-ocupacion-pill ocup-baja">Ocupación —</div></div>
