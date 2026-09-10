@@ -34,11 +34,17 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
+html {
+  background: var(--navy);
+}
+
 body {
   background: var(--navy);
   color: var(--white);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Figtree', sans-serif;
   min-height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
   padding-bottom: env(safe-area-inset-bottom, 20px);
 }
 
@@ -349,7 +355,7 @@ body {
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Figtree', sans-serif;
   width: 100%;
   transition: background .2s;
 }
@@ -948,7 +954,7 @@ body {
     </div>
 
     <!-- BOTON ESC2 -->
-    <button onclick="dispararEsc2()" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(91,60,204,.15);border:1px solid rgba(91,60,204,.4);color:#9B7FE8;border-radius:var(--radius);padding:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;width:100%" id="esc2-btn">
+    <button onclick="dispararEsc2()" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(91,60,204,.15);border:1px solid rgba(91,60,204,.4);color:#9B7FE8;border-radius:var(--radius);padding:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:Figtree,sans-serif;width:100%" id="esc2-btn">
       🛰️ Generar Parte con AIS ahora
     </button>
 
