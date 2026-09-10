@@ -8,7 +8,7 @@
 <link rel="shortcut icon" href="favicon.ico?v=2">
 <link rel="apple-touch-icon" href="icon-180.png?v=2">
 <title>HALCÓN · Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=JetBrains+Mono:wght@400;500;700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --navy:#0A1628;--navy2:#0F2540;--navy3:#1B3A5C;
@@ -440,6 +440,9 @@ function applyData(d) {
   var activeDot = dotMap[sem];
   if(activeDot){ var dotEl=document.getElementById(activeDot); if(dotEl) dotEl.classList.add('active'); }
   var cv = parseFloat(d.confort_10)||0;
+  var confortColors = ['#e74c3c','#e74c3c','#c0392b','#e67e22','#e67e22','#f39c12','#f1c40f','#2ecc71','#27ae60','#1abc9c','#16a085'];
+  var cNumEl = document.getElementById('sem-confort');
+  if(cNumEl){ cNumEl.style.color = confortColors[Math.max(0,Math.min(10,Math.round(cv)))]; }
   var cBar = document.getElementById('comfort-bar');
   if(cBar){ cBar.style.width=(cv/10*100)+'%'; cBar.style.background=cv>=7?'#27AE60':cv>=5?'#E8A020':'#C0392B'; }
   document.getElementById('dot-r').style.opacity = d.sem_red_opacity;
