@@ -1146,6 +1146,19 @@ function applyData(d) {
             <span class="fc-detail-lbl">🌡️ Temp</span>
             <span class="fc-detail-val">${d['forecast_day'+i+'_temp'] || '—'}°C</span>
           </div>
+          <div class="fc-detail-row">
+            <span class="fc-detail-lbl">🌧️ Lluvia</span>
+            <span class="fc-detail-val">${d['forecast_day'+i+'_lluvia_pct']!=null?d['forecast_day'+i+'_lluvia_pct']:'—'}%</span>
+          </div>
+          <div class="fc-detail-row">
+            <span class="fc-detail-lbl">🌊 Olas</span>
+            <span class="fc-detail-val">${d['forecast_day'+i+'_olas_m']!=null?d['forecast_day'+i+'_olas_m']:'—'}m</span>
+          </div>
+          <div class="fc-detail-row">
+            <span class="fc-detail-lbl">💨 Ráfaga</span>
+            <span class="fc-detail-val">${d['forecast_day'+i+'_rafaga_bft']!=null?d['forecast_day'+i+'_rafaga_bft']:'—'} Bft</span>
+          </div>
+          <div style="text-align:center;font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.04em;margin-top:5px">${d['forecast_day'+i+'_ventana']||''}</div>
         </div>`;
     }
   }
@@ -1174,7 +1187,7 @@ function applyData(d) {
 
   // TRAVESÍA
   setText('m-trav-nombre', v(d.travesia_recomendada));
-  setText('m-trav-coste', d.travesia1_coste ? d.travesia1_coste + ' €' : '—');
+  setText('m-trav-coste', d.travesia_eur ? d.travesia_eur + ' €' : '—');
   setText('m-trav-razon', v(d.travesia_porque));
 
   // TENDENCIA
