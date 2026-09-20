@@ -418,6 +418,8 @@ function renderForecast(d) {
         </div>
         <div class="fc-dir">${d['forecast_day'+i+'_wind_dir']||''}</div>
         <div class="fc-temp">${d['forecast_day'+i+'_temp']||'—'}°C</div>
+        <div style="font-size:9px;color:#8a94a6;margin-top:4px;line-height:1.4">🌧️ ${d['forecast_day'+i+'_lluvia_pct']!=null?d['forecast_day'+i+'_lluvia_pct']:'—'}% · 🌊 ${d['forecast_day'+i+'_olas_m']!=null?d['forecast_day'+i+'_olas_m']:'—'}m · 💨 ${d['forecast_day'+i+'_rafaga_bft']!=null?d['forecast_day'+i+'_rafaga_bft']:'—'}Bft</div>
+        <div style="font-size:8px;color:#C9A84C;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-top:2px">${d['forecast_day'+i+'_ventana']||''}</div>
         <div style="font-size:9px;color:${bColor5};font-weight:700;margin-top:4px">${condLbl5}</div>
       </div>`;
   }
@@ -544,7 +546,7 @@ function applyData(d) {
   var aisOcup=document.getElementById('ais-cala-ocup-s');
   if(aisOcup){if(!aisValido){aisOcup.textContent='Sin datos';aisOcup.className='ais-col-ocup ocup-media';}else{var oc=(d.ocupacion_cala_recomendada||'').toLowerCase();aisOcup.className='ais-col-ocup '+(oc==='baja'?'ocup-baja':oc==='media'?'ocup-media':'ocup-alta');aisOcup.textContent=(d.ocupacion_cala_recomendada||'—');}}
   setText('trav-nombre', d.travesia_recomendada);
-  setText('trav-coste', d.travesia1_coste + ' €');
+  setText('trav-coste', d.travesia_eur ? d.travesia_eur + ' €' : '—');
   setText('trav-razon', d.travesia_porque);
 
   // Ticker
