@@ -418,12 +418,14 @@ function renderForecast(d) {
         </div>
         <div class="fc-dir">${d['forecast_day'+i+'_wind_dir']||''}</div>
         <div class="fc-temp">${d['forecast_day'+i+'_temp']||'—'}°C</div>
-        <div style="font-size:9px;color:#8a94a6;margin-top:4px;line-height:1.4">🌧️ ${d['forecast_day'+i+'_lluvia_pct']!=null?d['forecast_day'+i+'_lluvia_pct']:'—'}% · 🌊 ${d['forecast_day'+i+'_olas_m']!=null?d['forecast_day'+i+'_olas_m']:'—'}m · 💨 ${d['forecast_day'+i+'_rafaga_bft']!=null?d['forecast_day'+i+'_rafaga_bft']:'—'}Bft</div>
+        <div style="font-size:9px;color:#8a94a6;margin-top:4px;line-height:1.4">🌧️ ${d['forecast_day'+i+'_lluvia_pct']!=null?d['forecast_day'+i+'_lluvia_pct']:'—'}% · 🌊 ${d['forecast_day'+i+'_olas_m']!=null?vOlas(d['forecast_day'+i+'_olas_m']):'—'}m · 💨 ${d['forecast_day'+i+'_rafaga_bft']!=null?d['forecast_day'+i+'_rafaga_bft']:'—'}Bft</div>
         <div style="font-size:8px;color:#C9A84C;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-top:2px">${d['forecast_day'+i+'_ventana']||''}</div>
         <div style="font-size:9px;color:${bColor5};font-weight:700;margin-top:4px">${condLbl5}</div>
       </div>`;
   }
 }
+
+function vOlas(x) { const n = parseFloat(x); return (x !== null && x !== undefined && x !== '' && !isNaN(n)) ? n.toFixed(1) : '—'; }
 
 function applyData(d) {
   // Topbar
@@ -466,7 +468,7 @@ function applyData(d) {
   setText('viento-kmh', d.viento_kmh + ' km/h');
   setText('gust-bft', d.wind_gust_beaufort);
   setText('gust-kmh', d.wind_gust_kmh + ' km/h');
-  setText('olas-m', d.olas_m);
+  setText('olas-m', vOlas(d.olas_m));
   setText('olas-per', 'Período ' + d.wave_period + 's');
   setText('temp-c', d.temp_c);
   setText('agua-c', 'Agua ' + d.agua_c + '°C');
@@ -552,7 +554,7 @@ function applyData(d) {
   // Ticker
   const items = [
     ['tick2','tick2b', '🌬️ VIENTO ' + d.viento_bft + ' Bft ' + d.viento_dir + ' · ' + d.viento_kmh + ' km/h'],
-    ['tick3','tick3b', '🌊 OLAS ' + d.olas_m + 'm · PERÍODO ' + d.wave_period + 's'],
+    ['tick3','tick3b', '🌊 OLAS ' + vOlas(d.olas_m) + 'm · PERÍODO ' + d.wave_period + 's'],
     ['tick4','tick4b', '⛽ GASOIL ' + d.gasoil_price + '€/L · REPSOL PORT D\'ANDRATX'],
     ['tick5','tick5b', '📅 ' + (d.parte_fecha||'') + ' · ' + d.ventana_inicio + '-' + d.ventana_fin + 'H'],
   ];
