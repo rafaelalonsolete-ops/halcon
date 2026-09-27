@@ -117,6 +117,32 @@
   .tend-bar{margin-top:8px;background:rgba(0,0,0,0.2);border-left:3px solid var(--gold);padding:9px 12px;font-size:11px;color:rgba(255,255,255,0.85);line-height:1.5;flex-shrink:0}
   .tend-bar strong{color:var(--gold)}
 
+  /* FORECAST 15 DÍAS — dos niveles */
+  .fc-subrow-lbl{font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:var(--white60);font-weight:700;margin:6px 0 3px;display:flex;align-items:center;gap:6px}
+  .fc-subrow-lbl::after{content:'';flex:1;height:1px;background:var(--white10)}
+  .fc-subrow-lbl.mini{color:var(--gold2)}
+  .fc-grid-full{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .fc-grid-full .fcard{padding:8px 4px;gap:2px}
+  .fc-grid-full .fc-day{font-size:7px}
+  .fc-grid-full .fc-date{font-size:12px}
+  .fc-grid-full .fc-icon{font-size:16px}
+  .fc-grid-full .fc-bft{font-size:14px}
+  .fc-grid-full .fc-dir{font-size:8px}
+  .fc-grid-full .fc-compass{width:24px;height:24px;margin:2px auto}
+  .fc-grid-full .fc-compass-arr{border-left-width:3px;border-right-width:3px;border-bottom-width:11px}
+  .fc-grid-full .fc-compass-n{font-size:6px}
+  .fc-grid-full .fc-temp{font-size:8px}
+  .fc-extra{font-size:7.5px;color:var(--white60);margin-top:1px;line-height:1.3}
+  .fc-grid-mini{display:grid;grid-template-columns:repeat(8,1fr);gap:3px}
+  .fcard-mini{background:rgba(255,255,255,0.03);border:1px dashed var(--white30);padding:6px 2px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;opacity:0.82}
+  .fcard-mini .m-day{font-size:6.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--white60);font-weight:700}
+  .fcard-mini .m-icon{font-size:13px;margin:1px 0}
+  .fcard-mini .m-bft{font-family:'Figtree',sans-serif;font-size:12px;font-weight:700}
+  .fcard-mini .m-dir{font-size:7px;color:var(--white30)}
+  .tend-contrast{margin-top:4px;background:rgba(39,174,96,0.08);border-left:3px solid #27AE60;padding:7px 12px;font-size:10px;color:rgba(255,255,255,0.85);line-height:1.45;flex-shrink:0;display:flex;align-items:center;gap:6px}
+  .tend-contrast .live-dot-c{width:5px;height:5px;border-radius:50%;background:#27AE60;animation:aisDs 1.5s ease-in-out infinite;flex-shrink:0}
+  .tend-contrast strong{color:#27AE60}
+
   /* CALA + TRAVESÍA */
   .panel-cala{grid-column:3;grid-row:2;background:var(--navy3)}
   .cala-nombre{font-family:'Figtree',sans-serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:6px}
@@ -267,9 +293,13 @@
   <!-- FORECAST + AIS COL -->
   <div class="panel panel-fc">
     <div class="fc-grid-wrap">
-      <div class="panel-lbl">📅 Pronóstico extendido · 5 días</div>
-      <div class="fc-grid" id="fc-grid"></div>
+      <div class="panel-lbl">📅 Pronóstico extendido · 15 días</div>
+      <div class="fc-subrow-lbl">1-7 días · detalle completo</div>
+      <div class="fc-grid-full" id="fc-grid"></div>
+      <div class="fc-subrow-lbl mini">8-15 días · tendencia orientativa</div>
+      <div class="fc-grid-mini" id="fc-grid-mini"></div>
       <div class="tend-bar" id="tendencia">Cargando tendencia...</div>
+      <div class="tend-contrast" id="tend-contrast"><span class="live-dot-c"></span>Cargando contraste...</div>
     </div>
   </div>
 
@@ -396,33 +426,58 @@ function renderForecast(d) {
   if (!grid) return;
   grid.innerHTML = '';
   var hoy = new Date();
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 7; i++) {
     var cls5 = d['weekly_day'+i+'_class'] === 'best' ? 'fcard best' : 'fcard';
     var bft5 = parseInt(d['forecast_day'+i+'_beaufort'])||0;
     var bColor5 = bft5<=2?'#27AE60':bft5<=3?'#E8A020':'#C0392B';
-    var condLbl5 = bft5<=1?'🟢 Calma':bft5<=2?'🟢 Brisa suave':bft5<=3?'🟡 Brisa suave':bft5<=4?'🟡 Brisa mod.':'🔴 Viento fuerte';
     var star5 = d['weekly_day'+i+'_class']==='best'?'⭐ ':'';
     var diaNav5=new Date(hoy);diaNav5.setDate(hoy.getDate()+i);
     var diasES5=['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
     var dayLbl5=d['forecast_day'+i+'_day']||diasES5[diaNav5.getDay()];
     var dateLbl5=d['forecast_day'+i+'_date']||(diaNav5.getDate()+'/'+(diaNav5.getMonth()+1));
+    var presTend5 = d['forecast_day'+i+'_presion_tendencia']||'→';
     grid.innerHTML += `
       <div class="${cls5}" style="border-top-color:${bColor5}">
         <div class="fc-day">${star5}${dayLbl5}</div>
         <div class="fc-date">${dateLbl5}</div>
-        <div class="fc-icon" style="font-size:22px;margin:3px 0">${d['forecast_day'+i+'_icon']||'☀️'}</div>
+        <div class="fc-icon" style="margin:2px 0">${d['forecast_day'+i+'_icon']||'☀️'}</div>
         <div class="fc-bft" style="color:${bColor5}">${d['forecast_day'+i+'_beaufort']||'—'} Bft</div>
-        <div class="fc-compass">
-          <div class="fc-compass-n">N</div>
-          <div class="fc-compass-arr" style="transform:rotate(${(function(){var cd={N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337,SO:225,O:270,NO:315,SSO:202,OSO:247,ONO:292,NNO:337};return ((cd[((d['forecast_day'+i+'_wind_dir']||'N')).toUpperCase()]||0)+180)})()}deg)"></div>
-        </div>
-        <div class="fc-dir">${d['forecast_day'+i+'_wind_dir']||''}</div>
-        <div class="fc-temp">${d['forecast_day'+i+'_temp']||'—'}°C</div>
-        <div style="font-size:9px;color:#8a94a6;margin-top:4px;line-height:1.4">🌧️ ${d['forecast_day'+i+'_lluvia_pct']!=null?d['forecast_day'+i+'_lluvia_pct']:'—'}% · 🌊 ${d['forecast_day'+i+'_olas_m']!=null?vOlas(d['forecast_day'+i+'_olas_m']):'—'}m · 💨 ${d['forecast_day'+i+'_rafaga_bft']!=null?d['forecast_day'+i+'_rafaga_bft']:'—'}Bft</div>
-        <div style="font-size:8px;color:#C9A84C;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-top:2px">${d['forecast_day'+i+'_ventana']||''}</div>
-        <div style="font-size:9px;color:${bColor5};font-weight:700;margin-top:4px">${condLbl5}</div>
+        <div class="fc-dir">${d['forecast_day'+i+'_wind_dir']||''} · ${d['forecast_day'+i+'_temp']||'—'}°C</div>
+        <div class="fc-extra">🌊 ${d['forecast_day'+i+'_olas_m']!=null?vOlas(d['forecast_day'+i+'_olas_m']):'—'}m</div>
+        <div class="fc-extra">🔵 ${d['forecast_day'+i+'_presion_hpa']||'—'} ${presTend5}</div>
       </div>`;
   }
+}
+
+function renderForecastMini(d) {
+  const grid = document.getElementById('fc-grid-mini');
+  if (!grid) return;
+  grid.innerHTML = '';
+  var hoy = new Date();
+  var diasES = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
+  for (let i = 8; i <= 15; i++) {
+    var bft = parseInt(d['forecast_day'+i+'_beaufort'])||0;
+    var bColor = bft<=2?'#27AE60':bft<=3?'#E8A020':'#C0392B';
+    var diaNav=new Date(hoy);diaNav.setDate(hoy.getDate()+i);
+    var dayLbl=d['forecast_day'+i+'_day']||diasES[diaNav.getDay()];
+    var dateLbl=d['forecast_day'+i+'_date']||(diaNav.getDate()+'/'+(diaNav.getMonth()+1));
+    grid.innerHTML += `
+      <div class="fcard-mini">
+        <div class="m-day">${dayLbl} ${dateLbl}</div>
+        <div class="m-icon">${d['forecast_day'+i+'_icon']||'☀️'}</div>
+        <div class="m-bft" style="color:${bColor}">${d['forecast_day'+i+'_beaufort']||'—'}</div>
+        <div class="m-dir">${d['forecast_day'+i+'_wind_dir']||''} · 🌊${d['forecast_day'+i+'_olas_m']!=null?vOlas(d['forecast_day'+i+'_olas_m']):'—'}m</div>
+      </div>`;
+  }
+}
+
+function renderContraste(d) {
+  const el = document.getElementById('tend-contrast');
+  if (!el) return;
+  el.innerHTML = '<span class="live-dot-c"></span>' +
+    '<strong>🎯 Contraste en vivo:</strong> Boya Dragonera ahora ' + (d.boya_dragonera_hs||'—') + 'm / ' + (d.boya_dragonera_periodo||'—') + 's ' +
+    (d.boya_dragonera_coincide ? '<span style="color:#27AE60">✓ coincide con la previsión</span>' : '<span style="color:#E8A020">⚠ difiere de la previsión</span>') +
+    ' &nbsp;·&nbsp; AEMET costera Baleares: ' + (d.aemet_costera_resumen||'—');
 }
 
 function vOlas(x) { const n = parseFloat(x); return (x !== null && x !== undefined && x !== '' && !isNaN(n)) ? n.toFixed(1) : '—'; }
@@ -520,6 +575,8 @@ function applyData(d) {
 
   // Forecast
   renderForecast(d);
+  renderForecastMini(d);
+  renderContraste(d);
 
   // Cala
   setText('cala-nombre', d.cala_recomendada);
