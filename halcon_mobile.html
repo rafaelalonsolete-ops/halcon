@@ -221,62 +221,76 @@ body {
 }
 .gasoil-var { font-size: 14px; font-weight: 600; margin-top: 2px; }
 
-/* FORECAST */
-.fc-scroll {
+/* FORECAST — 3 páginas de 5 días, deslizables con snap (2 gestos = 15 días) */
+.fc-pager {
   display: flex;
-  gap: 8px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  border-radius: var(--radius-sm);
 }
-.fc-scroll::-webkit-scrollbar { display: none; }
+.fc-pager::-webkit-scrollbar { display: none; }
+.fc-page {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+}
+.fc-dots { display: flex; justify-content: center; gap: 6px; margin-top: 10px; }
+.fc-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--white10); border: 1px solid var(--white30); transition: background .2s, border-color .2s; }
+.fc-dot.active { background: var(--gold); border-color: var(--gold); }
 .fc-day {
-  flex-shrink: 0;
-  width: 130px;
   background: var(--white10);
   border-radius: var(--radius-sm);
-  padding: 14px 12px;
+  padding: 8px 4px;
   text-align: center;
   border: 1px solid transparent;
   border-top: 3px solid transparent;
+  min-width: 0;
 }
 .fc-day.best {
   background: var(--gold-faint);
   border-color: var(--gold-border);
   border-top-color: var(--gold);
 }
-.fc-day-name { font-size: 11px; font-weight: 700; color: var(--white30); text-transform: uppercase; letter-spacing: .08em; }
-.fc-day-date { font-size: 13px; font-weight: 600; color: var(--white60); margin-bottom: 6px; }
-.fc-icon { font-size: 26px; margin: 6px 0; }
+.fc-day-name { font-size: 8.5px; font-weight: 700; color: var(--white30); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fc-day-date { font-size: 10.5px; font-weight: 600; color: var(--white60); margin-bottom: 2px; }
+.fc-icon { font-size: 19px; margin: 3px 0; }
 .fc-bft {
   font-family: 'Figtree', sans-serif;
-  font-size: 28px;
+  font-size: 19px;
   font-weight: 700;
   line-height: 1;
 }
-.fc-bft-sub { font-size: 11px; color: var(--white30); margin-top: 1px; }
-.fc-detail-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-top: 1px solid var(--white10); margin-top: 4px; }
-.fc-detail-lbl { font-size: 10px; color: var(--white30); }
-.fc-detail-val { font-size: 11px; font-weight: 600; color: var(--white60); }
-.fc-cond { font-size: 11px; font-weight: 700; margin-top: 6px; padding: 3px 8px; border-radius: 20px; display: inline-block; }
+.fc-bft-sub { font-size: 8px; color: var(--white30); margin-top: 0; }
+.fc-detail-row { display: flex; flex-direction: column; align-items: center; padding: 3px 0; border-top: 1px solid var(--white10); margin-top: 3px; gap: 1px; }
+.fc-detail-lbl { font-size: 7.5px; color: var(--white30); }
+.fc-detail-val { font-size: 9.5px; font-weight: 600; color: var(--white60); }
+.fc-cond { font-size: 8px; font-weight: 700; margin-top: 3px; padding: 2px 5px; border-radius: 20px; display: inline-block; }
 
-/* En pantallas mas anchas que un movil (PC/tablet viendo la version movil),
-   se muestran los 5 dias en fila sin necesidad de scroll horizontal.
-   Por debajo de 481px (moviles reales) se mantiene el scroll original. */
-@media (min-width: 481px) {
-  .fc-scroll {
-    overflow-x: visible;
-  }
-  .fc-day {
-    flex: 1 1 0;
-    width: auto;
-    min-width: 0;
-    padding: 14px 6px;
-  }
-  .fc-icon { font-size: 22px; }
-  .fc-bft { font-size: 22px; }
+.fc-day-mini {
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--radius-sm);
+  padding: 8px 3px;
+  text-align: center;
+  border: 1px dashed var(--white30);
+  opacity: 0.85;
+  min-width: 0;
 }
+.fc-day-mini .fc-day-name { font-size: 8px; }
+.fc-day-mini .fc-day-date { font-size: 9.5px; }
+.fc-day-mini .fc-icon { font-size: 17px; margin: 2px 0; }
+.fc-day-mini .fc-bft { font-size: 15px; }
+.fc-day-mini .fc-bft-sub { font-size: 7px; }
+.fc-day-mini .fc-detail-val { font-size: 8.5px; }
+.fc-orientativo-tag { font-size: 6.5px; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-top: 4px; }
+.contraste-card { background: rgba(39,174,96,0.07); border: 1px solid rgba(39,174,96,0.3); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 10px; }
+.contraste-head { display:flex; align-items:center; gap:6px; font-size:11px; font-weight:700; color:#27AE60; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
+.contraste-dot { width:6px; height:6px; border-radius:50%; background:#27AE60; flex-shrink:0; }
+.contraste-body { font-size: 13px; color: var(--white); line-height: 1.5; }
+.contraste-sub { font-size: 11px; color: var(--white60); margin-top: 2px; }
 
 /* CALA */
 .cala-header {
@@ -780,10 +794,26 @@ body {
       </div>
     </div>
     <!-- PRONÓSTICO -->
-    <div class="section-divider">📅 Pronóstico 5 días</div>
+    <div class="section-divider">📅 Pronóstico 15 días</div>
     <div class="card" style="padding:16px 16px 12px">
-      <div class="fc-scroll" id="m-fc-grid">
-        <!-- generado por JS -->
+      <div class="fc-pager" id="m-fc-grid">
+        <!-- 3 páginas de 5 días, generadas por JS -->
+      </div>
+      <div class="fc-dots" id="m-fc-dots"></div>
+      <div style="text-align:center;font-size:10px;color:var(--white30);margin-top:6px">← desliza para ver los 15 días →</div>
+    </div>
+
+    <!-- CONTRASTE CON DATOS REALES -->
+    <div class="section-divider">🎯 Contraste con datos reales</div>
+    <div class="card">
+      <div class="contraste-card">
+        <div class="contraste-head"><span class="contraste-dot"></span>Boya Dragonera · Puertos del Estado (en vivo)</div>
+        <div class="contraste-body" id="m-boya-dragonera">Altura ola —m · Periodo —s</div>
+        <div class="contraste-sub" id="m-boya-coincide">—</div>
+      </div>
+      <div class="contraste-card" style="background:rgba(201,168,76,0.07);border-color:var(--gold-border)">
+        <div class="contraste-head" style="color:var(--gold)"><span class="contraste-dot" style="background:var(--gold)"></span>AEMET · Predicción costera Baleares (oficial)</div>
+        <div class="contraste-body" id="m-aemet-costera">—</div>
       </div>
     </div>
 
@@ -1109,60 +1139,91 @@ function applyData(d) {
     gvarEl.style.color = d.gasoil_color || '#888';
   }
 
-  // FORECAST
+  // FORECAST — genera las 15 tarjetas y las reparte en 3 páginas de 5
   const fcGrid = document.getElementById('m-fc-grid');
   if (fcGrid) {
-    fcGrid.innerHTML = '';
     const dias = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
     const hoy = new Date();
-    for (let i = 1; i <= 5; i++) {
+    const cardsHtml = [];
+    for (let i = 1; i <= 15; i++) {
+      const isMini = i >= 8;
       const bft = d['forecast_day'+i+'_beaufort'] || 0;
-      const cls = d['weekly_day'+i+'_class'] === 'best' ? 'fc-day best' : 'fc-day';
       const color = bft <= 2 ? 'var(--green)' : bft <= 3 ? 'var(--gold)' : 'var(--red)';
-      const cond = bft <= 1 ? 'Calma' : bft <= 2 ? 'Brisa' : bft <= 3 ? 'Suave' : bft <= 4 ? 'Moderada' : 'Fuerte';
       const dNav = new Date(hoy); dNav.setDate(hoy.getDate() + i);
       const dayLbl = d['forecast_day'+i+'_day'] || dias[dNav.getDay()];
       const dateLbl = d['forecast_day'+i+'_date'] || (dNav.getDate()+'/'+(dNav.getMonth()+1));
-      const star = d['weekly_day'+i+'_class'] === 'best' ? '⭐ ' : '';
-      const condBg5 = bft<=2?'rgba(39,174,96,.12)':bft<=3?'rgba(232,160,32,.12)':'rgba(231,76,60,.12)';
-      fcGrid.innerHTML += `
-        <div class="${cls}" style="border-top-color:${color}">
-          <div class="fc-day-name">${star}${dayLbl}</div>
-          <div class="fc-day-date">${dateLbl}</div>
-          <div class="fc-icon">${d['forecast_day'+i+'_icon'] || '☀️'}</div>
-          <div class="fc-bft" style="color:${color}">${bft || '—'}</div>
-          <div class="fc-bft-sub">Beaufort</div>
-          <div class="fc-cond" style="color:${color};background:${condBg5}">${cond}</div>
-          <div class="fc-dir-row">
-            <span class="fc-detail-lbl">💨 Dir</span>
-            <div style="display:flex;align-items:center;gap:4px">
-              <div class="fc-compass">
-                <div class="fc-compass-n">N</div>
-                <div class="fc-compass-arr" style="transform:rotate(${(function(){var cd={N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337,SO:225,O:270,NO:315,SSO:202,OSO:247,ONO:292,NNO:337};return ((cd[((d['forecast_day'+i+'_wind_dir']||'N')).toUpperCase()]||0)+180)})()}deg)"></div>
-              </div>
-              <span class="fc-detail-val">${d['forecast_day'+i+'_wind_dir']||'—'}</span>
+      const olas = d['forecast_day'+i+'_olas_m']!=null?vOlas(d['forecast_day'+i+'_olas_m']):'—';
+      if (!isMini) {
+        const cls = d['weekly_day'+i+'_class'] === 'best' ? 'fc-day best' : 'fc-day';
+        const cond = bft <= 1 ? 'Calma' : bft <= 2 ? 'Brisa' : bft <= 3 ? 'Suave' : bft <= 4 ? 'Moderada' : 'Fuerte';
+        const star = d['weekly_day'+i+'_class'] === 'best' ? '⭐' : '';
+        const condBg5 = bft<=2?'rgba(39,174,96,.12)':bft<=3?'rgba(232,160,32,.12)':'rgba(231,76,60,.12)';
+        const presion = d['forecast_day'+i+'_presion_hpa'];
+        const presTend = d['forecast_day'+i+'_presion_tendencia'] || '→';
+        cardsHtml.push(`
+          <div class="${cls}" style="border-top-color:${color}">
+            <div class="fc-day-name">${star} ${dayLbl}</div>
+            <div class="fc-day-date">${dateLbl}</div>
+            <div class="fc-icon">${d['forecast_day'+i+'_icon'] || '☀️'}</div>
+            <div class="fc-bft" style="color:${color}">${bft || '—'}</div>
+            <div class="fc-bft-sub">Bft ${d['forecast_day'+i+'_wind_dir']||''}</div>
+            <div class="fc-cond" style="color:${color};background:${condBg5}">${cond}</div>
+            <div class="fc-detail-row">
+              <span class="fc-detail-lbl">🌡️</span>
+              <span class="fc-detail-val">${d['forecast_day'+i+'_temp'] || '—'}°C</span>
             </div>
-          </div>
-          <div class="fc-detail-row">
-            <span class="fc-detail-lbl">🌡️ Temp</span>
-            <span class="fc-detail-val">${d['forecast_day'+i+'_temp'] || '—'}°C</span>
-          </div>
-          <div class="fc-detail-row">
-            <span class="fc-detail-lbl">🌧️ Lluvia</span>
-            <span class="fc-detail-val">${d['forecast_day'+i+'_lluvia_pct']!=null?d['forecast_day'+i+'_lluvia_pct']:'—'}%</span>
-          </div>
-          <div class="fc-detail-row">
-            <span class="fc-detail-lbl">🌊 Olas</span>
-            <span class="fc-detail-val">${d['forecast_day'+i+'_olas_m']!=null?vOlas(d['forecast_day'+i+'_olas_m']):'—'}m</span>
-          </div>
-          <div class="fc-detail-row">
-            <span class="fc-detail-lbl">💨 Ráfaga</span>
-            <span class="fc-detail-val">${d['forecast_day'+i+'_rafaga_bft']!=null?d['forecast_day'+i+'_rafaga_bft']:'—'} Bft</span>
-          </div>
-          <div style="text-align:center;font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.04em;margin-top:5px">${d['forecast_day'+i+'_ventana']||''}</div>
-        </div>`;
+            <div class="fc-detail-row">
+              <span class="fc-detail-lbl">🌊 Olas</span>
+              <span class="fc-detail-val">${olas}m</span>
+            </div>
+            <div class="fc-detail-row">
+              <span class="fc-detail-lbl">🔵 Presión</span>
+              <span class="fc-detail-val">${presion || '—'} ${presTend}</span>
+            </div>
+          </div>`);
+      } else {
+        cardsHtml.push(`
+          <div class="fc-day-mini">
+            <div class="fc-day-name">${dayLbl}</div>
+            <div class="fc-day-date">${dateLbl}</div>
+            <div class="fc-icon">${d['forecast_day'+i+'_icon'] || '☀️'}</div>
+            <div class="fc-bft" style="color:${color}">${bft || '—'}</div>
+            <div class="fc-bft-sub">${d['forecast_day'+i+'_wind_dir']||''}</div>
+            <div class="fc-detail-row">
+              <span class="fc-detail-lbl">🌊</span>
+              <span class="fc-detail-val">${olas}m</span>
+            </div>
+            <div class="fc-orientativo-tag">orientativo</div>
+          </div>`);
+      }
+    }
+    // 3 páginas de 5 tarjetas — 2 deslizamientos para ver los 15 días
+    let pagesHtml = '';
+    for (let p = 0; p < 3; p++) {
+      pagesHtml += `<div class="fc-page">${cardsHtml.slice(p*5, p*5+5).join('')}</div>`;
+    }
+    fcGrid.innerHTML = pagesHtml;
+
+    // Puntos indicadores de página, sincronizados con el deslizamiento
+    const dotsWrap = document.getElementById('m-fc-dots');
+    if (dotsWrap) {
+      dotsWrap.innerHTML = [0,1,2].map(i => `<div class="fc-dot${i===0?' active':''}"></div>`).join('');
+      const dots = dotsWrap.querySelectorAll('.fc-dot');
+      fcGrid.addEventListener('scroll', function() {
+        const page = Math.round(fcGrid.scrollLeft / fcGrid.clientWidth);
+        dots.forEach((dot, idx) => dot.classList.toggle('active', idx === page));
+      }, { passive: true });
     }
   }
+
+  // CONTRASTE CON DATOS REALES
+  setText('m-boya-dragonera', 'Altura ola ' + (d.boya_dragonera_hs||'—') + 'm · Periodo ' + (d.boya_dragonera_periodo||'—') + 's');
+  const boyaCoincideEl = document.getElementById('m-boya-coincide');
+  if (boyaCoincideEl) {
+    boyaCoincideEl.textContent = d.boya_dragonera_coincide ? '✓ Coincide con nuestra previsión' : '⚠ Difiere de nuestra previsión';
+    boyaCoincideEl.style.color = d.boya_dragonera_coincide ? '#27AE60' : '#E8A020';
+  }
+  setText('m-aemet-costera', d.aemet_costera_resumen || '—');
 
   // CALA + AIS
   var navLbl = document.getElementById('m-nav-lbl');
