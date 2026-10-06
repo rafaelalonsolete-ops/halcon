@@ -546,6 +546,10 @@ body {
 .fc-compass-n{position:absolute;top:1px;left:50%;transform:translateX(-50%);font-size:6px;font-weight:800;color:#C9A84C;line-height:1}
 .fc-compass-arr{width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-bottom:11px solid #C9A84C;transform-origin:50% 75%}
 .fc-dir-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-top:1px solid rgba(255,255,255,.10);margin-top:4px}
+
+  .fc-compass{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(201,168,76,.5);position:relative;display:flex;align-items:center;justify-content:center;margin:5px auto 2px;background:rgba(255,255,255,.05)}
+  .fc-compass-n{position:absolute;top:1px;left:50%;transform:translateX(-50%);font-size:7px;font-weight:800;color:var(--gold,#C9A84C);line-height:1}
+  .fc-compass-arr{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:13px solid var(--gold,#C9A84C);transform-origin:50% 75%}
 </style>
 </head>
 <body>
@@ -1033,6 +1037,12 @@ body {
 </div>
 
 <script>
+
+// ── Dirección del viento: flecha hacia donde sopla ──
+const WIND_DEG={N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337,NNO:337,NO:315,ONO:292,O:270,OSO:247,SO:225,SSO:202};
+function windDeg(dir){var k=String(dir||'').trim().toUpperCase();return (k in WIND_DEG)?(WIND_DEG[k]+180)%360:null;}
+function windChar(dir){var g=windDeg(dir);if(g===null)return '';var a=['↑','↗','→','↘','↓','↙','←','↖'];return a[Math.round(g/45)%8];}
+function windCompass(dir,cls){var g=windDeg(dir);if(g===null)return '';return '<div class="'+cls+'"><div class="'+cls+'-n">N</div><div class="'+cls+'-arr" style="transform:rotate('+g+'deg)"></div></div>';}
 function setText(id, val) {
   const el = document.getElementById(id);
   if (el) el.textContent = (val !== null && val !== undefined && val !== '') ? val : '—';
@@ -1167,6 +1177,7 @@ function applyData(d) {
             <div class="fc-icon">${d['forecast_day'+i+'_icon'] || '☀️'}</div>
             <div class="fc-bft" style="color:${color}">${bft || '—'}</div>
             <div class="fc-bft-sub">Bft ${d['forecast_day'+i+'_wind_dir']||''}</div>
+            ${windCompass(d['forecast_day'+i+'_wind_dir'],'fc-compass')}
             <div class="fc-cond" style="color:${color};background:${condBg5}">${cond}</div>
             <div class="fc-detail-row">
               <span class="fc-detail-lbl">🌡️</span>
@@ -1188,7 +1199,7 @@ function applyData(d) {
             <div class="fc-day-date">${dateLbl}</div>
             <div class="fc-icon">${d['forecast_day'+i+'_icon'] || '☀️'}</div>
             <div class="fc-bft" style="color:${color}">${bft || '—'}</div>
-            <div class="fc-bft-sub">${d['forecast_day'+i+'_wind_dir']||''}</div>
+            <div class="fc-bft-sub">${windChar(d['forecast_day'+i+'_wind_dir'])} ${d['forecast_day'+i+'_wind_dir']||''}</div>
             <div class="fc-detail-row">
               <span class="fc-detail-lbl">🌊</span>
               <span class="fc-detail-val">${olas}m</span>
