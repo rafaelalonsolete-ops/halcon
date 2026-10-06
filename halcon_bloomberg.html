@@ -379,6 +379,12 @@
 </div>
 
 <script>
+
+// ── Dirección del viento: flecha hacia donde sopla ──
+const WIND_DEG={N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337,NNO:337,NO:315,ONO:292,O:270,OSO:247,SO:225,SSO:202};
+function fcWindDeg(dir){var k=String(dir||'').trim().toUpperCase();return (k in WIND_DEG)?(WIND_DEG[k]+180)%360:null;}
+function windChar(dir){var g=fcWindDeg(dir);if(g===null)return '';var a=['↑','↗','→','↘','↓','↙','←','↖'];return a[Math.round(g/45)%8];}
+function windCompass(dir,cls){var g=fcWindDeg(dir);if(g===null)return '';return '<div class="'+cls+'"><div class="'+cls+'-n">N</div><div class="'+cls+'-arr" style="transform:rotate('+g+'deg)"></div></div>';}
 // ── RELOJ ──────────────────────────────────────────────
 function updateClock() {
   const now = new Date();
@@ -442,7 +448,7 @@ function renderForecast(d) {
         <div class="fc-date">${dateLbl5}</div>
         <div class="fc-icon" style="margin:2px 0">${d['forecast_day'+i+'_icon']||'☀️'}</div>
         <div class="fc-bft" style="color:${bColor5}">${d['forecast_day'+i+'_beaufort']||'—'} Bft</div>
-        <div class="fc-dir">${d['forecast_day'+i+'_wind_dir']||''} · ${d['forecast_day'+i+'_temp']||'—'}°C</div>
+        ${windCompass(d['forecast_day'+i+'_wind_dir'],'fc-compass')}<div class="fc-dir">${d['forecast_day'+i+'_wind_dir']||''} · ${d['forecast_day'+i+'_temp']||'—'}°C</div>
         <div class="fc-extra">🌊 ${d['forecast_day'+i+'_olas_m']!=null?vOlas(d['forecast_day'+i+'_olas_m']):'—'}m</div>
         <div class="fc-extra">🔵 ${d['forecast_day'+i+'_presion_hpa']||'—'} ${presTend5}</div>
       </div>`;
@@ -466,7 +472,7 @@ function renderForecastMini(d) {
         <div class="m-day">${dayLbl} ${dateLbl}</div>
         <div class="m-icon">${d['forecast_day'+i+'_icon']||'☀️'}</div>
         <div class="m-bft" style="color:${bColor}">${d['forecast_day'+i+'_beaufort']||'—'}</div>
-        <div class="m-dir">${d['forecast_day'+i+'_wind_dir']||''} · 🌊${d['forecast_day'+i+'_olas_m']!=null?vOlas(d['forecast_day'+i+'_olas_m']):'—'}m</div>
+        <div class="m-dir">${windChar(d['forecast_day'+i+'_wind_dir'])} ${d['forecast_day'+i+'_wind_dir']||''} · 🌊${d['forecast_day'+i+'_olas_m']!=null?vOlas(d['forecast_day'+i+'_olas_m']):'—'}m</div>
       </div>`;
   }
 }
