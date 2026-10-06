@@ -180,6 +180,22 @@
   @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
   .pulse{animation:pulse 1s infinite}
+
+  /* 15 días completos, escalados a la pantalla */
+  .panel-fc .fc-grid-wrap{--u:clamp(6.5px,min(.38vw,.76vh),14px)}
+  .fc-grid-full{grid-template-columns:repeat(8,1fr);gap:calc(var(--u)*.5)}
+  .fc-grid-full .fcard{padding:calc(var(--u)*.7) calc(var(--u)*.3);gap:calc(var(--u)*.15)}
+  .fc-grid-full .fcard.best::before{display:none}
+  .fc-grid-full .fc-day{font-size:calc(var(--u)*.95)}
+  .fc-grid-full .fc-date{font-size:calc(var(--u)*1.7)}
+  .fc-grid-full .fc-icon{font-size:calc(var(--u)*2.3)}
+  .fc-grid-full .fc-bft{font-size:calc(var(--u)*1.9)}
+  .fc-grid-full .fc-dir{font-size:calc(var(--u)*1.1)}
+  .fc-grid-full .fc-compass{width:calc(var(--u)*3);height:calc(var(--u)*3);margin:calc(var(--u)*.2) auto}
+  .fc-grid-full .fc-compass-n{font-size:calc(var(--u)*.7)}
+  .fc-grid-full .fc-compass-arr{border-left-width:calc(var(--u)*.4);border-right-width:calc(var(--u)*.4);border-bottom-width:calc(var(--u)*1.2)}
+  .fc-grid-full .fc-extra{font-size:calc(var(--u)*1.05)}
+  .fc-subrow-lbl.mini,#fc-grid-mini{display:none}
 </style>
 </head>
 <body>
@@ -294,7 +310,7 @@
   <div class="panel panel-fc">
     <div class="fc-grid-wrap">
       <div class="panel-lbl">📅 Pronóstico extendido · 15 días</div>
-      <div class="fc-subrow-lbl">1-7 días · detalle completo</div>
+      <div class="fc-subrow-lbl">15 días · detalle completo · días 9-15 orientativos</div>
       <div class="fc-grid-full" id="fc-grid"></div>
       <div class="fc-subrow-lbl mini">8-15 días · tendencia orientativa</div>
       <div class="fc-grid-mini" id="fc-grid-mini"></div>
@@ -432,11 +448,12 @@ function renderForecast(d) {
   if (!grid) return;
   grid.innerHTML = '';
   var hoy = new Date();
-  for (let i = 1; i <= 7; i++) {
-    var cls5 = d['weekly_day'+i+'_class'] === 'best' ? 'fcard best' : 'fcard';
+  for (let i = 1; i <= 15; i++) {
     var bft5 = parseInt(d['forecast_day'+i+'_beaufort'])||0;
+    var isBest5 = i<=7 ? d['weekly_day'+i+'_class']==='best' : (bft5>0 && bft5<=1);
+    var cls5 = isBest5 ? 'fcard best' : 'fcard';
     var bColor5 = bft5<=2?'#27AE60':bft5<=3?'#E8A020':'#C0392B';
-    var star5 = d['weekly_day'+i+'_class']==='best'?'⭐ ':'';
+    var star5 = isBest5?'⭐ ':'';
     var diaNav5=new Date(hoy);diaNav5.setDate(hoy.getDate()+i);
     var diasES5=['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
     var dayLbl5=d['forecast_day'+i+'_day']||diasES5[diaNav5.getDay()];
