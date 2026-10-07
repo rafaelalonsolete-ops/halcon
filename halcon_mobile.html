@@ -1156,7 +1156,7 @@ function applyData(d) {
     const hoy = new Date();
     const cardsHtml = [];
     for (let i = 1; i <= 15; i++) {
-      const isMini = i >= 8;
+      const isMini = false; // los 15 días con tarjeta completa
       const bft = d['forecast_day'+i+'_beaufort'] || 0;
       const color = bft <= 2 ? 'var(--green)' : bft <= 3 ? 'var(--gold)' : 'var(--red)';
       const dNav = new Date(hoy); dNav.setDate(hoy.getDate() + i);
@@ -1164,9 +1164,10 @@ function applyData(d) {
       const dateLbl = d['forecast_day'+i+'_date'] || (dNav.getDate()+'/'+(dNav.getMonth()+1));
       const olas = d['forecast_day'+i+'_olas_m']!=null?vOlas(d['forecast_day'+i+'_olas_m']):'—';
       if (!isMini) {
-        const cls = d['weekly_day'+i+'_class'] === 'best' ? 'fc-day best' : 'fc-day';
+        const isBest = d['weekly_day'+i+'_class'] === 'best' || (bft > 0 && bft <= 1);
+        const cls = isBest ? 'fc-day best' : 'fc-day';
         const cond = bft <= 1 ? 'Calma' : bft <= 2 ? 'Brisa' : bft <= 3 ? 'Suave' : bft <= 4 ? 'Moderada' : 'Fuerte';
-        const star = d['weekly_day'+i+'_class'] === 'best' ? '⭐' : '';
+        const star = isBest ? '⭐' : '';
         const condBg5 = bft<=2?'rgba(39,174,96,.12)':bft<=3?'rgba(232,160,32,.12)':'rgba(231,76,60,.12)';
         const presion = d['forecast_day'+i+'_presion_hpa'];
         const presTend = d['forecast_day'+i+'_presion_tendencia'] || '→';
@@ -1191,6 +1192,7 @@ function applyData(d) {
               <span class="fc-detail-lbl">🔵 Presión</span>
               <span class="fc-detail-val">${presion || '—'} ${presTend}</span>
             </div>
+            ${i >= 9 ? '<div class="fc-orientativo-tag">orientativo</div>' : ''}
           </div>`);
       } else {
         cardsHtml.push(`
