@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HALCÓN · Histórico de partes</title>
+<link rel="icon" href="favicon.ico?v=2">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#17304F;--bg:#F3F6FA;--ink:#1A2433;--muted:#55627A;--line:#D5DCE8;--green:#2E7D32;--amber:#B7791F;--red:#B3261E;--gold:#8A6A12}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Figtree',sans-serif;max-width:480px;margin-inline:auto;min-height:100vh}
+header{background:var(--navy);color:#fff;padding:16px 16px 14px}
+header h1{margin:0;font-size:19px;font-weight:700}
+header .sub{font-size:12.5px;color:#C9D6EA;margin-top:2px}
+header a{color:#fff;font-size:13px;font-weight:600;text-decoration:none;float:right;margin-top:2px}
+main{padding:14px 14px 40px;display:flex;flex-direction:column;gap:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.tiles{display:flex;gap:8px}
+.tile{flex:1;background:var(--bg);border-radius:10px;padding:8px 10px}
+.tile .k{font-size:10.5px;font-weight:600;letter-spacing:.06em;color:var(--muted)}
+.tile .v{font-size:19px;font-weight:700;color:var(--navy);margin-top:1px}
+h2{margin:0 0 8px;font-size:14px;color:var(--navy)}
+.chart{height:116px;border-bottom:1px solid var(--line);display:flex;align-items:flex-end;gap:4px}
+.bar{flex:1;border-radius:4px 4px 0 0;min-height:4px;cursor:pointer;border:0;padding:0}
+.axis{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px}
+.legend{display:flex;gap:12px;font-size:12px;color:var(--muted);margin-top:8px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #E8EDF4;font-size:13.5px;width:100%;background:none;border-left:0;border-right:0;border-top:0;font-family:inherit;color:inherit;text-align:left;cursor:pointer}
+.row:last-child{border-bottom:0}
+.row .d{width:52px;font-weight:700}
+.row .dot{width:12px;height:12px;border-radius:50%;flex:none}
+.row .dec{width:92px;font-weight:600}
+.row .meta{flex:1;color:#3F4B62;font-size:13px}
+.row .go{color:var(--navy);font-weight:600;font-size:13px}
+.empty{padding:22px 8px;text-align:center;color:var(--muted);font-size:14px;line-height:1.45}
+.note{font-size:12px;color:var(--muted);line-height:1.4}
+#modal{position:fixed;inset:0;background:rgba(23,48,79,.55);display:none;align-items:flex-end;justify-content:center;z-index:9}
+#modal.on{display:flex}
+#sheet{background:#fff;width:100%;max-width:480px;max-height:85vh;overflow:auto;border-radius:18px 18px 0 0;padding:18px 16px 28px}
+#sheet h3{margin:0 0 4px;font-size:18px;color:var(--navy)}
+#sheet .line{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid #E8EDF4;font-size:14px}
+#sheet .line b{width:112px;flex:none;color:var(--muted);font-weight:600;font-size:12.5px;padding-top:1px}
+#sheet button{margin-top:16px;width:100%;background:var(--navy);color:#fff;border:0;border-radius:10px;padding:12px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer}
+</style>
+</head>
+<body>
+<header>
+<a href="halcon_mobile.html">← Parte de hoy</a>
+<h1>Histórico de partes</h1>
+<div class="sub">Puerto de Andratx · Amarre 263</div>
+</header>
+<main id="app"><div class="card empty">Cargando…</div></main>
+
+<div id="modal"><div id="sheet"></div></div>
+
+<script>
+var MESES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function num(x){var n=parseFloat(String(x).replace(',','.'));return isNaN(n)?null:n}
+function nombreDia(iso){var p=iso.split('-');return parseInt(p[2],10)+' '+MESES[parseInt(p[1],10)-1]}
+function color(e){
+  var s=String((e.semaforo||'')+' '+(e.decision||'')).toUpperCase();
+  if(s.indexOf('ROJ')>-1||s.indexOf('NO SALIR')>-1)return {c:'var(--red)',t:'NO SALIR',k:'r'};
+  if(s.indexOf('AMAR')>-1||s.indexOf('PRECAU')>-1)return {c:'var(--amber)',t:'PRECAUCIÓN',k:'a'};
+  return {c:'var(--green)',t:'SALIR',k:'g'};
+}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function load(){
+  fetch('historico.json?t='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json()}).then(draw).catch(function(){
+    document.getElementById('app').innerHTML='<div class="card empty">Todavía no hay histórico.<br>Aparecerá a partir del próximo parte de las 9:00.</div>';
+  });
+}
+function draw(all){
+  var by={};all.forEach(function(e){if(e&&e.d)by[e.d]=e});
+  var days=Object.keys(by).sort().slice(-14).map(function(k){return by[k]});
+  if(!days.length){document.getElementById('app').innerHTML='<div class="card empty">Todavía no hay histórico.</div>';return}
+  var salir=days.filter(function(e){return color(e).k==='g'}).length;
+  var bf=days.map(function(e){return num(e.bft)}).filter(function(x){return x!==null});
+  var media=bf.length?(bf.reduce(function(a,b){return a+b},0)/bf.length):null;
+  var mejor=null;days.forEach(function(e){var b=num(e.bft);if(color(e).k==='g'&&b!==null&&(mejor===null||b<mejor.b))mejor={b:b,d:e.d}});
+  var h='<div class="card"><div class="tiles">'
+   +'<div class="tile"><div class="k">DÍAS PARA SALIR</div><div class="v" style="color:var(--green)">'+salir+' de '+days.length+'</div></div>'
+   +'<div class="tile"><div class="k">VIENTO MEDIO</div><div class="v">'+(media===null?'–':media.toFixed(1).replace('.',',')+' Bft')+'</div></div>'
+   +'<div class="tile"><div class="k">MEJOR DÍA</div><div class="v">'+(mejor?nombreDia(mejor.d):'–')+'</div></div>'
+   +'</div></div>';
+  h+='<div class="card"><h2>Viento de cada día y decisión</h2><div class="chart">';
+  days.forEach(function(e){var b=num(e.bft)||0;var hh=Math.max(4,Math.round(b*16));
+    h+='<button class="bar" data-d="'+esc(e.d)+'" style="height:'+hh+'px;background:'+color(e).c+'" aria-label="'+esc(nombreDia(e.d))+', '+b+' Bft"></button>'});
+  h+='</div><div class="axis"><span>'+nombreDia(days[0].d)+'</span><span>'+nombreDia(days[days.length-1].d)+'</span></div>'
+   +'<div class="legend"><span><i style="background:var(--green)"></i>Salir</span><span><i style="background:var(--amber)"></i>Precaución</span><span><i style="background:var(--red)"></i>No salir</span></div></div>';
+  h+='<div class="card"><h2>Día a día</h2>';
+  days.slice().reverse().forEach(function(e){var c=color(e);
+    h+='<button class="row" data-d="'+esc(e.d)+'"><span class="d">'+nombreDia(e.d)+'</span><span class="dot" style="background:'+c.c+'"></span><span class="dec">'+c.t+'</span>'
+     +'<span class="meta">'+esc(e.dir||'')+' '+esc(e.bft||'–')+' Bft · ola '+esc(e.olas||'–')+' m</span><span class="go">Abrir</span></button>'});
+  h+='</div><div class="note">Se guarda un parte cada día a las 9:00. El histórico empieza el día en que se activó.</div>';
+  document.getElementById('app').innerHTML=h;
+  document.getElementById('app').onclick=function(ev){var t=ev.target.closest('[data-d]');if(t)openDay(t.getAttribute('data-d'),by[t.getAttribute('data-d')])};
+}
+var CAMPOS=[['decision','Decisión'],['semaforo_razon','Por qué'],['motivo','Motivo'],['ventana_descripcion','Ventana'],['viento_dir','Dirección viento'],['viento_bft','Viento (Bft)'],['olas_m','Olas (m)'],['temp_c','Temperatura (°C)'],['uv_index','UV'],['travesia_recomendada','Travesía'],['cala_recomendada','Cala']];
+function openDay(d,res){
+  var s=document.getElementById('sheet');
+  s.innerHTML='<h3>Parte del '+nombreDia(d)+'</h3><div class="note">Cargando…</div>';
+  document.getElementById('modal').classList.add('on');
+  fetch('data/'+d+'.json?t='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){
+    var h='<h3>Parte del '+nombreDia(d)+'</h3>';
+    CAMPOS.forEach(function(c){if(j[c[0]]!=null&&j[c[0]]!=='')h+='<div class="line"><b>'+c[1]+'</b><span>'+esc(j[c[0]])+'</span></div>'});
+    s.innerHTML=h+'<button id="x">Cerrar</button>';document.getElementById('x').onclick=close;
+  }).catch(function(){
+    var h='<h3>Parte del '+nombreDia(d)+'</h3><div class="note">El parte completo de este día no está disponible. Resumen:</div>';
+    CAMPOS.slice(4).forEach(function(c){});
+    h+='<div class="line"><b>Decisión</b><span>'+esc(res.decision)+'</span></div><div class="line"><b>Viento</b><span>'+esc(res.dir)+' '+esc(res.bft)+' Bft</span></div><div class="line"><b>Olas</b><span>'+esc(res.olas)+' m</span></div>';
+    s.innerHTML=h+'<button id="x">Cerrar</button>';document.getElementById('x').onclick=close;
+  });
+}
+function close(){document.getElementById('modal').classList.remove('on')}
+document.getElementById('modal').onclick=function(e){if(e.target.id==='modal')close()};
+load();
+</script>
+</body>
+</html>
