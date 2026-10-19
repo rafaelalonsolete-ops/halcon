@@ -1190,7 +1190,7 @@ function applyData(d) {
             </div>
             <div class="fc-detail-row">
               <span class="fc-detail-lbl">🔵 Presión</span>
-              <span class="fc-detail-val">${presion || '—'} ${presTend}</span>
+              <span class="fc-detail-val" style="color:${presTend.indexOf('↑')>-1?'#27AE60':presTend.indexOf('↓')>-1?'#E74C3C':'#E8A020'};font-weight:700">${presion || '—'} ${presTend}</span>
             </div>
             ${i >= 9 ? '<div class="fc-orientativo-tag">orientativo</div>' : ''}
           </div>`);
