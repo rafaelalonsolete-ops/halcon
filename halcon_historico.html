@@ -44,6 +44,16 @@ h2{margin:0 0 8px;font-size:14px;color:var(--navy)}
 #sheet .line{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid #E8EDF4;font-size:14px}
 #sheet .line b{width:112px;flex:none;color:var(--muted);font-weight:600;font-size:12.5px;padding-top:1px}
 #sheet button{margin-top:16px;width:100%;background:var(--navy);color:#fff;border:0;border-radius:10px;padding:12px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer}
+
+.acc-sum{display:flex;gap:8px;margin-bottom:10px}
+table.acc{width:100%;border-collapse:collapse;font-size:12.5px}
+table.acc th{font-size:10.5px;font-weight:600;letter-spacing:.04em;color:var(--muted);text-align:left;padding:4px 4px 6px;border-bottom:1px solid var(--line)}
+table.acc td{padding:8px 4px;border-bottom:1px solid #E8EDF4;vertical-align:middle}
+table.acc tr:last-child td{border-bottom:0}
+.chip{display:inline-block;border-radius:999px;padding:2px 8px;font-weight:700;font-size:12px;white-space:nowrap}
+.chip.g{background:#E3F1E4;color:var(--green)}.chip.a{background:#FBEFD5;color:var(--amber)}.chip.r{background:#F8E1DF;color:var(--red)}.chip.n{background:#EEF1F6;color:var(--muted)}
+.ok{color:var(--green);font-weight:700}.ko{color:var(--red);font-weight:700}
+.scroll{overflow-x:auto}
 </style>
 </head>
 <body>
@@ -96,6 +106,7 @@ function draw(all){
      +'<span class="meta">'+esc(e.dir||'')+' '+esc(e.bft||'–')+' Bft · ola '+esc(e.olas||'–')+' m</span><span class="go">Abrir</span></button>'});
   h+='</div><div class="note">Se guarda un parte cada día a las 9:00. El histórico empieza el día en que se activó.</div>';
   document.getElementById('app').innerHTML=h;
+  acierto(all);
   document.getElementById('app').onclick=function(ev){var t=ev.target.closest('[data-d]');if(t)openDay(t.getAttribute('data-d'),by[t.getAttribute('data-d')])};
 }
 var CAMPOS=[['decision','Decisión'],['semaforo_razon','Por qué'],['motivo','Motivo'],['ventana_descripcion','Ventana'],['viento_dir','Dirección viento'],['viento_bft','Viento (Bft)'],['olas_m','Olas (m)'],['temp_c','Temperatura (°C)'],['uv_index','UV'],['travesia_recomendada','Travesía'],['cala_recomendada','Cala']];
@@ -116,6 +127,61 @@ function openDay(d,res){
 }
 function close(){document.getElementById('modal').classList.remove('on')}
 document.getElementById('modal').onclick=function(e){if(e.target.id==='modal')close()};
+
+function fmt1(x){return x.toFixed(1).replace('.',',')}
+function isoD(y,m,d){return y+'-'+('0'+m).slice(-2)+'-'+('0'+d).slice(-2)}
+function targetISO(d0,ddmm){var q=String(ddmm||'').split('/');if(q.length<2)return null;var p=d0.split('-');var y=+p[0],m=+q[1],d=+q[0];if(!m||!d)return null;if(m<+p[1]-6)y++;return isoD(y,m,d)}
+function between(a,b){var pa=a.split('-'),pb=b.split('-');return Math.round((Date.UTC(+pb[0],+pb[1]-1,+pb[2])-Date.UTC(+pa[0],+pa[1]-1,+pa[2]))/86400000)}
+function lvl(p){return p>=75?['g','Bueno']:p>=50?['a','Regular']:['r','Flojo']}
+function hLabel(h){return h===0?'Mismo día':h===1?'Mañana':'A '+h+' días'}
+function acierto(all){
+  var by={};all.forEach(function(e){if(e&&e.d)by[e.d]=e});
+  var dates=Object.keys(by).sort().slice(-30);
+  var box=document.createElement('div');box.className='card';box.innerHTML='<h2>¿Cuánto acierta el parte?</h2><div class="note">Calculando…</div>';
+  document.getElementById('app').appendChild(box);
+  Promise.all(dates.map(function(d){return fetch('data/'+d+'.json?t='+Date.now()).then(function(r){return r.ok?r.json():null}).catch(function(){return null})})).then(function(files){
+    var pairs=[];
+    files.forEach(function(f,i){if(!f)return;var d0=dates[i];
+      for(var n=1;n<=8;n++){
+        var t=targetISO(d0,f['forecast_day'+n+'_date']);if(!t||!by[t])continue;
+        var h=between(d0,t);if(h<0)continue;
+        pairs.push({h:h,d0:d0,t:t,fb:num(f['forecast_day'+n+'_beaufort']),fo:num(f['forecast_day'+n+'_olas_m']),rb:num(by[t].bft),ro:num(by[t].olas)});
+      }});
+    var agg={};
+    pairs.forEach(function(p){var a=agg[p.h]||(agg[p.h]={nW:0,okW:0,eW:0,nO:0,okO:0,eO:0,n:0});a.n++;
+      if(p.fb!==null&&p.rb!==null){a.nW++;var e=Math.abs(p.fb-p.rb);a.eW+=e;if(e<=1)a.okW++}
+      if(p.fo!==null&&p.ro!==null){a.nO++;var e2=Math.abs(p.fo-p.ro);a.eO+=e2;if(e2<=0.3)a.okO++}});
+    var hs=Object.keys(agg).map(Number).sort(function(a,b){return a-b});
+    if(!hs.length){box.innerHTML='<h2>¿Cuánto acierta el parte?</h2><div class="empty">Todavía no hay comparaciones.<br>Cada día se compara lo que el parte previó con lo que midió la boya, y esta tabla se irá llenando.</div>';return}
+    // fiabilidad hasta
+    var hasta=null,stop=false;
+    for(var k=1;k<=8&&!stop;k++){var a=agg[k];if(!a||(a.nW+a.nO)<3){stop=true;break}var pc=100*(a.okW+a.okO)/(a.nW+a.nO);if(pc>=70)hasta=k;else stop=true}
+    var tot=pairs.filter(function(p){return p.h>=1});var tp=0,tn=0;
+    tot.forEach(function(p){if(p.fb!==null&&p.rb!==null){tn++;if(Math.abs(p.fb-p.rb)<=1)tp++}if(p.fo!==null&&p.ro!==null){tn++;if(Math.abs(p.fo-p.ro)<=0.3)tp++}});
+    var glob=tn?Math.round(100*tp/tn):null;
+    var h2='<h2>¿Cuánto acierta el parte?</h2><div class="acc-sum">'
+      +'<div class="tile"><div class="k">ACIERTO GLOBAL</div><div class="v">'+(glob===null?'–':glob+' %')+'</div></div>'
+      +'<div class="tile"><div class="k">TE PUEDES FIAR</div><div class="v">'+(hasta?'hasta '+hasta+(hasta===1?' día':' días'):'–')+'</div></div>'
+      +'<div class="tile"><div class="k">COMPARACIONES</div><div class="v">'+pairs.length+'</div></div></div>';
+    h2+='<div class="scroll"><table class="acc"><tr><th>PREVISIÓN</th><th>VIENTO ±1 Bft</th><th>OLAS ±0,3 m</th><th>Nº</th></tr>';
+    hs.forEach(function(k){var a=agg[k];
+      var pw=a.nW?Math.round(100*a.okW/a.nW):null,po=a.nO?Math.round(100*a.okO/a.nO):null;
+      var cw=pw===null?'<span class="chip n">–</span>':'<span class="chip '+lvl(pw)[0]+'">'+pw+' % · '+lvl(pw)[1]+'</span><div class="note">error medio '+fmt1(a.eW/a.nW)+' Bft</div>';
+      var co=po===null?'<span class="chip n">–</span>':'<span class="chip '+lvl(po)[0]+'">'+po+' % · '+lvl(po)[1]+'</span><div class="note">error medio '+fmt1(a.eO/a.nO).replace(',',',')+' m</div>';
+      h2+='<tr><td><b>'+hLabel(k)+'</b></td><td>'+cw+'</td><td>'+co+'</td><td>'+a.n+'</td></tr>'});
+    h2+='</table></div>';
+    var rec=pairs.filter(function(p){return p.h===1}).sort(function(a,b){return a.t<b.t?1:-1}).slice(0,10);
+    if(rec.length){
+      h2+='<h2 style="margin-top:14px">Último previsto frente a lo real (el día antes)</h2><div class="scroll"><table class="acc"><tr><th>DÍA</th><th>VIENTO prev. → real</th><th>OLAS prev. → real</th></tr>';
+      rec.forEach(function(p){
+        var okw=p.fb!==null&&p.rb!==null&&Math.abs(p.fb-p.rb)<=1,oko=p.fo!==null&&p.ro!==null&&Math.abs(p.fo-p.ro)<=0.3;
+        h2+='<tr><td><b>'+nombreDia(p.t)+'</b></td><td>'+(p.fb===null||p.rb===null?'–':p.fb+' → '+p.rb+' Bft <span class="'+(okw?'ok">✓':'ko">✗')+'</span>')+'</td><td>'+(p.fo===null||p.ro===null?'–':fmt1(p.fo)+' → '+fmt1(p.ro)+' m <span class="'+(oko?'ok">✓':'ko">✗')+'</span>')+'</td></tr>'});
+      h2+='</table></div>';
+    }
+    h2+='<div class="note" style="margin-top:10px">Se compara cada previsión con lo que el parte midió ese día a las 9:00 (viento y boya de olas). Un viento «acierta» si se equivoca como mucho 1 Bft, y las olas si se equivocan como mucho 0,3 m.'+(pairs.length<15?' <b>Hay pocos datos todavía:</b> las cifras se afinarán con los días.':'')+'</div>';
+    box.innerHTML=h2;
+  });
+}
 load();
 </script>
 </body>
