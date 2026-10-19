@@ -467,7 +467,7 @@ function renderForecast(d) {
         <div class="fc-bft" style="color:${bColor5}">${d['forecast_day'+i+'_beaufort']||'—'} Bft</div>
         ${windCompass(d['forecast_day'+i+'_wind_dir'],'fc-compass')}<div class="fc-dir">${d['forecast_day'+i+'_wind_dir']||''} · ${d['forecast_day'+i+'_temp']||'—'}°C</div>
         <div class="fc-extra">🌊 ${d['forecast_day'+i+'_olas_m']!=null?vOlas(d['forecast_day'+i+'_olas_m']):'—'}m</div>
-        <div class="fc-extra">🔵 ${d['forecast_day'+i+'_presion_hpa']||'—'} ${presTend5}</div>
+        <div class="fc-extra">🔵 <span style="color:${presTend5.indexOf('↑')>-1?'#27AE60':presTend5.indexOf('↓')>-1?'#E74C3C':'#E8A020'};font-weight:700">${d['forecast_day'+i+'_presion_hpa']||'—'} ${presTend5}</span></div>
       </div>`;
   }
 }
